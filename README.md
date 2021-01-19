@@ -36,3 +36,6 @@ Forritið keyrir sjálfgefið á http://localhost:7979/ og taka skal eftir að �
 * Verður að geta flokkað í fornöfn og millinöfn
 * Uppruni nafnsins (kemur það frá þýskalandi eða ítalíu)?
 * fleira...?
+
+
+Pushtest
