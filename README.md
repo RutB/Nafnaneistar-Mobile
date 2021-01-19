@@ -38,5 +38,4 @@ Forritið keyrir sjálfgefið á http://localhost:7979/ og taka skal eftir að �
 * Uppruni nafnsins (kemur það frá þýskalandi eða ítalíu)?
 * fleira...?
 
-
-Pushtest
+MITT PUSH TEST!
