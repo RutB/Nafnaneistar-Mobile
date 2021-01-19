@@ -3,6 +3,7 @@
 Heimasíða:
 http://www.nafnaneistar.xyz/
 
+Ég er best 
 
 # Fyrir Code Exchange:
 * Use Case Document: https://notendur.hi.is/ojv1/hugbo1/Use%20Case%20Document.pdf 
