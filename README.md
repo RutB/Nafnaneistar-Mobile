@@ -5,12 +5,6 @@ http://www.nafnaneistar.xyz/
 
 Ég er best 
 
-# Fyrir Code Exchange:
-* Use Case Document: https://notendur.hi.is/ojv1/hugbo1/Use%20Case%20Document.pdf 
-* UML diagrams: https://notendur.hi.is/ojv1/hugbo1/Assignment%202%20-%20Content.pdf 
-* Class Diagram: https://notendur.hi.is/ojv1/hugbo1/Assignment%203/Assignment%203%20-%20Class%20Diagram.pdf
-* Class Diagram svg: https://notendur.hi.is/ojv1/hugbo1/Assignment%203/Nafnaneistar.svg
-
 # Keyrsla:
 Það þarf að vera með á vélinni sem keyrir forritið Java 11 eða nýrra.
 Forritið keyrir sjálfgefið á http://localhost:7979/ og taka skal eftir að það er port 7979 svo ef að það port er í notkun þarf að slökkva á þeirri þjónustu sem er keyrand þar.
@@ -22,6 +16,12 @@ Forritið keyrir sjálfgefið á http://localhost:7979/ og taka skal eftir að �
 
 
 # TODO
+* Útfæra searchname í REST
+* Koma SASS virkni í framendann hver sem hann verður
+* Taka til og fjarlægja stuff sem þarf ekki 
+* Ákveða framenda
+
+## Gamla
 * Code exchange 1.Nóv - spurningum að yfirfara kóða - Póstur sendur
 * @Rut a.k.a Grafíski hönnuðurinn pæla í litum - basically komið?
 * koma með hugmyndir að logo - current WIP er fíll
@@ -37,3 +37,6 @@ Forritið keyrir sjálfgefið á http://localhost:7979/ og taka skal eftir að �
 * Verður að geta flokkað í fornöfn og millinöfn
 * Uppruni nafnsins (kemur það frá þýskalandi eða ítalíu)?
 * fleira...?
+
+
+Pushtest
