@@ -1,4 +1,4 @@
-# Throbo2_nafnaneistar
+# Mobile throbo
  
 Heimasíða:
 http://www.nafnaneistar.xyz/
