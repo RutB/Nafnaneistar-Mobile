@@ -1,14 +1,12 @@
 package is.hi.hbv501g.nafnaneistar.nafnaneistar.Controllers;
 
-import java.util.Collections;
 import java.util.HashMap;
-import java.util.Map;
 
 import javax.servlet.http.HttpSession;
 
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -44,16 +42,13 @@ public class UserRestController {
      * @return true if the credentials were right, false otherwise
      */
     @GetMapping(path = "/login/check", produces = "application/json")
-    public Map<String, Boolean> checkLogin(@RequestParam String email, @RequestParam String password,
-            HttpSession session) 
+    public String checkLogin(@RequestParam String email, @RequestParam String password) 
     {   
-        boolean value = false;
         User user  = userService.findByEmailAndPassword(email, password);
         if(user != null){
-            session.setAttribute("currentUser", user);
-            value =  true;
+            return user.toJsonString();
         }
-        return Collections.singletonMap("success", value);
+        return "{}";
     }
 
     /**

@@ -2,7 +2,6 @@ package is.hi.hbv501g.nafnaneistar.nafnaneistar.Controllers;
 
 import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.List;
 import java.util.Optional;
 import org.apache.commons.lang3.StringUtils;
 import javax.servlet.http.HttpSession;
