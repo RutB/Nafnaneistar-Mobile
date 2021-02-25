@@ -7,4 +7,6 @@
     <string name="btnLogin">Innskráning</string>
     <string name="btnSignup">Nýskráning</string>
     <string name="needAccount">Ekki með aðgang?</string>
+    <string name="loginError">Innskráning tókst ekki</string>
+    <string name="nafnaneistar_logo_elephant">Nafnaneistar Logo Elephant</string>
 </resources>
