@@ -2,13 +2,17 @@
 <layout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools">
-
+    <data>
+        <variable
+            name="user"
+            type="xyz.nafnaneistar.model.User"/>
+    </data>
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:background="@color/background"
-        tools:context=".LoginActivity">
+        tools:context="xyz.nafnaneistar.activities.LoginActivity">
 
         <Button
             android:id="@+id/btnLogin"
@@ -83,13 +87,15 @@
 
         <TextView
             android:id="@+id/tvError"
-            android:layout_width="149dp"
-            android:layout_height="24dp"
+            android:layout_width="244dp"
+            android:layout_height="17dp"
             android:layout_marginBottom="3dp"
             android:layout_marginTop="5dp"
+            android:gravity="center"
             android:text="@string/loginError"
+            android:textAlignment="center"
             android:textColor="@color/design_default_color_error"
-            android:visibility="visible"
+            android:visibility="invisible"
             app:layout_constraintBottom_toTopOf="@+id/btnLogin"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
