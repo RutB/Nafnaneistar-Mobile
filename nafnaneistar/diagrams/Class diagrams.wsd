@@ -1,5 +1,8 @@
 @startuml Nafnaneistar
 scale 1.5
+package Server {
+
+
 Class  User <<@Entity >> {
     -id : Long
     -name : String
@@ -43,7 +46,7 @@ class NameController <<@Controller>> {
     +swipeNames(model: Model, session HttpSession) : String
     +viewLiked(model : Model, session HttpSession) : String
 }
-
+}
 class HomeController <<@Controller>> {
     -userService : UserService
     -nameService : NameService

@@ -1,6 +1,9 @@
 package is.hi.hbv501g.nafnaneistar.nafnaneistar.Controllers;
 
+import java.util.Collections;
 import java.util.HashMap;
+import java.util.Map;
+
 import javax.servlet.http.HttpSession;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -16,8 +19,8 @@ import is.hi.hbv501g.nafnaneistar.nafnaneistar.Services.UserService;
 import is.hi.hbv501g.nafnaneistar.utils.UserUtils;
 
 /**
- * UserRestController contains methods and functions to process 
- * fetch calls from the viewing template
+ * UserRestController contains methods and functions to process fetch calls from
+ * the viewing template
  */
 @RestController
 public class UserRestController {
@@ -32,22 +35,25 @@ public class UserRestController {
     }
 
     /**
-     * function that validates the information from the User to login, if the User with the given email matches 
-     * the given password the user is logged in
-     * @param email - Email of User
+     * function that validates the information from the User to login, if the User
+     * with the given email matches the given password the user is logged in
+     * 
+     * @param email    - Email of User
      * @param password - Password of the User
-     * @param session - Session to keep information 
+     * @param session  - Session to keep information
      * @return true if the credentials were right, false otherwise
      */
-    @GetMapping(path="/login/check/{email}/{password}", produces = "application/json")
-    public boolean checkLogin(@PathVariable String email, @PathVariable String password, HttpSession session) 
+    @GetMapping(path = "/login/check", produces = "application/json")
+    public Map<String, Boolean> checkLogin(@RequestParam String email, @RequestParam String password,
+            HttpSession session) 
     {   
+        boolean value = false;
         User user  = userService.findByEmailAndPassword(email, password);
         if(user != null){
             session.setAttribute("currentUser", user);
-            return true;
+            value =  true;
         }
-        return false;
+        return Collections.singletonMap("success", value);
     }
 
     /**

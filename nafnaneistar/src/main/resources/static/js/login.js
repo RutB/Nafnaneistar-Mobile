@@ -9,7 +9,7 @@ document.addEventListener('DOMContentLoaded', () => {
         error.classList.add('--hidden')
         let user = document.querySelector('#email').value
         let password = document.querySelector('#password').value
-        let url = `${window.location.origin}/login/check/${user}/${password}`
+        let url = `${window.location.origin}/login/check?email=${user}&password=${password}`
         validateLogin(url)
     }
 

@@ -1,0 +1,293 @@
+@startuml Nafnaneistar
+scale 1.25
+package ClientSide {
+    class NavFragment<<Fragment>> {
+        -SessionID : int
+        +onCreate()
+        +onCreateOptionsMenu()
+
+
+    }
+    class LoginActivity<<Activity>>{
+        +onCreate()
+        +validateEmail()
+        +validateLogin()
+
+    }
+    package Data {
+        Class  CurrentUser <<Model>> {
+        -id : Long
+        -name : String
+        -email : String
+        -password : String
+        -availableNames : ArrayList<Integer>
+        -approvedNames : HashMap<Integer, Integer>
+        -linkedPartners : ArrayList<Long>
+        --
+        +[Getters & Setters]
+    }
+        Class CurrentNameCard <<Model>> {
+        -id : Integer
+        -name : String
+        -description : String
+        -gender : boolean
+        --
+        +CurrentNameCard(id : Integer, name : String, description : String)
+        .. Modified getter ..
+        +getGender() : int
+        --
+        +[Getters and Setters]
+    }
+    }
+    
+    class SignupActivity<<Activity>>{
+        +onCreate()
+        +CreateUser(name : String, email : String, password : String)
+
+    }
+    class FindNameActivity<<Activity>>{
+        +onCreate()
+        +approveName(int nameId, int userId) : NameCard
+        +disApproveName(int nameId, int userId) : NameCard
+        +getNewName()
+
+    }
+    class SearchActivity<<Activity>>{
+        +onCreate()
+        +addNameToList()
+        +removeNameFromList()
+    }
+
+    class PushController<<Controller>>{
+        +onCreate()
+        +sendNotification()
+    }
+
+    class LinkPartnerActivity<<Activity>>{
+        +onCreate()
+        +addParnter()
+        +removePartner()
+
+    }
+
+    class SettingsActivity<<Activity>>{
+        +onCreate()
+        +updateUserName()
+        +updatePassword()
+        +resetList()
+
+    }
+    
+    class ViewLikedActivity<<Activity>>{
+        +onCreate()
+        +getPartnerUnionList()
+        +getListSize()
+        +customSelect()
+        +getTopList()
+        +sendUpdateRating()
+
+    }
+    
+}
+skinparam class {
+    backgroundColor<<Activity>> PaleGreen
+}
+skinparam class {
+    backgroundColor<<Fragment>> AliceBlue
+}
+skinparam class {
+    backgroundColor<<Model>> #F7D8BA
+}
+
+package Server {
+    Class  User <<@Entity >> {
+        -id : Long
+        -name : String
+        -email : String
+        -password : String
+        -availableNames : ArrayList<Integer>
+        -approvedNames : HashMap<Integer, Integer>
+        -linkedPartners : ArrayList<Long>
+        --
+        +User()
+        +User(name : String, email : String, password : String, availableNames : ArrayList<Integer>)
+        +approveName(id : Integer) : ArrayList<Integer>
+        +disapproveName(id : Integer) : ArrayList<Integer>
+        +removeApprovedName(id: Integer)
+        +addLinkedPartner(id : Long)
+        +removeLinkedPartner(id : Long) : boolean
+        +getAvailableNamesSize() : int
+        +getRandomNameId() : Integer
+        +getRandomNameId(genderList : ArrayList<Integer>) : Integer
+        +updateRatingById(id : Integer, rating : Integer)
+        +[Getters & Setters]
+    }
+    Class NameCard <<@Entity>> {
+        -id : Integer
+        -name : String
+        -description : String
+        -gender : boolean
+        --
+        +NameCard()
+        +NameCard(id : Integer, name : String, description : String)
+        .. Modified getter ..
+        +getGender() : int
+        --
+        +[Getters and Setters]
+    }
+
+    class NameRestController <<@RestController>> {
+        -userService : UserService
+        -nameService : NameService
+        +NameRestController(userService : UserService, nameService : NameService)
+        +approveName(id : String, male : String, female : String, session : HttpSession) : Optional<NameCard>
+        +disapproveName(id : String, male : String, female : String, session : HttpSession) : Optional<NameCard>
+        +getNewName(id : String, male : String, female : String, session : HttpSession) : Optional<NameCard>
+        +getNewNameCard(user : User, nameService : NameService, gender : int) : Optional<NameCard>
+        +getComboList(session : HttpSession, partnerid : String) : HashMap<String, Integer>
+        +getRemainingSize( session : HttpSession) : Integer[]
+        +rankName(id : Integer , session : HttpSession) : ArrayList<NameCard>
+        +viewLiked(session HttpSession) : String
+
+    }
+
+
+    class UserRestController <<@RestController>> {
+        -userService : UserService
+        -nameService : NameService
+        +login(session:HttpSession)
+        +signup(user:User, result)
+        +UserRestController (userService: UserService, nameService: NameService)
+        +checkLogin(email:String, password:String, session:HttpSession) : boolean
+        +validateEmail(email : String) : boolean
+        +updateNameRating(id : String, rating : String, session : HttpSession) : boolean 
+        +removeNameFromApproved(session : HttpSession, id : Integer) : ArrayList<NameCard>
+        +logOut(session : HttpSession)
+        +linkpartner(email : String, session : HttpSession)
+    }
+
+    Interface UserService <<Interface>> {
+        save( user: User): User
+        delete(user: User): void
+        findAll(): List<User>
+        findAllByNameLike(name:String): List<User>
+        findByEmailAndPassword(email:String, password:String): User
+        findByEmail(email:String) : User
+        findById(id:Long): Optional<User>
+    }
+    class UserServiceImplementation <<@Service>> {
+        repository : UserRepository
+        --
+        +UserServiceImplementation(userRepo : UserRepository)
+        +save(user : User) : User
+        +delete(user : User)
+        +findAll() : List<User>
+        +findAllByNameLike(name : String) : List<User>
+        +findByEmailAndPassword(email : String, password : Password) :User
+        +findByEmai(email : String) : User
+        +findById(id : Long) : Optional<User>
+    }
+
+
+    Interface NameRepository<<interface>> {
+        save(namecard : NameCard) : NameCard
+        delete(namecard NameCard)
+        findAll() : List<NameCard>
+        findById(id : Integer ) : Optional<NameCard>
+        findAllByGender(bool : boolean) : List<NameCard>
+        findDescriptionByName(s : String) : Optional<NameCard>
+        countByGender(gender : boolean) : Integer
+
+    }
+
+    Interface UserRepository<<interface>> {
+        save(user User) : User
+        delete(user User)
+        findAll() : List<User>
+        findAllByNameLike(name : String) : List<User>
+        findByEmailAndPassword(email : String, password : String) : User
+        findByEmail(email : String) : User
+        findById(id : Long ) : Optional<User>
+    }
+
+    Interface NameService <<Interface>> {
+        save(nameCard : NameCard) : NameCard
+        delete(nameCard : NameCard) : NameCard
+        findAll() : List<NameCard>
+        findById(id : Integer) : Optional<NameCard>
+        findAllByGender(bool : boolean) : List<NameCard>
+        findDescriptionByName(s : String) : String
+        countByGender(gender : boolean) : Integer
+    }
+
+    class NameServiceImplementation <<@Service>> {
+        repository : NameRepository
+        --
+        +NameServiceImplementation(nameRepo : NameRepository)
+        +save(nameCard : NameCard) : NameCard
+        +delete(nameCard : NameCard)
+        +findAll() : List<NameCard>
+        +findById(id : Integer) : Optional<NameCard>
+        +findAllByGender(bool : boolean) : List<NameCard>
+        +findDescriptionByName(s : String) : String
+        +countByGender(gender : boolean) : Integer
+    }
+
+    class UserUtils {
+        +initAvailable(user : user, nameService : NameService)
+        +getGenderList(user : User, nameService : NameService) : ArrayList<Integer>
+        +getGenderList(ids : Set<Integer>, nameService : NameService, int gender) : ArrayList<Integer>
+        +isLoggedIn(user : User) : boolean
+    }
+
+    class SearchRestController<<@RestController>> {
+        -userService : UserService
+        -nameService : NameService
+        +SearcRestController(userService : UserService, nameService : NameService)
+        +searchNameByString(s : String) : ArrayList<NameCard>
+        +addToApproved(id : Integer)
+    }
+
+    class SettingsRestController<<@RestController>> {
+        -userService : UserService
+        -nameService : NameService
+        +SettingsRestController(userService : UserService)
+        +changePassword(oldpassword : String, newpassword : String)
+        +changeName(name : String)
+        +restartNameLists(session : HttpSession)
+
+    }
+}
+
+
+
+NameServiceImplementation "1" --|> "1" NameService
+UserServiceImplementation "1" -up-|> "1" UserService
+
+NameRepository "1" <- "1" NameServiceImplementation
+UserServiceImplementation "1" -l-> "1" UserRepository
+
+SettingsRestController "1" -r-> "1" UserService
+
+UserRestController "1" --> "1" UserService
+NameService "1" <-- "1" UserRestController
+NameService "1" <-- "1" SettingsRestController
+
+NameService "1" <-- "1" NameRestController
+NameRestController "1" --> "1" UserService
+
+SearchRestController "1" -> "1" UserService 
+SearchRestController "1" -> "1"  NameService
+
+UserServiceImplementation -[hidden]-> NameCard
+NameCard -[hidden]> UserUtils
+User -[hidden]> NameCard
+
+
+LinkPartnerActivity -left-> NavFragment
+SettingsActivity -down-> NavFragment
+FindNameActivity -right-> NavFragment
+SearchActivity -up-> NavFragment
+ViewLikedActivity --> NavFragment
+
+@enduml
