@@ -70,26 +70,7 @@ public class UserController {
     }
    
 
-    /**
-     * populates the model with data and initializes the available names
-     * @param user Object user that is the current user
-     * @param result manages the retrieval of validation errors
-     * @param model manages the data for the viewing template
-     * @return signup template
-     */
-    @RequestMapping(value = "/signup", method = RequestMethod.POST)
-    public String signup(@Valid @ModelAttribute User user, BindingResult result, Model model) {
-        model.addAttribute("names", nameService.findAll());
-        model.addAttribute("users", userService.findAll());
 
-        if (result.hasErrors()) {
-            return "Signup";
-        }
-        UserUtils.initAvailableNames(user, nameService);
-        userService.save(user);
-        model.addAttribute("users", userService.findAll());
-        return "redirect:/";
-    }
 
     /** 
      * signup is activated when the user accesses /signup on the domain.

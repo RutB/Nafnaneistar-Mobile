@@ -4,9 +4,9 @@ import java.util.HashMap;
 
 import javax.servlet.http.HttpSession;
 
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -49,6 +49,16 @@ public class UserRestController {
             return user.toJsonString();
         }
         return "{}";
+    }
+
+    @PostMapping(path = "/signup",produces = "application/json")
+    public String SignUp(@RequestParam String name, @RequestParam String email, @RequestParam String password){
+        User user = userService.findByEmail(email);
+        if(user != null)
+            return "{'message':'Netfang núþegar skráð'}";
+        User newUser = new User(name,email,password,UserUtils.getAvailableNames(nameService));
+        userService.save(newUser);
+        return newUser.toJsonString();
     }
 
     /**

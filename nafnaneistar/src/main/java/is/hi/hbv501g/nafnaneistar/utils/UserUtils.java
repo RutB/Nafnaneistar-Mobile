@@ -21,6 +21,12 @@ public class UserUtils {
             ids.add(nc.getId());
         user.setAvailableNames(ids);
     }
+    public static ArrayList<Integer> getAvailableNames(NameService nameService){
+        ArrayList<Integer> ids = new ArrayList<>();
+		for(NameCard nc : nameService.findAll())
+            ids.add(nc.getId());
+       return ids;
+    }
 
     /**
      * Returns the Id's of the available id matching the name's gender, used if you only want to

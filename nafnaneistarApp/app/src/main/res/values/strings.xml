@@ -20,4 +20,7 @@
     <string name="hintNAme">Nafn</string>
     <string name="DontNeedAccount">Ég er með aðgang?</string>
     <string name="signup">Nýskráning</string>
+    <string name="errorEmptyStrings">Reitir mega ekki vera tómir</string>
+    <string name="errorInvalidEmail">Netfang ekki gilt</string>
+    <string name="signupSuccess">Nýskráning Tókst!</string>
 </resources>
