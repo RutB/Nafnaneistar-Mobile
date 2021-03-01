@@ -31,6 +31,9 @@ public class SignupActivity extends AppCompatActivity {
         binding = DataBindingUtil.setContentView(this, R.layout.activity_signup);
         binding.btnLogin2.setOnClickListener(this::Login);
         binding.btnSignup2.setOnClickListener(this::SignupUser);
+
+
+
     }
 
     public void Login(View view){
@@ -44,24 +47,20 @@ public class SignupActivity extends AppCompatActivity {
         Pattern pattern = Pattern.compile("^.+@.+\\..+$");
         Matcher matcher = pattern.matcher(email);
         if(name.length() == 0 || email.length() == 0 | pass.length() == 0){
-            binding.tvError.setText(R.string.errorEmptyStrings);
-            binding.tvError.setVisibility(View.VISIBLE);
+            Toast.makeText(SignupActivity.this, R.string.errorEmptyStrings ,Toast.LENGTH_SHORT)
+                    .show();
             return;
         }
         else if(!matcher.matches()){
-            binding.tvError.setText(R.string.errorInvalidEmail);
-            binding.tvError.setVisibility(View.VISIBLE);
+            Toast.makeText(SignupActivity.this, R.string.errorInvalidEmail ,Toast.LENGTH_SHORT)
+                    .show();
             return;
-        }
-        else {
-            binding.tvError.setVisibility(View.INVISIBLE);
         }
         String signupUrl = String.format("%ssignup?name=%s&email=%s&password=%s", ApiController.getDomainURL(),name, email, pass);
         JsonObjectRequest jsonObjReq = new JsonObjectRequest(Request.Method.POST,signupUrl,null,
                 response -> {
                     Gson g = new Gson();
                     User p = g.fromJson(String.valueOf(response), User.class);
-                    System.out.println(response.toString());
                     if(p.getName() != null){
                         Toast.makeText(SignupActivity.this, R.string.signupSuccess ,Toast.LENGTH_SHORT)
                                 .show();
@@ -70,18 +69,18 @@ public class SignupActivity extends AppCompatActivity {
                         String message = null;
                         try {
                             message = response.getString("message");
-                            binding.tvError.setText(message);
+                            Toast.makeText(SignupActivity.this, message ,Toast.LENGTH_SHORT)
+                                    .show();
                         } catch (JSONException e) {
-                            binding.tvError.setText("Nýskráning Mistókt");
+                            Toast.makeText(SignupActivity.this, R.string.errorEmptyStrings ,Toast.LENGTH_SHORT)
+                                    .show();
                             e.printStackTrace();
                         }
-                        binding.tvError.setVisibility(View.VISIBLE);
-                        Log.d("fetch", "SignupUser: "+ response.toString());
                     }
 
                 },error -> {
-            binding.tvError.setText("Nýskráning Mistókst!");
-            binding.tvError.setVisibility(View.VISIBLE);
+            Toast.makeText(SignupActivity.this, R.string.errorEmptyStrings ,Toast.LENGTH_SHORT)
+                    .show();
             Log.d("Test", "CheckLogin: " + error.toString());
         });
         ApiController.getInstance().addToRequestQueue(jsonObjReq);

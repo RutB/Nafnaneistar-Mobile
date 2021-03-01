@@ -70,8 +70,6 @@ public class UserController {
     }
    
 
-
-
     /** 
      * signup is activated when the user accesses /signup on the domain.
      * to access /signup the user is not logged in and has not an active session.

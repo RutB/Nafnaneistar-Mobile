@@ -11,7 +11,11 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.LoginActivity"
         android:usesCleartextTraffic="true">
-        <activity android:name="xyz.nafnaneistar.activities.SignupActivity"></activity>
+        <activity
+            android:name="xyz.nafnaneistar.activities.testActivyti"
+            android:label="@string/title_activity_test_activyti"
+            android:theme="@style/Theme.LoginActivity.NoActionBar"></activity>
+        <activity android:name="xyz.nafnaneistar.activities.SignupActivity" />
         <activity android:name="xyz.nafnaneistar.activities.LoginActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -19,7 +23,6 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-
     </application>
 
     <uses-permission android:name="android.permission.INTERNET" />
