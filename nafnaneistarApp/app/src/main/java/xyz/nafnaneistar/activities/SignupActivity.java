@@ -1,5 +1,6 @@
 package xyz.nafnaneistar.activities;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
@@ -64,6 +65,7 @@ public class SignupActivity extends AppCompatActivity {
                     if(p.getName() != null){
                         Toast.makeText(SignupActivity.this, R.string.signupSuccess ,Toast.LENGTH_SHORT)
                                 .show();
+                        startActivity(new Intent( SignupActivity.this, SwipeActivity.class));
                     }
                     else {
                         String message = null;

@@ -11,10 +11,7 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.LoginActivity"
         android:usesCleartextTraffic="true">
-        <activity
-            android:name="xyz.nafnaneistar.activities.testActivyti"
-            android:label="@string/title_activity_test_activyti"
-            android:theme="@style/Theme.LoginActivity.NoActionBar"></activity>
+        <activity android:name="xyz.nafnaneistar.activities.SwipeActivity"></activity>
         <activity android:name="xyz.nafnaneistar.activities.SignupActivity" />
         <activity android:name="xyz.nafnaneistar.activities.LoginActivity">
             <intent-filter>

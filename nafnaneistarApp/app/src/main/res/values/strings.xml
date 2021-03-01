@@ -33,4 +33,14 @@
 
     <string name="hello_first_fragment">Hello first fragment</string>
     <string name="hello_second_fragment">Hello second fragment. Arg: %1$s</string>
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name="title_activity_swipte">SwipteActivity</string>
+    <string name="title_activity_swipe">swipelabel</string>
+    <string name="navMenu">Valmynd</string>
+    <string name="navbarSearchname">Leita af Nafni</string>
+    <string name="navbarSwipe">Velja Nöfn</string>
+    <string name="navbarvviewliked">Skoða Valin Nöfn</string>
+    <string name="navbarLinkPartner">Tengjast Öðrum</string>
+    <string name="navbarSettings">Stillingar</string>
 </resources>

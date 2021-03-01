@@ -56,6 +56,7 @@ public class LoginActivity extends AppCompatActivity {
                     if(p.getName() != null){
                         Toast.makeText(LoginActivity.this, R.string.loginSuccess ,Toast.LENGTH_SHORT)
                                 .show();
+                        startActivity(new Intent( LoginActivity.this, SwipeActivity.class));
                     }
                     else {
                         Snackbar.make(binding.etEmail,R.string.loginFailed, Snackbar.LENGTH_INDEFINITE)
