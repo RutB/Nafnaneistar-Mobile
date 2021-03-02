@@ -16,6 +16,7 @@ public class SwipeActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         binding = DataBindingUtil.setContentView(this, R.layout.activity_swipe);
 
+        //Initialize the navbar fragment
         FragmentManager fragmentManager = getSupportFragmentManager();
         Fragment navbar = fragmentManager.findFragmentById(R.id.navbar);
 

@@ -8,11 +8,12 @@ import android.view.View;
 import android.widget.Toast;
 
 import xyz.nafnaneistar.loginactivity.R;
+import xyz.nafnaneistar.loginactivity.databinding.ActivityLinkPartnerBinding;
 import xyz.nafnaneistar.loginactivity.databinding.ActivityLoginBinding;
 import xyz.nafnaneistar.model.User;
 
 public class LinkPartnerActivity extends AppCompatActivity {
-    private ActivityLinkBinding binding;
+    private ActivityLinkPartnerBinding binding;
     private User currentUser = new User();
     @Override
     protected void onCreate(Bundle savedInstanceState) {

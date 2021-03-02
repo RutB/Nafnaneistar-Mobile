@@ -1,29 +1,10 @@
 package xyz.nafnaneistar.controller;
 
-import android.app.Activity;
 import android.app.Application;
-import android.content.Context;
-import android.content.Intent;
-import android.content.SharedPreferences;
-import android.util.Log;
-import android.widget.Toast;
 
 import com.android.volley.Request;
 import com.android.volley.RequestQueue;
-import com.android.volley.toolbox.JsonObjectRequest;
 import com.android.volley.toolbox.Volley;
-import com.google.android.material.snackbar.Snackbar;
-import com.google.gson.Gson;
-
-import java.lang.reflect.Array;
-import java.util.HashSet;
-import java.util.Set;
-
-import xyz.nafnaneistar.activities.LoginActivity;
-import xyz.nafnaneistar.activities.SignupActivity;
-import xyz.nafnaneistar.activities.SwipeActivity;
-import xyz.nafnaneistar.loginactivity.R;
-import xyz.nafnaneistar.model.User;
 
 /**
  * Singleton Class for contacting the nafnaneistar.xyz API/Server
@@ -31,15 +12,13 @@ import xyz.nafnaneistar.model.User;
  */
 public class ApiController extends Application {
     private static ApiController instance;
-    //private static String domainURL = "http://46.22.102.179:7979/";
-    private static String domainURL = "http://192.168.1.207:7979/";
+    private static String domainURL = "http://46.22.102.179:7979/";
+    //private static String domainURL = "http://192.168.1.207:7979/";
     private RequestQueue requestQueue;
 
-    public static final String SHARED_PREFS = "prefsUser";
-    public static final String TEXT = "text";
 
     /**
-     * Return the current instance
+     * Return the current instance to prevent multiple instances
      */
     public static synchronized ApiController getInstance(){
         return instance;
@@ -58,15 +37,26 @@ public class ApiController extends Application {
         return requestQueue;
     }
 
+    /**
+     * makes sure to queue up the requests to maintain a stable connection
+     * @param req the jsonobject or array reqyest
+     * @param <T>
+     */
     public <T> void addToRequestQueue(Request<T> req){
         getRequestQueue().add(req);
     }
 
+    /**
+     * make the domainUrl a variable for better convience
+     * @return
+     */
     public static String getDomainURL() {
         return domainURL;
     }
 
-
+    /**
+     * makes sure that the instance can only be this one
+     */
     @Override
     public void onCreate() {
         super.onCreate();
