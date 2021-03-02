@@ -1,10 +1,29 @@
 package xyz.nafnaneistar.controller;
 
+import android.app.Activity;
 import android.app.Application;
+import android.content.Context;
+import android.content.Intent;
+import android.content.SharedPreferences;
+import android.util.Log;
+import android.widget.Toast;
 
 import com.android.volley.Request;
 import com.android.volley.RequestQueue;
+import com.android.volley.toolbox.JsonObjectRequest;
 import com.android.volley.toolbox.Volley;
+import com.google.android.material.snackbar.Snackbar;
+import com.google.gson.Gson;
+
+import java.lang.reflect.Array;
+import java.util.HashSet;
+import java.util.Set;
+
+import xyz.nafnaneistar.activities.LoginActivity;
+import xyz.nafnaneistar.activities.SignupActivity;
+import xyz.nafnaneistar.activities.SwipeActivity;
+import xyz.nafnaneistar.loginactivity.R;
+import xyz.nafnaneistar.model.User;
 
 /**
  * Singleton Class for contacting the nafnaneistar.xyz API/Server
@@ -12,9 +31,12 @@ import com.android.volley.toolbox.Volley;
  */
 public class ApiController extends Application {
     private static ApiController instance;
-    private static String domainURL = "http://46.22.102.179:7979/";
-    //private static String domainURL = "http://192.168.1.207:7979/";
+    //private static String domainURL = "http://46.22.102.179:7979/";
+    private static String domainURL = "http://192.168.1.207:7979/";
     private RequestQueue requestQueue;
+
+    public static final String SHARED_PREFS = "prefsUser";
+    public static final String TEXT = "text";
 
     /**
      * Return the current instance
@@ -43,6 +65,7 @@ public class ApiController extends Application {
     public static String getDomainURL() {
         return domainURL;
     }
+
 
     @Override
     public void onCreate() {

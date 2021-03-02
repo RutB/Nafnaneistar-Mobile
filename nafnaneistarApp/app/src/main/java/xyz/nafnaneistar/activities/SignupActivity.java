@@ -1,6 +1,7 @@
 package xyz.nafnaneistar.activities;
 
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
@@ -14,6 +15,7 @@ import com.google.gson.Gson;
 import org.json.JSONException;
 
 import xyz.nafnaneistar.controller.ApiController;
+import xyz.nafnaneistar.helpers.Prefs;
 import xyz.nafnaneistar.model.User;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
@@ -25,6 +27,7 @@ import xyz.nafnaneistar.loginactivity.databinding.ActivitySignupBinding;
 
 public class SignupActivity extends AppCompatActivity {
     private ActivitySignupBinding binding;
+    private Prefs prefs;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -32,13 +35,23 @@ public class SignupActivity extends AppCompatActivity {
         binding = DataBindingUtil.setContentView(this, R.layout.activity_signup);
         binding.btnLogin2.setOnClickListener(this::Login);
         binding.btnSignup2.setOnClickListener(this::SignupUser);
-
+        prefs = new Prefs(SignupActivity.this);
 
 
     }
 
     public void Login(View view){
-        onBackPressed();
+        Intent i = new Intent(SignupActivity.this, LoginActivity.class);
+        finish();
+        startActivity(i);
+    }
+
+    @Override
+    public void onBackPressed() {
+        super.onBackPressed();
+        Intent i = new Intent(SignupActivity.this, LoginActivity.class);
+        finish();
+        startActivity(i);
     }
 
     public void SignupUser(View view){
@@ -65,6 +78,11 @@ public class SignupActivity extends AppCompatActivity {
                     if(p.getName() != null){
                         Toast.makeText(SignupActivity.this, R.string.signupSuccess ,Toast.LENGTH_SHORT)
                                 .show();
+                        prefs.saveUser(email, pass);
+                        Intent intent = getIntent();
+                        intent.putExtra("close","close");
+                        setResult(RESULT_OK, intent);
+                        finish();
                         startActivity(new Intent( SignupActivity.this, SwipeActivity.class));
                     }
                     else {

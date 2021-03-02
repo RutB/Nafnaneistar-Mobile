@@ -47,4 +47,6 @@
     <string name="btnLink">Tengjast</string>
     <string name="linkError">Ekki tókst að tengjast netfangi</string>
     <string name="tvConnected">Þú ert tengd/ur við</string>
+    <string name="sharedPrefUsername">prefUsername</string>
+    <string name="intentBooleanClsoe">close</string>
 </resources>

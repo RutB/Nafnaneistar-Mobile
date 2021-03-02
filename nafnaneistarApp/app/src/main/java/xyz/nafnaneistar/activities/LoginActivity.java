@@ -1,13 +1,16 @@
 package xyz.nafnaneistar.activities;
 
+import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.databinding.DataBindingUtil;
 
+import xyz.nafnaneistar.helpers.Prefs;
 import xyz.nafnaneistar.loginactivity.R;
 import xyz.nafnaneistar.controller.ApiController;
 import xyz.nafnaneistar.model.User;
 import xyz.nafnaneistar.loginactivity.databinding.ActivityLoginBinding;
 
+import android.content.Context;
 import android.content.Intent;
 import android.graphics.Color;
 import android.os.Bundle;
@@ -22,9 +25,13 @@ import com.android.volley.toolbox.JsonObjectRequest;
 import com.google.android.material.snackbar.Snackbar;
 import com.google.gson.Gson;
 
+import java.util.Set;
+
 public class LoginActivity extends AppCompatActivity {
     private ActivityLoginBinding binding;
     private  User currentUser = new User();
+    private final int REQUEST_CODE = 2;
+    private Prefs prefs;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -32,10 +39,37 @@ public class LoginActivity extends AppCompatActivity {
         binding = DataBindingUtil.setContentView(this, R.layout.activity_login);
         binding.btnLogin.setOnClickListener(this::CheckLogin);
         binding.btnSignup.setOnClickListener(this::Signup);
+        prefs = new Prefs(LoginActivity.this);
+        //prefs.Logout();
+        Set<String> user = prefs.getUser();
+        CheckLogin(user);
     }
 
     public void Signup(View view){
-        startActivity(new Intent(LoginActivity.this, SignupActivity.class));
+        Intent i = new Intent(LoginActivity.this, SignupActivity.class);
+        finish();
+        startActivity(i);
+    }
+
+    public void CheckLogin(Set<String> user){
+        if (user.size() != 2){
+            return;
+        }
+        String email = user.toArray()[0].toString();
+        String pass = user.toArray()[1].toString();
+        String loginUrl = ApiController.getDomainURL()+"login/check?email=" +email+"&password="+pass;
+        JsonObjectRequest jsonObjReq = new JsonObjectRequest(Request.Method.GET,loginUrl,null,
+                response -> {
+                    Gson g = new Gson();
+                    User p = g.fromJson(String.valueOf(response), User.class);
+                    if(p.getName() != null){
+                        Intent i = new Intent( LoginActivity.this, SwipeActivity.class);
+                        finish();
+                        startActivity(i);
+                    }
+                },error -> {
+        });
+        ApiController.getInstance().addToRequestQueue(jsonObjReq);
     }
 
     public void CheckLogin(View view){
@@ -47,8 +81,6 @@ public class LoginActivity extends AppCompatActivity {
             return;
         }
         String loginUrl = ApiController.getDomainURL()+"login/check?email=" +email+"&password="+pass;
-
-
         JsonObjectRequest jsonObjReq = new JsonObjectRequest(Request.Method.GET,loginUrl,null,
                 response -> {
                     Gson g = new Gson();
@@ -56,13 +88,16 @@ public class LoginActivity extends AppCompatActivity {
                     if(p.getName() != null){
                         Toast.makeText(LoginActivity.this, R.string.loginSuccess ,Toast.LENGTH_SHORT)
                                 .show();
+                        prefs.saveUser(email,pass);
                         startActivity(new Intent( LoginActivity.this, SwipeActivity.class));
                     }
                     else {
                         Snackbar.make(binding.etEmail,R.string.loginFailed, Snackbar.LENGTH_INDEFINITE)
                                 .setAction(R.string.btnSignup, view1 -> {
                                     Log.d("Snack", "showInfo: SnackBarMore");
-                                    startActivity(new Intent(LoginActivity.this, SignupActivity.class));
+                                    Intent i = new Intent(LoginActivity.this, SignupActivity.class);
+                                    startActivity(i);
+
                                 })
                                 .show();
                     }
@@ -70,9 +105,9 @@ public class LoginActivity extends AppCompatActivity {
                 },error -> {
                 Toast.makeText(LoginActivity.this, R.string.loginFailed ,Toast.LENGTH_SHORT)
                     .show();
-                Log.d("Test", "CheckLogin: " + error.toString());
         });
             ApiController.getInstance().addToRequestQueue(jsonObjReq);
 
     }
+
 }
