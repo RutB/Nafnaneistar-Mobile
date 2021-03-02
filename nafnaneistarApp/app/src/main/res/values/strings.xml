@@ -43,4 +43,8 @@
     <string name="navbarvviewliked">Skoða Valin Nöfn</string>
     <string name="navbarLinkPartner">Tengjast Öðrum</string>
     <string name="navbarSettings">Stillingar</string>
+    <string name="tvLinkPartner">Viltu tengja nafna listann þinn við einhvern annann? Skrifaðu póstfangið og tengist saman</string>
+    <string name="btnLink">Tengjast</string>
+    <string name="linkError">Ekki tókst að tengjast netfangi</string>
+    <string name="tvConnected">Þú ert tengd/ur við</string>
 </resources>
