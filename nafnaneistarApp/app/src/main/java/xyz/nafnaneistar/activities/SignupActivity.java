@@ -25,6 +25,9 @@ import androidx.databinding.DataBindingUtil;
 import xyz.nafnaneistar.loginactivity.R;
 import xyz.nafnaneistar.loginactivity.databinding.ActivitySignupBinding;
 
+/**
+ * The Activity that handles the signup part of the app
+ */
 public class SignupActivity extends AppCompatActivity {
     private ActivitySignupBinding binding;
     private Prefs prefs;
@@ -37,15 +40,23 @@ public class SignupActivity extends AppCompatActivity {
         binding.btnSignup2.setOnClickListener(this::SignupUser);
         prefs = new Prefs(SignupActivity.this);
 
-
     }
 
+    /**
+     * if the button near i already have account is clicked the user is taken to the
+     * login activity
+     * @param view
+     */
     public void Login(View view){
         Intent i = new Intent(SignupActivity.this, LoginActivity.class);
         finish();
         startActivity(i);
     }
 
+    /**
+     * to ensure a more normal flow the login activity is created again if the user presses back
+     * on the signup activity
+     */
     @Override
     public void onBackPressed() {
         super.onBackPressed();
@@ -54,6 +65,12 @@ public class SignupActivity extends AppCompatActivity {
         startActivity(i);
     }
 
+    /**
+     * The Function that is executed when the user tries to create account
+     * it makes sure that the edit text views contain text and then it creates a jsonObjectRequest
+     * andit gets added to the ApiController queue
+     * @param view
+     */
     public void SignupUser(View view){
         String name = binding.etName.getText().toString().trim();
         String email = binding.etEmail.getText().toString().trim();
@@ -75,12 +92,12 @@ public class SignupActivity extends AppCompatActivity {
                 response -> {
                     Gson g = new Gson();
                     User p = g.fromJson(String.valueOf(response), User.class);
+                    Log.d("signup", "SignupUser: "+response.toString());
                     if(p.getName() != null){
                         Toast.makeText(SignupActivity.this, R.string.signupSuccess ,Toast.LENGTH_SHORT)
                                 .show();
                         prefs.saveUser(email, pass);
                         Intent intent = getIntent();
-                        intent.putExtra("close","close");
                         setResult(RESULT_OK, intent);
                         finish();
                         startActivity(new Intent( SignupActivity.this, SwipeActivity.class));

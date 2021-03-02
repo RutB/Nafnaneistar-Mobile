@@ -45,12 +45,20 @@ public class LoginActivity extends AppCompatActivity {
         CheckLogin(user);
     }
 
+    /**
+     * if the user taps signup then we close the login activity and switch to signupactivity
+     * @param view
+     */
     public void Signup(View view){
         Intent i = new Intent(LoginActivity.this, SignupActivity.class);
         finish();
         startActivity(i);
     }
 
+    /**
+     * checks if the user is already loggedn in
+     * @param user
+     */
     public void CheckLogin(Set<String> user){
         if (user.size() != 2){
             return;
@@ -72,6 +80,10 @@ public class LoginActivity extends AppCompatActivity {
         ApiController.getInstance().addToRequestQueue(jsonObjReq);
     }
 
+    /**
+     * checks if the user is submitting the correct credentials and validates the user
+     * @param view
+     */
     public void CheckLogin(View view){
         String email = binding.etEmail.getText().toString().trim();
         String pass = binding.etPassword.getText().toString().trim();
