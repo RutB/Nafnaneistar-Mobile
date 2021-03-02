@@ -43,11 +43,12 @@ public class UserRestController {
      * @return true if the credentials were right, false otherwise
      */
     @GetMapping(path = "/login/check", produces = "application/json")
-    public String checkLogin(@RequestParam String email, @RequestParam String password) 
+    public String checkLogin(@RequestParam String email, @RequestParam String password,HttpSession session) 
     {   
         User user  = userService.findByEmail(email);;
         System.out.println(BCrypt.checkpw(user.getPassword(), user.getPassword()));
         if(BCrypt.checkpw(password, user.getPassword())){
+            
             return user.toJsonString();
         }
         return "{}";
