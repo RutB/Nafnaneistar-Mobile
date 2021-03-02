@@ -43,4 +43,6 @@
     <string name="navbarvviewliked">Skoða Valin Nöfn</string>
     <string name="navbarLinkPartner">Tengjast Öðrum</string>
     <string name="navbarSettings">Stillingar</string>
+    <string name="sharedPrefUsername">prefUsername</string>
+    <string name="intentBooleanClsoe">close</string>
 </resources>

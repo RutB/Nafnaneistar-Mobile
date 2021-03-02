@@ -14,6 +14,7 @@ import is.hi.hbv501g.nafnaneistar.nafnaneistar.Entities.NameCard;
 import is.hi.hbv501g.nafnaneistar.nafnaneistar.Entities.User;
 import is.hi.hbv501g.nafnaneistar.nafnaneistar.Services.NameService;
 import is.hi.hbv501g.nafnaneistar.nafnaneistar.Services.UserService;
+import is.hi.hbv501g.nafnaneistar.utils.BCrypt;
 import is.hi.hbv501g.nafnaneistar.utils.UserUtils;
 
 /**
@@ -44,8 +45,9 @@ public class UserRestController {
     @GetMapping(path = "/login/check", produces = "application/json")
     public String checkLogin(@RequestParam String email, @RequestParam String password) 
     {   
-        User user  = userService.findByEmailAndPassword(email, password);
-        if(user != null){
+        User user  = userService.findByEmail(email);;
+        System.out.println(BCrypt.checkpw(user.getPassword(), user.getPassword()));
+        if(BCrypt.checkpw(password, user.getPassword())){
             return user.toJsonString();
         }
         return "{}";
@@ -56,7 +58,8 @@ public class UserRestController {
         User user = userService.findByEmail(email);
         if(user != null)
             return "{'message':'Netfang núþegar skráð'}";
-        User newUser = new User(name,email,password,UserUtils.getAvailableNames(nameService));
+        String generatedPass = BCrypt.hashpw(password, BCrypt.gensalt(12));
+        User newUser = new User(name,email,generatedPass,UserUtils.getAvailableNames(nameService));
         userService.save(newUser);
         return newUser.toJsonString();
     }
