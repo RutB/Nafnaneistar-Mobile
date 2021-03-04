@@ -49,4 +49,6 @@
     <string name="tvConnected">Þú ert tengd/ur við</string>
     <string name="sharedPrefUsername">prefUsername</string>
     <string name="intentBooleanClsoe">close</string>
+    <string name="hintOption">Aðgerðir</string>
+    <string name="linkSuccess">Tenging tókst</string>
 </resources>
