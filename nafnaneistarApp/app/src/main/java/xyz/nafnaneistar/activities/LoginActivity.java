@@ -36,13 +36,22 @@ public class LoginActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        prefs = new Prefs(LoginActivity.this);
+        Set<String> user;
+
         binding = DataBindingUtil.setContentView(this, R.layout.activity_login);
+        if(prefs.getUser().size() == 2){
+            user = prefs.getUser();
+            binding.etEmail.setText(user.toArray()[0].toString());
+            binding.etPassword.setText(user.toArray()[1].toString());
+            CheckLogin(user);
+        }
         binding.btnLogin.setOnClickListener(this::CheckLogin);
         binding.btnSignup.setOnClickListener(this::Signup);
-        prefs = new Prefs(LoginActivity.this);
+
         //prefs.Logout();
-        Set<String> user = prefs.getUser();
-        CheckLogin(user);
+
+
     }
 
     /**
@@ -60,6 +69,7 @@ public class LoginActivity extends AppCompatActivity {
      * @param user
      */
     public void CheckLogin(Set<String> user){
+        Log.d("user", "CheckLogin: " + user);
         if (user.size() != 2){
             return;
         }
