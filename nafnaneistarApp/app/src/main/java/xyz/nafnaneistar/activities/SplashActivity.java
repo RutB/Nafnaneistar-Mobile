@@ -29,8 +29,11 @@ public class SplashActivity extends AppCompatActivity {
         binding = DataBindingUtil.setContentView(this, R.layout.activity_splash);
         Uri video = Uri.parse("android.resource://" + getPackageName() + "/" + R.raw.splash);
         binding.videoView.setVideoURI(video);
-        binding.videoView.setMediaController(new MediaController((this)));
         binding.videoView.start();
         binding.videoView.setOnCompletionListener(mediaPlayer -> prefs.CheckLogin(prefs.getUser()));
+        binding.videoView.setOnPreparedListener(mp -> {
+            mp.setVolume(0,0);
+
+        });
     }
 }

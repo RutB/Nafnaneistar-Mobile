@@ -25,6 +25,9 @@ import com.android.volley.toolbox.JsonObjectRequest;
 import com.google.android.material.snackbar.Snackbar;
 import com.google.gson.Gson;
 
+import org.apache.http.client.utils.URIBuilder;
+
+import java.net.URISyntaxException;
 import java.util.Set;
 
 public class LoginActivity extends AppCompatActivity {
@@ -44,9 +47,19 @@ public class LoginActivity extends AppCompatActivity {
             user = prefs.getUser();
             binding.etEmail.setText(user[0]);
             binding.etPassword.setText(user[1]);
-            CheckLogin(user);
+            try {
+                CheckLogin(user);
+            } catch (URISyntaxException e) {
+                e.printStackTrace();
+            }
         }
-        binding.btnLogin.setOnClickListener(this::CheckLogin);
+        binding.btnLogin.setOnClickListener(view -> {
+            try {
+                CheckLogin(view);
+            } catch (URISyntaxException e) {
+                e.printStackTrace();
+            }
+        });
         binding.btnSignup.setOnClickListener(this::Signup);
 
         //prefs.Logout();
@@ -68,15 +81,18 @@ public class LoginActivity extends AppCompatActivity {
      * checks if the user is already loggedn in
      * @param user
      */
-    public void CheckLogin(String[] user){
+    public void CheckLogin(String[] user) throws URISyntaxException {
         Log.d("user", "CheckLogin: " + user);
         if (user.length != 2){
             return;
         }
         String email = user[0];
         String pass = user[1];
-        String loginUrl = ApiController.getDomainURL()+"login/check?email=" +email+"&password="+pass;
-        JsonObjectRequest jsonObjReq = new JsonObjectRequest(Request.Method.GET,loginUrl,null,
+        String listeningPath = "login/check";
+        URIBuilder b = new URIBuilder(ApiController.getDomainURL()+listeningPath);
+        b.addParameter("email",email);
+        b.addParameter("pass",pass);
+        JsonObjectRequest jsonObjReq = new JsonObjectRequest(Request.Method.GET,b.build().toString(),null,
                 response -> {
                     Gson g = new Gson();
                     User p = g.fromJson(String.valueOf(response), User.class);
@@ -94,7 +110,7 @@ public class LoginActivity extends AppCompatActivity {
      * checks if the user is submitting the correct credentials and validates the user
      * @param view
      */
-    public void CheckLogin(View view){
+    public void CheckLogin(View view) throws URISyntaxException {
         String email = binding.etEmail.getText().toString().trim();
         String pass = binding.etPassword.getText().toString().trim();
         if(email.length() == 0 || pass.length()==0){
@@ -102,8 +118,11 @@ public class LoginActivity extends AppCompatActivity {
                     .show();
             return;
         }
-        String loginUrl = ApiController.getDomainURL()+"login/check?email=" +email+"&password="+pass;
-        JsonObjectRequest jsonObjReq = new JsonObjectRequest(Request.Method.GET,loginUrl,null,
+        String listeningPath = "login/check";
+        URIBuilder b = new URIBuilder(ApiController.getDomainURL()+listeningPath);
+        b.addParameter("email",email);
+        b.addParameter("pass",pass);
+        JsonObjectRequest jsonObjReq = new JsonObjectRequest(Request.Method.GET,b.build().toString(),null,
                 response -> {
                     Gson g = new Gson();
                     User p = g.fromJson(String.valueOf(response), User.class);

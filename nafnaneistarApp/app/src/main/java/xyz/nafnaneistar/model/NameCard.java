@@ -8,7 +8,7 @@ public class NameCard {
     private Integer id;
     private String name;
     private String description;
-    private boolean gender;
+    private Integer gender;
 
     /**
      * Empty Constructor to create a new instance via reflection
@@ -27,7 +27,7 @@ public class NameCard {
         this.id = id;
         this.name = name;
         this.description = description;
-        this.gender = (gender == 1) ? true : false;
+        this.gender = gender;
     }
 
     public Integer getId() {
@@ -47,7 +47,7 @@ public class NameCard {
      * @return returns 1 if true (female) and 0 if false (male)
      */
     public int getGender() {
-        return  (this.gender) ? 1 : 0;
+        return  this.gender;
     }
 
 }

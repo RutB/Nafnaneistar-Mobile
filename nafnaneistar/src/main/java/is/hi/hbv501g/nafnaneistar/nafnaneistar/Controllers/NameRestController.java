@@ -133,11 +133,11 @@ public class NameRestController {
         if(male == null && female != null){
             gender = 1; 
         }
-        System.out.println(email);
-
         if(UserUtils.isAuthenticated(userService, email, pass)) {
             User user = userService.findByEmail(email);
-            return getNewNameCard(user,nameService,gender).get().toJsonString();
+            NameCard nc = getNewNameCard(user,nameService,gender).get();
+            System.out.println(nc.getName());
+            return nc.toJsonString();
         }
 
         return "{}";

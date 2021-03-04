@@ -48,7 +48,6 @@
                     android:layout_height="wrap_content"
                     android:drawableRight="@android:drawable/ic_dialog_info"
                     android:gravity="center"
-                    android:text="Nafn"
                     android:textSize="30sp" />
 
                 <TextView
@@ -57,7 +56,6 @@
                     android:layout_height="334dp"
                     android:layout_gravity="center"
                     android:gravity="center_horizontal|center_vertical"
-                    android:text="TextView"
                     android:textSize="18sp" />
             </LinearLayout>
         </ScrollView>
@@ -133,7 +131,6 @@
             android:layout_marginTop="32dp"
             android:background="@drawable/ic_arrow_approve"
             android:rotation="-90"
-            android:text="Button"
             android:textColorLink="@color/ambiant"
             android:theme="@style/buttonStyle"
             app:layout_constraintBottom_toBottomOf="parent"
