@@ -9,9 +9,14 @@ import android.util.Log;
 import com.android.volley.Request;
 import com.android.volley.toolbox.JsonObjectRequest;
 import com.google.gson.Gson;
+import com.google.gson.JsonObject;
+
+import org.json.JSONObject;
 
 import java.util.HashSet;
 import java.util.Set;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 import xyz.nafnaneistar.activities.LoginActivity;
 import xyz.nafnaneistar.activities.SwipeActivity;
@@ -45,19 +50,17 @@ public class Prefs {
         userSet.add(user);
         userSet.add(pass);
         preferences.edit().putStringSet(userRef, userSet).apply();
-
     }
-    public void CheckLogin(Set<String> user) {
-        Log.d("user", "CheckLogin: "+(user.size()));
-        if (user.size() != 2) {
+    public void CheckLogin(String[] user) {
+        if (user.length != 2) {
             Intent i = new Intent(context, LoginActivity.class);
             context.finish();
             context.startActivity(i);
             return;
         }
         else {
-            String email = user.toArray()[1].toString();
-            String pass = user.toArray()[0].toString();
+            String email = user[0];
+            String pass = user[1];
             String loginUrl = ApiController.getDomainURL() + "login/check?email=" + email + "&password=" + pass;
             JsonObjectRequest jsonObjReq = new JsonObjectRequest(Request.Method.GET, loginUrl, null,
                     response -> {
@@ -87,8 +90,22 @@ public class Prefs {
      * A function to get the current loggedin user
      * @return Set<String> containng the users credentials
      */
-    public Set<String> getUser(){
-        return preferences.getStringSet(userRef, new HashSet<>());
+    public String[] getUser(){
+        Set<String> userSet = preferences.getStringSet(userRef, new HashSet<>());
+        if(userSet.size() == 0) return new String[0];
+        String user  = "";
+        String pass = "";
+        String test = userSet.toArray()[0].toString();
+        Pattern pattern = Pattern.compile("^.+@.+\\..+$");
+        Matcher matcher = pattern.matcher(test);
+        if(matcher.matches()) {
+            user = test;
+            pass = userSet.toArray()[1].toString();
+        }else {
+            pass = test;
+            user = userSet.toArray()[1].toString();
+        }
+        return new String[] {user, pass};
     }
 
     /**

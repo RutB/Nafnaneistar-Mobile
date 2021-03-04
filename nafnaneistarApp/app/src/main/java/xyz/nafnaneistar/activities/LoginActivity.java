@@ -37,13 +37,13 @@ public class LoginActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         prefs = new Prefs(LoginActivity.this);
-        Set<String> user;
+        String[] user;
 
         binding = DataBindingUtil.setContentView(this, R.layout.activity_login);
-        if(prefs.getUser().size() == 2){
+        if(prefs.getUser().length == 2){
             user = prefs.getUser();
-            binding.etEmail.setText(user.toArray()[0].toString());
-            binding.etPassword.setText(user.toArray()[1].toString());
+            binding.etEmail.setText(user[0]);
+            binding.etPassword.setText(user[1]);
             CheckLogin(user);
         }
         binding.btnLogin.setOnClickListener(this::CheckLogin);
@@ -68,13 +68,13 @@ public class LoginActivity extends AppCompatActivity {
      * checks if the user is already loggedn in
      * @param user
      */
-    public void CheckLogin(Set<String> user){
+    public void CheckLogin(String[] user){
         Log.d("user", "CheckLogin: " + user);
-        if (user.size() != 2){
+        if (user.length != 2){
             return;
         }
-        String email = user.toArray()[0].toString();
-        String pass = user.toArray()[1].toString();
+        String email = user[0];
+        String pass = user[1];
         String loginUrl = ApiController.getDomainURL()+"login/check?email=" +email+"&password="+pass;
         JsonObjectRequest jsonObjReq = new JsonObjectRequest(Request.Method.GET,loginUrl,null,
                 response -> {

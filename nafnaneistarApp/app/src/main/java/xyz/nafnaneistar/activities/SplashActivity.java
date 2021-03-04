@@ -22,7 +22,7 @@ public class SplashActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         prefs = new Prefs(SplashActivity.this);
-        if(prefs.getUser().size() == 2){
+        if(prefs.getUser().length == 2){
             prefs.CheckLogin(prefs.getUser());
         }
         setContentView(R.layout.activity_splash);

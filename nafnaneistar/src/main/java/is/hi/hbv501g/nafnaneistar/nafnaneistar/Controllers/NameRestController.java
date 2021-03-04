@@ -101,8 +101,8 @@ public class NameRestController {
      * @param session to get the User session
      * @return a new namecard
      */
-    @GetMapping(path="/swipe/newname", produces = "application/json")
-    public Optional<NameCard> getNewName(
+    @GetMapping(path="/swipe/newname_old", produces = "application/json")
+    public Optional<NameCard> getNewName_old(
         @RequestParam(required = false) String male,
         @RequestParam(required = false) String female,
         HttpSession session) 
@@ -116,6 +116,31 @@ public class NameRestController {
             gender = 1; 
         }
         return getNewNameCard(currentUser,nameService,gender);
+            
+    }
+    @GetMapping(path="/swipe/newname", produces = "application/json")
+    public String getNewName(
+        @RequestParam(required = false) String email,
+        @RequestParam(required = false) String pass,
+        @RequestParam(required = false) String male,
+        @RequestParam(required = false) String female,
+        HttpSession session) 
+    {
+        int gender = 3;
+        if(male != null && female == null){
+            gender = 0;
+        }
+        if(male == null && female != null){
+            gender = 1; 
+        }
+        System.out.println(email);
+
+        if(UserUtils.isAuthenticated(userService, email, pass)) {
+            User user = userService.findByEmail(email);
+            return getNewNameCard(user,nameService,gender).get().toJsonString();
+        }
+
+        return "{}";
             
     }
 
