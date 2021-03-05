@@ -59,69 +59,76 @@
 
                 <TextView
                     android:id="@+id/tvSearchName"
-                    android:layout_width="230dp"
+                    android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_gravity="center"
-                    android:layout_marginBottom="24dp"
-                    android:layout_marginTop="24dp"
+                    android:layout_marginBottom="20dp"
+                    android:layout_marginTop="20dp"
                     android:gravity="center"
                     android:text="@string/navbarSearchname"
                     android:textAlignment="center"
                     android:textSize="24sp"
-                    android:textStyle="bold"
-                    app:drawableRightCompat="@android:drawable/btn_plus" />
+                    android:textStyle="bold" />
 
                 <TextView
                     android:id="@+id/tvSwipe"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginBottom="24dp"
-                    android:layout_marginTop="24dp"
+                    android:layout_marginBottom="20dp"
+                    android:layout_marginTop="20dp"
                     android:gravity="center"
                     android:text="@string/navbarSwipe"
                     android:textAlignment="center"
                     android:textSize="24sp"
-                    android:textStyle="bold"
-                    app:drawableRightCompat="@android:drawable/checkbox_on_background" />
+                    android:textStyle="bold" />
 
                 <TextView
                     android:id="@+id/tvViewLiked"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginBottom="24dp"
-                    android:layout_marginTop="24dp"
+                    android:layout_marginBottom="20dp"
+                    android:layout_marginTop="20dp"
                     android:gravity="center"
                     android:text="@string/navbarvviewliked"
                     android:textAlignment="center"
                     android:textSize="24sp"
-                    android:textStyle="bold"
-                    app:drawableRightCompat="@android:drawable/btn_star_big_on" />
+                    android:textStyle="bold" />
 
                 <TextView
                     android:id="@+id/tvLinkPartner"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginBottom="24dp"
-                    android:layout_marginTop="24dp"
+                    android:layout_marginBottom="20dp"
+                    android:layout_marginTop="20dp"
                     android:gravity="center"
                     android:text="@string/navbarLinkPartner"
                     android:textAlignment="center"
                     android:textSize="24sp"
-                    android:textStyle="bold"
-                    app:drawableRightCompat="@android:drawable/ic_menu_myplaces" />
+                    android:textStyle="bold" />
 
                 <TextView
                     android:id="@+id/tvSettings"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginBottom="24dp"
-                    android:layout_marginTop="24dp"
+                    android:layout_marginBottom="20dp"
+                    android:layout_marginTop="20dp"
                     android:gravity="center"
                     android:text="@string/navbarSettings"
                     android:textAlignment="center"
                     android:textSize="24sp"
-                    android:textStyle="bold"
-                    app:drawableRightCompat="@android:drawable/ic_menu_manage" />
+                    android:textStyle="bold" />
+
+                <TextView
+                    android:id="@+id/tvLogOut"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginBottom="20dp"
+                    android:layout_marginTop="20dp"
+                    android:gravity="center"
+                    android:text="@string/navLogout"
+                    android:textAlignment="center"
+                    android:textSize="24sp"
+                    android:textStyle="bold" />
             </LinearLayout>
         </com.google.android.material.navigation.NavigationView>
 

@@ -14,8 +14,13 @@ import xyz.nafnaneistar.model.User;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
+import android.text.Spannable;
+import android.text.SpannableStringBuilder;
+import android.text.style.DynamicDrawableSpan;
+import android.text.style.ImageSpan;
 import android.util.Log;
 import android.view.View;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.android.volley.Request;
@@ -90,8 +95,14 @@ public class SwipeActivity extends AppCompatActivity {
                 response -> {
                     Gson g = new Gson();
                     NameCard nc = g.fromJson(String.valueOf(response), NameCard.class);
-                    binding.tvName.setText(nc.getName());
                     binding.tvTexti.setText(nc.getDescription());
+                    SpannableStringBuilder ssb = new SpannableStringBuilder(nc.getName()+"  ");
+
+                    if(nc.getGender() == 0)
+                        ssb.setSpan(new ImageSpan(getApplicationContext(), R.drawable.ic_gender_male, DynamicDrawableSpan.ALIGN_CENTER),nc.getName().length()+1,nc.getName().length()+2, Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
+                    if(nc.getGender() == 1)
+                        ssb.setSpan(new ImageSpan(getApplicationContext(), R.drawable.ic_gender_female, DynamicDrawableSpan.ALIGN_CENTER),nc.getName().length()+1,nc.getName().length()+2, Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
+                    binding.tvName.setText(ssb, TextView.BufferType.SPANNABLE);
                     currentCard = nc;
 
                 },error -> {
@@ -117,9 +128,15 @@ public class SwipeActivity extends AppCompatActivity {
                 response -> {
                     Gson g = new Gson();
                     NameCard nc = g.fromJson(String.valueOf(response), NameCard.class);
-                    binding.tvName.setText(nc.getName());
                     binding.tvTexti.setText(nc.getDescription());
                     currentCard = nc;
+                    SpannableStringBuilder ssb = new SpannableStringBuilder(nc.getName()+"  ");
+
+                    if(nc.getGender() == 0)
+                        ssb.setSpan(new ImageSpan(getApplicationContext(), R.drawable.ic_gender_male, DynamicDrawableSpan.ALIGN_CENTER),nc.getName().length()+1,nc.getName().length()+2, Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
+                    if(nc.getGender() == 1)
+                        ssb.setSpan(new ImageSpan(getApplicationContext(), R.drawable.ic_gender_female, DynamicDrawableSpan.ALIGN_CENTER),nc.getName().length()+1,nc.getName().length()+2, Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
+                    binding.tvName.setText(ssb, TextView.BufferType.SPANNABLE);
 
                 },error -> {
                     Toast.makeText(SwipeActivity.this, "Kerfisvilla" ,Toast.LENGTH_LONG)

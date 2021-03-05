@@ -91,7 +91,7 @@ public class LoginActivity extends AppCompatActivity {
         String listeningPath = "login/check";
         URIBuilder b = new URIBuilder(ApiController.getDomainURL()+listeningPath);
         b.addParameter("email",email);
-        b.addParameter("pass",pass);
+        b.addParameter("password",pass);
         JsonObjectRequest jsonObjReq = new JsonObjectRequest(Request.Method.GET,b.build().toString(),null,
                 response -> {
                     Gson g = new Gson();
@@ -121,7 +121,7 @@ public class LoginActivity extends AppCompatActivity {
         String listeningPath = "login/check";
         URIBuilder b = new URIBuilder(ApiController.getDomainURL()+listeningPath);
         b.addParameter("email",email);
-        b.addParameter("pass",pass);
+        b.addParameter("password",pass);
         JsonObjectRequest jsonObjReq = new JsonObjectRequest(Request.Method.GET,b.build().toString(),null,
                 response -> {
                     Gson g = new Gson();

@@ -136,7 +136,6 @@ public class NameRestController {
         if(UserUtils.isAuthenticated(userService, email, pass)) {
             User user = userService.findByEmail(email);
             NameCard nc = getNewNameCard(user,nameService,gender).get();
-            System.out.println(nc.getName());
             return nc.toJsonString();
         }
 
