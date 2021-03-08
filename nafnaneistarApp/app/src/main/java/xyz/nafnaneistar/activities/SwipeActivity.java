@@ -5,12 +5,14 @@ import androidx.databinding.DataBindingUtil;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 import xyz.nafnaneistar.controller.ApiController;
+import xyz.nafnaneistar.helpers.OnSwipeTouchListener;
 import xyz.nafnaneistar.helpers.Prefs;
 import xyz.nafnaneistar.loginactivity.R;
 import xyz.nafnaneistar.loginactivity.databinding.ActivitySwipeBinding;
 import xyz.nafnaneistar.model.NameCard;
 import xyz.nafnaneistar.model.User;
 
+import android.annotation.SuppressLint;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
@@ -41,19 +43,36 @@ public class SwipeActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         binding = DataBindingUtil.setContentView(this, R.layout.activity_swipe);
+        binding.btnDislike.setForeground(getDrawable(R.drawable.ic_arrow_dislike));
         prefs = new Prefs(SwipeActivity.this);
-        binding.btnApprove.setOnClickListener(view -> {
-            try {
-                chooseName(view);
-            } catch (URISyntaxException e) {
-                e.printStackTrace();
+        binding.btnApprove.setOnClickListener(this::onClick2);
+        binding.btnDislike.setOnClickListener(this::onClick);
+        binding.SwipeContainer.setOnTouchListener(new OnSwipeTouchListener(SwipeActivity.this){
+            @Override
+            public void onSwipeRight() {
+                super.onSwipeRight();
+                binding.btnApprove.callOnClick();
+            }
+
+            @Override
+            public void onSwipeLeft() {
+                super.onSwipeLeft();
+                binding.btnDislike.callOnClick();
             }
         });
-        binding.btnDislike.setOnClickListener(view -> {
-            try {
-                chooseName(view);
-            } catch (URISyntaxException e) {
-                e.printStackTrace();
+
+        binding.scrollView2.setOnTouchListener(new OnSwipeTouchListener(SwipeActivity.this){
+            @SuppressLint("ClickableViewAccessibility")
+            @Override
+            public void onSwipeRight() {
+                super.onSwipeRight();
+                binding.btnApprove.callOnClick();
+            }
+
+            @Override
+            public void onSwipeLeft() {
+                super.onSwipeLeft();
+                binding.btnDislike.callOnClick();
             }
         });
         //Initialize the navbar fragment
@@ -71,19 +90,17 @@ public class SwipeActivity extends AppCompatActivity {
         } catch (URISyntaxException e) {
             e.printStackTrace();
         }
-
-
     }
 
-    public void loader(){
-
-    }
     public void chooseName(View view) throws URISyntaxException {
         String[] user = prefs.getUser();
         String email = user[0];
         String pass = user[1];
-        String listeningPath = "swipe/newname";
+        String action = "disapprove";
+        if(view.getId() == R.id.btnApprove) action = "approve";
+        String listeningPath = "swipe/"+action;
         URIBuilder b = new URIBuilder(ApiController.getDomainURL()+listeningPath);
+        b.addParameter("id", String.valueOf(currentCard.getId()));
         b.addParameter("email",email);
         b.addParameter("pass",pass);
         if(binding.cbGenderFemale.isChecked())
@@ -116,7 +133,9 @@ public class SwipeActivity extends AppCompatActivity {
         String[] user = prefs.getUser();
         String email = user[0];
         String pass = user[1];
-        URIBuilder b = new URIBuilder(ApiController.getDomainURL()+"swipe/newname");
+        String listeningPath = "swipe/newname";
+        URIBuilder b = new URIBuilder(ApiController.getDomainURL()+listeningPath);
+
         b.addParameter("email",email);
         b.addParameter("pass",pass);
         if(binding.cbGenderFemale.isChecked())
@@ -143,5 +162,21 @@ public class SwipeActivity extends AppCompatActivity {
                     .show();
         });
         ApiController.getInstance().addToRequestQueue(jsonObjReq);
+    }
+
+    private void onClick(View view) {
+        try {
+            chooseName(view);
+        } catch (URISyntaxException e) {
+            e.printStackTrace();
+        }
+    }
+
+    private void onClick2(View view) {
+        try {
+            chooseName(view);
+        } catch (URISyntaxException e) {
+            e.printStackTrace();
+        }
     }
 }

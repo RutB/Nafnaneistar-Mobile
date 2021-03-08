@@ -79,7 +79,7 @@ public class NavbarFragment extends Fragment {
         settingsssb.setSpan(new ImageSpan(getContext(), R.drawable.ic_settings, DynamicDrawableSpan.ALIGN_CENTER),settings.length()+1,settings.length()+2, Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
         binding.tvSettings.setText(settingsssb, TextView.BufferType.SPANNABLE);
 
-        String logout = getString(R.string.navbarSettings);
+        String logout = getString(R.string.navLogout);
         SpannableStringBuilder logoutssb = new SpannableStringBuilder(logout+"  ");
         logoutssb.setSpan(new ImageSpan(getContext(), R.drawable.ic_logout, DynamicDrawableSpan.ALIGN_CENTER),logout.length()+1,logout.length()+2, Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
         binding.tvLogOut.setText(logoutssb, TextView.BufferType.SPANNABLE);

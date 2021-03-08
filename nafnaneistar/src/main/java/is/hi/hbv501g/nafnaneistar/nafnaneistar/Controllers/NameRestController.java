@@ -49,7 +49,7 @@ public class NameRestController {
      * @return a new NameCard
      */
     @GetMapping(path="/swipe/approve/{id}", produces = "application/json")
-    public Optional<NameCard> approveName(@PathVariable String id,
+    public Optional<NameCard> approveName__old(@PathVariable String id,
         @RequestParam(required = false) String male,
         @RequestParam(required = false) String female,
         HttpSession session) 
@@ -66,6 +66,75 @@ public class NameRestController {
         }
         return getNewNameCard(currentUser,nameService,gender);
     }
+
+    /**
+     * Adds the name to the approvedNames list if the user has an active session
+     * and returns a new namecard from the availableList of the logged in User
+     * @param id id of the name
+     * @param male getparameter that implies if viewing only male names
+     * @param female getparameter that implies if viewing only female names
+     * @param session to get the User session
+     * @return a new NameCard
+     */
+    @GetMapping(path="/swipe/approve", produces = "application/json")
+    public String approveName(
+        @RequestParam(required = false) String id,
+        @RequestParam(required = false) String email,
+        @RequestParam(required = false) String pass,
+        @RequestParam(required = false) String male,
+        @RequestParam(required = false) String female){
+        System.out.println("approve");
+        int gender = 3;
+        if(male != null && female == null){
+            gender = 0;
+        }
+        if(male == null && female != null){
+            gender = 1; 
+        }
+        if(UserUtils.isAuthenticated(userService, email, pass)) {
+            User user = userService.findByEmail(email);
+            user.approveName(Integer.parseInt(id));
+            userService.save(user);
+            NameCard nc = getNewNameCard(user,nameService,gender).get();
+            
+            return nc.toJsonString();
+        }
+        return "{}";
+    }
+        /**
+     * Disapproves the name with the id and removes it from the availableNames list
+     * and then returns a new name
+     * @param id id of the name
+     * @param male getparameter that implies if viewing only male names
+     * @param female getparameter that implies if viewing only female names
+     * @param session to get the User session
+     * @return a new NameCard
+     */
+    @GetMapping(path="/swipe/disapprove", produces = "application/json")
+    public String disapproveName(
+        @RequestParam(required = false) String id,
+        @RequestParam(required = false) String email,
+        @RequestParam(required = false) String pass,
+        @RequestParam(required = false) String male,
+        @RequestParam(required = false) String female){
+        System.out.println("disapprove");
+        int gender = 3;
+        if(male != null && female == null){
+            gender = 0;
+        }
+        if(male == null && female != null){
+            gender = 1; 
+        }
+        if(UserUtils.isAuthenticated(userService, email, pass)) {
+            User user = userService.findByEmail(email);
+            user.disapproveName(Integer.parseInt(id));
+            userService.save(user);
+            NameCard nc = getNewNameCard(user,nameService,gender).get();
+            
+            return nc.toJsonString();
+        }
+        return "{}";
+    }
     /**
      * Disapproves the name with the id and removes it from the availableNames list
      * and then returns a new name
@@ -76,7 +145,7 @@ public class NameRestController {
      * @return a new NameCard
      */
     @GetMapping(path="/swipe/disapprove/{id}", produces = "application/json")
-    public Optional<NameCard> disapproveName(@PathVariable String id,
+    public Optional<NameCard> disapproveName__old(@PathVariable String id,
         @RequestParam(required = false) String male,
         @RequestParam(required = false) String female,
         HttpSession session) 
@@ -123,8 +192,7 @@ public class NameRestController {
         @RequestParam(required = false) String email,
         @RequestParam(required = false) String pass,
         @RequestParam(required = false) String male,
-        @RequestParam(required = false) String female,
-        HttpSession session) 
+        @RequestParam(required = false) String female) 
     {
         int gender = 3;
         if(male != null && female == null){
@@ -138,7 +206,6 @@ public class NameRestController {
             NameCard nc = getNewNameCard(user,nameService,gender).get();
             return nc.toJsonString();
         }
-
         return "{}";
             
     }
