@@ -52,4 +52,6 @@
     <string name="hintOption">Aðgerðir</string>
     <string name="linkSuccess">Tenging tókst</string>
     <string name="navLogout">Skrá út</string>
+    <string name="cbMale">Karlkyns</string>
+    <string name="cbFemale">Kvenkyns</string>
 </resources>

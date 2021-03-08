@@ -48,15 +48,15 @@
                     android:layout_height="wrap_content"
                     android:layout_gravity="fill_horizontal|center_vertical"
                     android:gravity="center"
-                    android:text="Jón"
                     android:textSize="30sp" />
 
                 <TextView
                     android:id="@+id/tvTexti"
-                    android:layout_width="356dp"
-                    android:layout_height="334dp"
+                    android:layout_width="match_parent"
+                    android:layout_height="331dp"
                     android:layout_gravity="center"
                     android:gravity="center_horizontal|center_vertical"
+                    android:padding="8dp"
                     android:textSize="18sp" />
             </LinearLayout>
         </ScrollView>
@@ -78,7 +78,7 @@
                 android:layout_marginStart="24dp"
                 android:buttonTint="@color/btn_color"
                 android:checked="true"
-                android:text="Karlkyns"
+                android:text="@string/cbMale"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintHorizontal_bias="0.5"
@@ -93,7 +93,7 @@
                 android:layout_marginEnd="24dp"
                 android:buttonTint="@color/btn_color"
                 android:checked="true"
-                android:text="Kvenkyns"
+                android:text="@string/cbFemale"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toStartOf="@+id/cbGenderMale"
                 app:layout_constraintHorizontal_bias="0.5"
@@ -116,7 +116,7 @@
             android:rotation="91"
             android:textAlignment="textStart"
             android:textColorLink="@color/ambiant"
-            android:theme="@style/buttonStyle"
+            android:theme="@style/Theme.LoginActivity"
             app:iconTint="@color/ambiant"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toStartOf="@+id/btnApprove"
