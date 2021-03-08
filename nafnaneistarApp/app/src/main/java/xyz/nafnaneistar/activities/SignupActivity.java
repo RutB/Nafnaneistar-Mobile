@@ -12,11 +12,14 @@ import com.android.volley.toolbox.JsonObjectRequest;
 import com.google.android.material.snackbar.Snackbar;
 import com.google.gson.Gson;
 
+import org.apache.http.client.utils.URIBuilder;
 import org.json.JSONException;
 
 import xyz.nafnaneistar.controller.ApiController;
 import xyz.nafnaneistar.helpers.Prefs;
 import xyz.nafnaneistar.model.User;
+
+import java.net.URISyntaxException;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -37,7 +40,13 @@ public class SignupActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         binding = DataBindingUtil.setContentView(this, R.layout.activity_signup);
         binding.btnLogin2.setOnClickListener(this::Login);
-        binding.btnSignup2.setOnClickListener(this::SignupUser);
+        binding.btnSignup2.setOnClickListener(view -> {
+            try {
+                SignupUser(view);
+            } catch (URISyntaxException e) {
+                e.printStackTrace();
+            }
+        });
         prefs = new Prefs(SignupActivity.this);
 
     }
@@ -71,7 +80,7 @@ public class SignupActivity extends AppCompatActivity {
      * andit gets added to the ApiController queue
      * @param view
      */
-    public void SignupUser(View view){
+    public void SignupUser(View view) throws URISyntaxException {
         String name = binding.etName.getText().toString().trim();
         String email = binding.etEmail.getText().toString().trim();
         String pass = binding.etPassword.getText().toString();
@@ -87,8 +96,12 @@ public class SignupActivity extends AppCompatActivity {
                     .show();
             return;
         }
-        String signupUrl = String.format("%ssignup?name=%s&email=%s&password=%s", ApiController.getDomainURL(),name, email, pass);
-        JsonObjectRequest jsonObjReq = new JsonObjectRequest(Request.Method.POST,signupUrl,null,
+        String listeningPath = "login/check";
+        URIBuilder b = new URIBuilder(ApiController.getDomainURL()+listeningPath);
+        b.addParameter("name",name);
+        b.addParameter("email",email);
+        b.addParameter("pass",pass);
+        JsonObjectRequest jsonObjReq = new JsonObjectRequest(Request.Method.POST,b.build().toString(),null,
                 response -> {
                     Gson g = new Gson();
                     User p = g.fromJson(String.valueOf(response), User.class);

@@ -1,28 +1,14 @@
-package is.hi.hbv501g.nafnaneistar.nafnaneistar.Entities;
-
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
-import javax.persistence.Lob;
-
-import com.fasterxml.jackson.core.JsonProcessingException;
-import com.fasterxml.jackson.databind.ObjectMapper;
-
+package xyz.nafnaneistar.model;
 /**
  * Namecard contains the Id, Name, Description and Gender information for each Name
  */
-@Entity
+
 public class NameCard {
-    
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
+
     private Integer id;
     private String name;
-    //@Lob is for the database creation to store it larger than a VARCHAR with only 255 char capacity
-    @Lob
     private String description;
-    private boolean gender;
+    private Integer gender;
 
     /**
      * Empty Constructor to create a new instance via reflection
@@ -38,9 +24,10 @@ public class NameCard {
      * @param gender true means female, false means male
      */
     public NameCard(Integer id, String name, String description,int gender) {
+        this.id = id;
         this.name = name;
         this.description = description;
-        this.gender = (gender == 1) ? true : false;
+        this.gender = gender;
     }
 
     public Integer getId() {
@@ -60,17 +47,7 @@ public class NameCard {
      * @return returns 1 if true (female) and 0 if false (male)
      */
     public int getGender() {
-        return  (this.gender) ? 1 : 0;
-    } 
-    public String toJsonString() {
-        ObjectMapper mapper = new ObjectMapper();
-        String jsonString = "";
-        try {
-            jsonString = mapper.writeValueAsString(this);
-        } catch (JsonProcessingException e) {
-            jsonString = "{}";
-        }
-        return jsonString;
+        return  this.gender;
     }
 
 }

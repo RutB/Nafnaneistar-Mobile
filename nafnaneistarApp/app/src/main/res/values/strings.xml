@@ -40,7 +40,7 @@
     <string name="navMenu">Valmynd</string>
     <string name="navbarSearchname">Leita af Nafni</string>
     <string name="navbarSwipe">Velja Nöfn</string>
-    <string name="navbarvviewliked">Skoða Valin Nöfn</string>
+    <string name="navbarvviewliked">Valin Nöfn</string>
     <string name="navbarLinkPartner">Tengjast Öðrum</string>
     <string name="navbarSettings">Stillingar</string>
     <string name="tvLinkPartner">Viltu tengja nafna listann þinn við einhvern annann? Skrifaðu póstfangið og tengist saman</string>
@@ -51,4 +51,7 @@
     <string name="intentBooleanClsoe">close</string>
     <string name="hintOption">Aðgerðir</string>
     <string name="linkSuccess">Tenging tókst</string>
+    <string name="navLogout">Skrá út</string>
+    <string name="cbMale">Karlkyns</string>
+    <string name="cbFemale">Kvenkyns</string>
 </resources>

@@ -22,15 +22,18 @@ public class SplashActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         prefs = new Prefs(SplashActivity.this);
-        if(prefs.getUser().size() == 2){
+        if(prefs.getUser().length == 2){
             prefs.CheckLogin(prefs.getUser());
         }
         setContentView(R.layout.activity_splash);
         binding = DataBindingUtil.setContentView(this, R.layout.activity_splash);
         Uri video = Uri.parse("android.resource://" + getPackageName() + "/" + R.raw.splash);
         binding.videoView.setVideoURI(video);
-        binding.videoView.setMediaController(new MediaController((this)));
         binding.videoView.start();
         binding.videoView.setOnCompletionListener(mediaPlayer -> prefs.CheckLogin(prefs.getUser()));
+        binding.videoView.setOnPreparedListener(mp -> {
+            mp.setVolume(0,0);
+
+        });
     }
 }

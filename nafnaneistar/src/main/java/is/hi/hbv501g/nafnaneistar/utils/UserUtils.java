@@ -6,6 +6,7 @@ import java.util.Set;
 import is.hi.hbv501g.nafnaneistar.nafnaneistar.Entities.NameCard;
 import is.hi.hbv501g.nafnaneistar.nafnaneistar.Entities.User;
 import is.hi.hbv501g.nafnaneistar.nafnaneistar.Services.NameService;
+import is.hi.hbv501g.nafnaneistar.nafnaneistar.Services.UserService;
 
 public class UserUtils {
 
@@ -71,6 +72,13 @@ public class UserUtils {
         if(user == null)
             return false;
         return true;
+    }
+    public static boolean isAuthenticated(UserService us, String email, String pass){
+        User user  = us.findByEmail(email);
+        if(BCrypt.checkpw(pass, user.getPassword())){
+            return true;
+        }
+        return false;
     }
 
 }

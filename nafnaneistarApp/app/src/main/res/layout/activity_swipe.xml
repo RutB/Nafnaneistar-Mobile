@@ -16,8 +16,8 @@
 
         <androidx.appcompat.widget.Toolbar
             android:id="@+id/toolbar"
-            android:layout_width="422dp"
-            android:layout_height="53dp"
+            android:layout_width="442dp"
+            android:layout_height="47dp"
             android:background="@color/ambiant"
             android:minHeight="?attr/actionBarSize"
             android:theme="?attr/actionBarTheme"
@@ -43,62 +43,64 @@
 
                 <TextView
                     android:id="@+id/tvName"
-                    style="@Style/H1"
+                    style="@style/h1"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:drawableRight="@android:drawable/ic_dialog_info"
+                    android:layout_gravity="fill_horizontal|center_vertical"
                     android:gravity="center"
-                    android:text="Nafn"
                     android:textSize="30sp" />
 
                 <TextView
                     android:id="@+id/tvTexti"
-                    android:layout_width="356dp"
-                    android:layout_height="334dp"
+                    android:layout_width="match_parent"
+                    android:layout_height="331dp"
                     android:layout_gravity="center"
                     android:gravity="center_horizontal|center_vertical"
-                    android:text="TextView"
+                    android:padding="8dp"
                     android:textSize="18sp" />
             </LinearLayout>
         </ScrollView>
 
         <androidx.constraintlayout.widget.ConstraintLayout
             android:id="@+id/rgGender"
-            android:layout_width="437dp"
-            android:layout_height="58dp"
+            android:layout_width="415dp"
+            android:layout_height="57dp"
             app:layout_constraintBottom_toBottomOf="@+id/toolbar"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="@+id/toolbar"
-            app:layout_constraintVertical_bias="0.545"
-            tools:layout_editor_absoluteX="-8dp">
+            app:layout_constraintVertical_bias="1.0">
 
-            <RadioButton
-                android:id="@+id/rgGenderMale"
+            <CheckBox
+                android:id="@+id/cbGenderMale"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="24dp"
-                android:text="Karlkyns"
+                android:buttonTint="@color/btn_color"
+                android:checked="true"
+                android:text="@string/cbMale"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintHorizontal_bias="0.5"
-                app:layout_constraintStart_toEndOf="@+id/rbGenderFemale"
+                app:layout_constraintStart_toEndOf="@+id/cbGenderFemale"
                 app:layout_constraintTop_toTopOf="parent"
-                tools:layout_conversion_absoluteHeight="32dp"
-                tools:layout_conversion_absoluteWidth="109dp" />
+                app:layout_constraintVertical_bias="1.0" />
 
-            <RadioButton
-                android:id="@+id/rbGenderFemale"
+            <CheckBox
+                android:id="@+id/cbGenderFemale"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginEnd="24dp"
-                android:text="Kvenkyns"
+                android:buttonTint="@color/btn_color"
+                android:checked="true"
+                android:text="@string/cbFemale"
                 app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintEnd_toStartOf="@+id/rgGenderMale"
+                app:layout_constraintEnd_toStartOf="@+id/cbGenderMale"
                 app:layout_constraintHorizontal_bias="0.5"
                 app:layout_constraintHorizontal_chainStyle="packed"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent"
-                tools:layout_conversion_absoluteHeight="32dp"
-                tools:layout_conversion_absoluteWidth="109dp" />
+                app:layout_constraintVertical_bias="1.0" />
         </androidx.constraintlayout.widget.ConstraintLayout>
 
         <Button
@@ -107,14 +109,14 @@
             android:layout_height="wrap_content"
             android:layout_marginTop="32dp"
             android:background="@drawable/ic_arrow_dislike"
-            android:backgroundTint="@android:color/holo_red_dark"
+            android:backgroundTint="@color/ambiant"
             android:backgroundTintMode="add"
             android:drawableTint="#ED1C1C"
             android:drawableTintMode="add"
-            android:rotation="90"
+            android:rotation="91"
             android:textAlignment="textStart"
             android:textColorLink="@color/ambiant"
-            android:theme="@style/buttonStyle"
+            android:theme="@style/Theme.LoginActivity"
             app:iconTint="@color/ambiant"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toStartOf="@+id/btnApprove"
@@ -127,10 +129,10 @@
             android:id="@+id/btnApprove"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_marginStart="24dp"
             android:layout_marginTop="32dp"
             android:background="@drawable/ic_arrow_approve"
             android:rotation="-90"
-            android:text="Button"
             android:textColorLink="@color/ambiant"
             android:theme="@style/buttonStyle"
             app:layout_constraintBottom_toBottomOf="parent"
