@@ -2,6 +2,8 @@ package xyz.nafnaneistar.activities;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.databinding.DataBindingUtil;
+import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentManager;
 
 import android.app.Activity;
 import android.content.Intent;
@@ -37,6 +39,17 @@ public class LinkPartnerActivity extends AppCompatActivity {
         binding = DataBindingUtil.setContentView(this, R.layout.activity_link_partner);
         binding.btnLink.setOnClickListener(this::CheckLink);
         prefs = new Prefs(LinkPartnerActivity.this);
+
+
+        FragmentManager fragmentManager = getSupportFragmentManager();
+        Fragment navbar = fragmentManager.findFragmentById(R.id.navbar);
+
+        if (navbar == null){
+            navbar = new NavbarFragment(LinkPartnerActivity.this);
+            fragmentManager.beginTransaction()
+                    .add(R.id.LinkContainer, navbar)
+                    .commit();
+        }
     }
 
     public void CheckLink(View view) {
@@ -62,6 +75,8 @@ public class LinkPartnerActivity extends AppCompatActivity {
                         Toast.makeText(LinkPartnerActivity.this, R.string.linkSuccess, Toast.LENGTH_SHORT)
                                 .show();
                         //prefs.saveUser(email);
+
+                        prefs.getUser(); //ef rétt skila þessu
                         Intent intent = getIntent();
                         setResult(RESULT_OK, intent);
                         //finish();
