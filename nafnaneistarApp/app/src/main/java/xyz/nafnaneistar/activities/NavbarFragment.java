@@ -17,6 +17,8 @@ import android.text.style.ImageSpan;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.animation.Animation;
+import android.view.animation.AnimationUtils;
 import android.widget.TextView;
 
 import xyz.nafnaneistar.helpers.Prefs;
@@ -113,9 +115,17 @@ public class NavbarFragment extends Fragment {
      * @param view
      */
     public void ToggleNavDrawer(View view) {
-        if(binding.navViewDrawer.getVisibility() == View.VISIBLE)
+
+        if (binding.navViewDrawer.getVisibility() == View.VISIBLE){
+            Animation slideOut = AnimationUtils.loadAnimation(getContext(), R.anim.slide_out);
+            binding.navViewDrawer.startAnimation(slideOut);
             binding.navViewDrawer.setVisibility(View.INVISIBLE);
-        else
+        }
+        else {
+            Animation slideIn = AnimationUtils.loadAnimation(getContext(), R.anim.slide_in);
+            binding.navViewDrawer.startAnimation(slideIn);
             binding.navViewDrawer.setVisibility(View.VISIBLE);
+        }
     }
+
 }

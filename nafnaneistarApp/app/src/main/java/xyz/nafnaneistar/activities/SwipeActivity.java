@@ -150,13 +150,11 @@ public class SwipeActivity extends AppCompatActivity {
                     binding.tvTexti.setText(nc.getDescription());
                     currentCard = nc;
                     SpannableStringBuilder ssb = new SpannableStringBuilder(nc.getName()+"  ");
-
                     if(nc.getGender() == 0)
                         ssb.setSpan(new ImageSpan(getApplicationContext(), R.drawable.ic_gender_male, DynamicDrawableSpan.ALIGN_CENTER),nc.getName().length()+1,nc.getName().length()+2, Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
                     if(nc.getGender() == 1)
                         ssb.setSpan(new ImageSpan(getApplicationContext(), R.drawable.ic_gender_female, DynamicDrawableSpan.ALIGN_CENTER),nc.getName().length()+1,nc.getName().length()+2, Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
                     binding.tvName.setText(ssb, TextView.BufferType.SPANNABLE);
-
                 },error -> {
                     Toast.makeText(SwipeActivity.this, "Kerfisvilla" ,Toast.LENGTH_LONG)
                     .show();
