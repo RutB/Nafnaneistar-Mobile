@@ -11,6 +11,7 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.LoginActivity"
         android:usesCleartextTraffic="true">
+        <activity android:name="xyz.nafnaneistar.activities.ViewLikedActivity"></activity>
         <activity android:name="xyz.nafnaneistar.activities.SplashActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -21,9 +22,7 @@
         <activity android:name="xyz.nafnaneistar.activities.LinkPartnerActivity" />
         <activity android:name="xyz.nafnaneistar.activities.SwipeActivity" />
         <activity android:name="xyz.nafnaneistar.activities.SignupActivity" />
-        <activity android:name="xyz.nafnaneistar.activities.LoginActivity">
-
-        </activity>
+        <activity android:name="xyz.nafnaneistar.activities.LoginActivity"></activity>
     </application>
 
     <uses-permission android:name="android.permission.INTERNET" />
