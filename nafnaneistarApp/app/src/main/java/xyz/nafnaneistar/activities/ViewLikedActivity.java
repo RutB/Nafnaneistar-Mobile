@@ -20,7 +20,7 @@ public class ViewLikedActivity extends AppCompatActivity {
         Fragment navbar = fragmentManager.findFragmentById(R.id.navbar);
 
         if (navbar == null) {
-            navbar = new NavbarFragment(ViewLikedActivity.this);
+            navbar = new NavbarFragment();
             fragmentManager.beginTransaction()
                     .add(R.id.viewLikedContainer, navbar)
                     .commit();

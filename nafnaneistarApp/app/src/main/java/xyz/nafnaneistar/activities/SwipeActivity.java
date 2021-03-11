@@ -75,7 +75,7 @@ public class SwipeActivity extends AppCompatActivity {
         Fragment navbar = fragmentManager.findFragmentById(R.id.navbar);
 
         if (navbar == null) {
-            navbar = new NavbarFragment(SwipeActivity.this);
+            navbar = new NavbarFragment();
             fragmentManager.beginTransaction()
                     .add(R.id.SwipeContainer, navbar)
                     .commit();
