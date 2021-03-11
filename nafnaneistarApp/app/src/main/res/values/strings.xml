@@ -13,6 +13,7 @@
     <string name="loginSuccess">Innskráning Tókst!</string>
     <string name="title_activity_signup">SignupActivity</string>
     <string name="hint_search_name">Sláðu inn nafn</string>
+    <string name="btnSearchName">Leita</string>
     <!--
     This string is used for square devices and overridden by hello_world in
     values-round/strings.xml for round devices.
