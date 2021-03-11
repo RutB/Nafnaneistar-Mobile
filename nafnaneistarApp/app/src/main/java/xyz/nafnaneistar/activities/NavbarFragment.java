@@ -54,7 +54,7 @@ public class NavbarFragment extends Fragment {
     }
 
     public void SwitchIntent(View view){
-
+        Log.d("partners", "SwitchIntent: " + "click?");
         switch (view.getId()){
             case R.id.tvSwipe:
                 if(!getActivity().getLocalClassName().toString().contains("SwipeActivity")){
@@ -123,6 +123,7 @@ public class NavbarFragment extends Fragment {
         binding.btnNavToggle.setOnClickListener(this::ToggleNavDrawer);
         binding.tvLogOut.setOnClickListener(this::logout);
         binding.tvSwipe.setOnClickListener(this::SwitchIntent);
+        binding.tvLinkPartner.setOnClickListener(this::SwitchIntent);
         binding.tvViewLiked.setOnClickListener(this::SwitchIntent);
         View view = binding.getRoot();
         return view;
