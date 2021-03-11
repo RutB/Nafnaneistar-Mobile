@@ -26,4 +26,8 @@ public class ViewLikedActivity extends AppCompatActivity {
                     .commit();
         }
     }
+
+    private void getData(){
+
+    }
 }
