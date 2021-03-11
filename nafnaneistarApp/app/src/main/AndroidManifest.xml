@@ -2,6 +2,8 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="xyz.nafnaneistar.loginactivity">
 
+    <uses-permission android:name="android.permission.INTERNET" />
+
     <application
         android:name="xyz.nafnaneistar.controller.ApiController"
         android:allowBackup="true"
@@ -11,6 +13,7 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.LoginActivity"
         android:usesCleartextTraffic="true">
+        <activity android:name="xyz.nafnaneistar.activities.SearchActivity"></activity>
         <activity android:name="xyz.nafnaneistar.activities.SplashActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -21,11 +24,7 @@
         <activity android:name="xyz.nafnaneistar.activities.LinkPartnerActivity" />
         <activity android:name="xyz.nafnaneistar.activities.SwipeActivity" />
         <activity android:name="xyz.nafnaneistar.activities.SignupActivity" />
-        <activity android:name="xyz.nafnaneistar.activities.LoginActivity">
-
-        </activity>
+        <activity android:name="xyz.nafnaneistar.activities.LoginActivity"></activity>
     </application>
-
-    <uses-permission android:name="android.permission.INTERNET" />
 
 </manifest>

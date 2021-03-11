@@ -4,6 +4,8 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import android.os.Bundle;
 
+import xyz.nafnaneistar.loginactivity.R;
+
 public class SearchActivity extends AppCompatActivity {
 
     @Override
@@ -11,4 +13,6 @@ public class SearchActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_search);
     }
+
+
 }
