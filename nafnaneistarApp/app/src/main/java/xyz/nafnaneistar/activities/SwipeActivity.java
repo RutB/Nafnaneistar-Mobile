@@ -42,6 +42,20 @@ public class SwipeActivity extends AppCompatActivity {
         prefs = new Prefs(SwipeActivity.this);
         binding.btnApprove.setOnClickListener(this::onClick2);
         binding.btnDislike.setOnClickListener(this::onClick);
+        binding.cbGenderMale.setOnClickListener(view -> {
+            try {
+                getNewName();
+            } catch (URISyntaxException e) {
+                e.printStackTrace();
+            }
+        });
+        binding.cbGenderFemale.setOnClickListener(view -> {
+            try {
+                getNewName();
+            } catch (URISyntaxException e) {
+                e.printStackTrace();
+            }
+        });
         binding.SwipeContainer.setOnTouchListener(new OnSwipeTouchListener(SwipeActivity.this) {
             @Override
             public void onSwipeRight() {
@@ -55,7 +69,6 @@ public class SwipeActivity extends AppCompatActivity {
                 binding.btnDislike.callOnClick();
             }
         });
-
         binding.scrollView2.setOnTouchListener(new OnSwipeTouchListener(SwipeActivity.this) {
             @SuppressLint("ClickableViewAccessibility")
             @Override
@@ -70,6 +83,7 @@ public class SwipeActivity extends AppCompatActivity {
                 binding.btnDislike.callOnClick();
             }
         });
+
         //Initialize the navbar fragment
         FragmentManager fragmentManager = getSupportFragmentManager();
         Fragment navbar = fragmentManager.findFragmentById(R.id.navbar);
