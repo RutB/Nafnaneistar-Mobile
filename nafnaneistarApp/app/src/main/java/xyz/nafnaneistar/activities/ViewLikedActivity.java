@@ -14,6 +14,7 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
+import android.widget.Toast;
 
 import com.android.volley.Request;
 import com.android.volley.toolbox.JsonObjectRequest;
@@ -43,10 +44,29 @@ public class ViewLikedActivity extends AppCompatActivity {
                     .add(R.id.viewLikedContainer, navbar)
                     .commit();
         }
-        getData();
+        loadStatMenu();
+
     }
 
-    private void getData(){
+    private void loadStatMenu(){
+        changedSelectedMenu(binding.tvViewLikedMenuYfirlit);
+        getStatData();
+        binding.clNameStats.setVisibility(View.VISIBLE);
+    }
+
+    private void changedSelectedMenu(View view){
+        int childCount = binding.llViewLikedMenu.getChildCount();
+        for(int i = 0; i < childCount; i++){
+            if(view ==binding.llViewLikedMenu.getChildAt(i)){
+                view.setBackgroundResource(R.color.btn_color_lg);
+            }
+            else{
+                binding.llViewLikedMenu.getChildAt(i).setBackgroundResource(R.color.ambiant);
+            }
+        }
+    }
+
+    private void getStatData(){
         String [] user = prefs.getUser();
         String email = user[0];
         String pass = user[1];
@@ -84,6 +104,12 @@ public class ViewLikedActivity extends AppCompatActivity {
                         e.printStackTrace();
                     }
                 },error -> {
+                    Toast.makeText(ViewLikedActivity.this, getResources().getString(R.string.errorRetrievingData) ,Toast.LENGTH_SHORT)
+                    .show();
+                    Intent i = new Intent(ViewLikedActivity.this, LoginActivity.class);
+                    finish();
+                    prefs.Logout();
+                    startActivity(i);
             Log.d("viewliked", "getData: " + error.getMessage());
         });
         ApiController.getInstance().addToRequestQueue(jsonObjReq);

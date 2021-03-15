@@ -64,4 +64,7 @@
     <string name="viewlikedmenu_ratename">Gefa Nafni Einkunn</string>
     <string name="viewlikedmenugetNamesbyRating">Skoða Nöfn eftir einkunn</string>
     <string name="viewlikednamecombo">Nafna Samsetningar</string>
+    <string name="errorRetrievingData">Ekki tókst að sækja gögn</string>
+    <string name="vtViewLikedNameStatsTitleMale">Karlkynsnöfn</string>
+    <string name="tvViewLikeStatNameFemaleTitle">Kvenkynsnöfn</string>
 </resources>
