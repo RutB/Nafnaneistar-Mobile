@@ -31,12 +31,9 @@
     <string name="next">Next</string>
     <string name="previous">Previous</string>
 
-    <string name="hello_first_fragment">Hello first fragment</string>
-    <string name="hello_second_fragment">Hello second fragment. Arg: %1$s</string>
     <!-- TODO: Remove or change this placeholder text -->
-    <string name="hello_blank_fragment">Hello blank fragment</string>
-    <string name="title_activity_swipte">SwipteActivity</string>
-    <string name="title_activity_swipe">swipelabel</string>
+    <string name="title_activity_swipte" translatable="false">SwipteActivity</string>
+    <string name="title_activity_swipe" translatable="false">swipelabel</string>
     <string name="navMenu">Valmynd</string>
     <string name="navbarSearchname">Leita af Nafni</string>
     <string name="navbarSwipe">Velja Nöfn</string>
@@ -47,7 +44,7 @@
     <string name="btnLink">Tengjast</string>
     <string name="linkError">Ekki tókst að tengjast netfangi</string>
     <string name="tvConnected">Þú ert tengd/ur við</string>
-    <string name="sharedPrefUsername">prefUsername</string>
+    <string name="sharedPrefUsername" translatable="false">prefUsername</string>
     <string name="intentBooleanClsoe">close</string>
     <string name="hintOption">Aðgerðir</string>
     <string name="linkSuccess">Tenging tókst</string>
@@ -67,4 +64,9 @@
     <string name="errorRetrievingData">Ekki tókst að sækja gögn</string>
     <string name="vtViewLikedNameStatsTitleMale">Karlkynsnöfn</string>
     <string name="tvViewLikeStatNameFemaleTitle">Kvenkynsnöfn</string>
+    <string name="combonameHintLastName">Eftirnafn</string>
+    <string name="female">Kvenkyns</string>
+    <string name="Comboname_getName">Fá Nafn</string>
+    <string name="comboname_name_and_middle">Fá Nafn &amp; Millinafn </string>
+    <string name="settu_inn_eftirnafn_og_f_u_upp_stungur_fyrir_nafn">Settu inn eftirnafn og fáðu uppástungur fyrir nafn</string>
 </resources>
