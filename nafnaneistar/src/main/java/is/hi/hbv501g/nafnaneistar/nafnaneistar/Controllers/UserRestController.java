@@ -1,8 +1,13 @@
 package is.hi.hbv501g.nafnaneistar.nafnaneistar.Controllers;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 
 import javax.servlet.http.HttpSession;
+
+import com.google.gson.Gson;
+import com.google.gson.JsonArray;
+import com.google.gson.JsonObject;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -46,6 +51,7 @@ public class UserRestController {
     public String checkLogin(@RequestParam String email, @RequestParam String password,HttpSession session) 
     {   
         User user  = userService.findByEmail(email);
+        if(user == null) return "'message':'Villa við auðkenningu'";
         if(BCrypt.checkpw(password, user.getPassword())){
             return user.toJsonString();
         }
@@ -181,6 +187,61 @@ public class UserRestController {
             }
         });
         return ncs;
+
+    }
+
+    @GetMapping(value = "/linkpartner",  produces = "application/json")
+    public String linkpartner(        
+        @RequestParam String email,
+        @RequestParam String pass) {
+        if (!UserUtils.isAuthenticated(userService, email, pass)) return "{}";
+        User currentUser = userService.findByEmail(email);
+        ArrayList<JsonObject> partners = new ArrayList<JsonObject>();
+        for(Long id : currentUser.getLinkedPartners()){
+            JsonObject p = new JsonObject();
+            User partner = userService.findById(id).get();
+            p.addProperty("name", partner.getName());
+            p.addProperty("email", partner.getEmail());
+            partners.add(p);
+        }
+        
+            
+        Gson gson = new Gson();
+        JsonArray partnerJSON = gson.toJsonTree(partners).getAsJsonArray();
+        JsonObject partnersObj = new JsonObject();
+        partnersObj.add("partners", partnerJSON);
+        return partnersObj.toString();
+
+    }
+
+    @PostMapping(value = "/linkpartner",  produces = "application/json")
+    public String linkpartner(        
+        @RequestParam String email,
+        @RequestParam String pass,
+        @RequestParam String partner) {
+        if (!UserUtils.isAuthenticated(userService, email, pass)) return "{}";
+        User currentUser = userService.findByEmail(email);
+        User linkPartner = userService.findByEmail(partner);
+        if(partner == null) return "'messge':'Notandi ekki til'";
+        if(!currentUser.getLinkedPartners().contains(linkPartner.getId())){
+            currentUser.addLinkedPartner(linkPartner.getId()); 
+            linkPartner.addLinkedPartner(currentUser.getId()); 
+            userService.save(currentUser);
+        }
+        ArrayList<JsonObject> partners = new ArrayList<JsonObject>();
+        for(Long id : currentUser.getLinkedPartners()){
+            JsonObject p = new JsonObject();
+            User mapartner = userService.findById(id).get();
+            p.addProperty("name", mapartner.getName());
+            p.addProperty("email", mapartner.getEmail());
+            partners.add(p);
+        }
+        Gson gson = new Gson();
+        JsonArray partnerJSON = gson.toJsonTree(partners).getAsJsonArray();
+        JsonObject partnersObj = new JsonObject();
+        partnersObj.add("partners", partnerJSON);
+
+        return partnersObj.toString();
 
     }
 

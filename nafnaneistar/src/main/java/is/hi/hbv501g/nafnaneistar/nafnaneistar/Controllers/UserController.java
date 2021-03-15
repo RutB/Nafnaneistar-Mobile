@@ -76,7 +76,7 @@ public class UserController {
      * @param model manages the data for the viewing template
      * @return signup template
      */
-    @RequestMapping(value = "/signup", method = RequestMethod.GET)
+    @RequestMapping(value = "/signup_OLD", method = RequestMethod.GET)
     public String signupForm(Model model) {
         model.addAttribute("users", userService.findAll());
         model.addAttribute("user", new User());
@@ -103,7 +103,7 @@ public class UserController {
      * @param session manages the session of the user
      * @return linkpartner template
      */
-    @RequestMapping(value = "/linkpartner", method = RequestMethod.GET)
+    @RequestMapping(value = "/linkpartner_OLD", method = RequestMethod.GET)
     public String linkpartnerForm(Model model, HttpSession session) {
         User currentUser = (User) session.getAttribute("currentUser");
         if (currentUser == null)
@@ -137,8 +137,8 @@ public class UserController {
       * @param session manages the session of the user
       * @return linkpartner template
       */
-    @RequestMapping(value = "/linkpartner", method = RequestMethod.POST)
-    public String linkpartner(@RequestParam(value = "email", required = true) String email, Model model,
+    @RequestMapping(value = "/linkpartner_OLD", method = RequestMethod.POST)
+    public String linkpartner_old(@RequestParam(value = "email", required = true) String email, Model model,
             HttpSession session) {
         User currentUser = (User) session.getAttribute("currentUser");
 

@@ -20,6 +20,10 @@
         <item name="windowNoTitle">true</item>
     </style>
 
+    <style name="btn.disLike" parent="ThemeOverlay.AppCompat">
+        <item name="colorAccent">@color/ambiant</item>
+    </style>
+
     <style name="Theme.LoginActivity.AppBarOverlay" parent="ThemeOverlay.AppCompat.Dark.ActionBar" />
 
     <style name="Theme.LoginActivity.PopupOverlay" parent="ThemeOverlay.AppCompat.Light" />

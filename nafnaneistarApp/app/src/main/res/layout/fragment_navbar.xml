@@ -36,6 +36,7 @@
             android:id="@+id/navViewDrawer"
             android:layout_width="232dp"
             android:layout_height="512dp"
+            android:animateLayoutChanges="true"
             android:background="@color/nav"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintHorizontal_bias="0.0"

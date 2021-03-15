@@ -35,7 +35,6 @@ public class LoginActivity extends AppCompatActivity {
     private  User currentUser = new User();
     private final int REQUEST_CODE = 2;
     private Prefs prefs;
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -62,7 +61,6 @@ public class LoginActivity extends AppCompatActivity {
         });
         binding.btnSignup.setOnClickListener(this::Signup);
 
-        //prefs.Logout();
 
 
     }
@@ -82,7 +80,6 @@ public class LoginActivity extends AppCompatActivity {
      * @param user
      */
     public void CheckLogin(String[] user) throws URISyntaxException {
-        Log.d("user", "CheckLogin: " + user);
         if (user.length != 2){
             return;
         }

@@ -56,4 +56,17 @@
     <string name="navLogout">Skrá út</string>
     <string name="cbMale">Karlkyns</string>
     <string name="cbFemale">Kvenkyns</string>
+    <string name="viewlikedapprovednamesstats">Samþykkt X nöfn</string>
+    <string name="viewlikedrejectedstats">Hafnað x nöfnum</string>
+    <string name="viewlikednamesleftstats">X nöfn eftir</string>
+    <string name="viewLikedPlaceholderName">Nafn</string>
+    <string name="getting_data">Sæki upplýsingar...</string>
+    <string name="viewlikedmenu_yfirlit">Yfirlit</string>
+    <string name="viewlikedmenuCombinedLists">Skoða Sameiginlega lista</string>
+    <string name="viewlikedmenu_ratename">Gefa Nafni Einkunn</string>
+    <string name="viewlikedmenugetNamesbyRating">Skoða Nöfn eftir einkunn</string>
+    <string name="viewlikednamecombo">Nafna Samsetningar</string>
+    <string name="errorRetrievingData">Ekki tókst að sækja gögn</string>
+    <string name="vtViewLikedNameStatsTitleMale">Karlkynsnöfn</string>
+    <string name="tvViewLikeStatNameFemaleTitle">Kvenkynsnöfn</string>
 </resources>

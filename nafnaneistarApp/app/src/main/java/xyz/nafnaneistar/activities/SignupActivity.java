@@ -96,11 +96,11 @@ public class SignupActivity extends AppCompatActivity {
                     .show();
             return;
         }
-        String listeningPath = "login/check";
+        String listeningPath = "signup";
         URIBuilder b = new URIBuilder(ApiController.getDomainURL()+listeningPath);
         b.addParameter("name",name);
         b.addParameter("email",email);
-        b.addParameter("pass",pass);
+        b.addParameter("password",pass);
         JsonObjectRequest jsonObjReq = new JsonObjectRequest(Request.Method.POST,b.build().toString(),null,
                 response -> {
                     Gson g = new Gson();
@@ -122,7 +122,7 @@ public class SignupActivity extends AppCompatActivity {
                             Toast.makeText(SignupActivity.this, message ,Toast.LENGTH_SHORT)
                                     .show();
                         } catch (JSONException e) {
-                            Toast.makeText(SignupActivity.this, R.string.errorEmptyStrings ,Toast.LENGTH_SHORT)
+                            Toast.makeText(SignupActivity.this, R.string.signupFailed ,Toast.LENGTH_SHORT)
                                     .show();
                             e.printStackTrace();
                         }

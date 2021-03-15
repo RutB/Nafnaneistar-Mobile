@@ -76,8 +76,8 @@ public class NameController {
      * @param session manages the session of the user
      * @return viewliked viewing template on succssfull authentication
      */
-    @RequestMapping(value = "/viewliked", method = RequestMethod.GET)
-    public String viewLiked(Model model, HttpSession session) {
+    @RequestMapping(value = "/viewlikedOld", method = RequestMethod.GET)
+    public String viewLiked_old(Model model, HttpSession session) {
         User currentUser = (User) session.getAttribute("currentUser");
         if(!UserUtils.isLoggedIn(currentUser)) return "redirect:/login";
                 
