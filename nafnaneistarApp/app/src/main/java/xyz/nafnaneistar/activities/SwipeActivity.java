@@ -42,6 +42,20 @@ public class SwipeActivity extends AppCompatActivity {
         prefs = new Prefs(SwipeActivity.this);
         binding.btnApprove.setOnClickListener(this::onClick2);
         binding.btnDislike.setOnClickListener(this::onClick);
+        binding.cbGenderMale.setOnClickListener(view -> {
+            try {
+                getNewName();
+            } catch (URISyntaxException e) {
+                e.printStackTrace();
+            }
+        });
+        binding.cbGenderFemale.setOnClickListener(view -> {
+            try {
+                getNewName();
+            } catch (URISyntaxException e) {
+                e.printStackTrace();
+            }
+        });
         binding.SwipeContainer.setOnTouchListener(new OnSwipeTouchListener(SwipeActivity.this) {
             @Override
             public void onSwipeRight() {
@@ -55,7 +69,6 @@ public class SwipeActivity extends AppCompatActivity {
                 binding.btnDislike.callOnClick();
             }
         });
-
         binding.scrollView2.setOnTouchListener(new OnSwipeTouchListener(SwipeActivity.this) {
             @SuppressLint("ClickableViewAccessibility")
             @Override
@@ -70,12 +83,13 @@ public class SwipeActivity extends AppCompatActivity {
                 binding.btnDislike.callOnClick();
             }
         });
+
         //Initialize the navbar fragment
         FragmentManager fragmentManager = getSupportFragmentManager();
         Fragment navbar = fragmentManager.findFragmentById(R.id.navbar);
 
         if (navbar == null) {
-            navbar = new NavbarFragment(SwipeActivity.this);
+            navbar = new NavbarFragment();
             fragmentManager.beginTransaction()
                     .add(R.id.SwipeContainer, navbar)
                     .commit();
@@ -88,6 +102,8 @@ public class SwipeActivity extends AppCompatActivity {
     }
 
     public void chooseName(View view) throws URISyntaxException {
+        if(currentCard == null) return;
+        initLoading();
         String[] user = prefs.getUser();
         String email = user[0];
         String pass = user[1];
@@ -102,9 +118,10 @@ public class SwipeActivity extends AppCompatActivity {
             b.addParameter("female", "true");
         if (binding.cbGenderMale.isChecked())
             b.addParameter("male", "true");
-
+        currentCard = null; //Núllað út þannig að það sé ekki hægt að spamma bara hægri og búa til requests
         JsonObjectRequest jsonObjReq = new JsonObjectRequest(Request.Method.GET, b.build().toString(), null,
                 response -> {
+                    binding.llLoadingContainer.setVisibility(View.INVISIBLE);
                     Gson g = new Gson();
                     NameCard nc = g.fromJson(String.valueOf(response), NameCard.class);
                     ///kanna hvort er fyrir nafn
@@ -126,6 +143,7 @@ public class SwipeActivity extends AppCompatActivity {
     }
 
     public void getNewName() throws URISyntaxException {
+        initLoading();
         String[] user = prefs.getUser();
         String email = user[0];
         String pass = user[1];
@@ -141,6 +159,7 @@ public class SwipeActivity extends AppCompatActivity {
 
         JsonObjectRequest jsonObjReq = new JsonObjectRequest(Request.Method.GET, b.build().toString(), null,
                 response -> {
+                    binding.llLoadingContainer.setVisibility(View.INVISIBLE);
                     Gson g = new Gson();
                     NameCard nc = g.fromJson(String.valueOf(response), NameCard.class);
                     binding.tvTexti.setText(nc.getDescription());
@@ -156,6 +175,12 @@ public class SwipeActivity extends AppCompatActivity {
                     .show();
         });
         ApiController.getInstance().addToRequestQueue(jsonObjReq);
+    }
+
+    private void initLoading(){
+        binding.llLoadingContainer.setVisibility(View.VISIBLE);
+        binding.tvName.setText("");
+        binding.tvTexti.setText("");
     }
 
     private void onClick(View view) {

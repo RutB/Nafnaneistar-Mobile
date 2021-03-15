@@ -33,28 +33,28 @@ public class NavbarFragment extends Fragment {
     Activity context;
     private Prefs prefs;
 
-    public NavbarFragment(Activity context) {
+    public NavbarFragment() {
         // Required empty public constructor
-        this.context = context;
-        prefs = new Prefs(context);
+
     }
 
 
-    public static NavbarFragment newInstance(Activity context) {
-        NavbarFragment fragment = new NavbarFragment(context);
+    public static NavbarFragment newInstance() {
+        NavbarFragment fragment = new NavbarFragment();
         return fragment;
     }
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-
+        this.context = getActivity();
+        prefs = new Prefs(context);
 
 
     }
 
     public void SwitchIntent(View view){
-
+        Log.d("partners", "SwitchIntent: " + "click?");
         switch (view.getId()){
             case R.id.tvSwipe:
                 if(!getActivity().getLocalClassName().toString().contains("SwipeActivity")){
@@ -67,12 +67,12 @@ public class NavbarFragment extends Fragment {
                     getActivity().finish();
                     startActivity(new Intent(getContext(),ViewLikedActivity.class));
                 }
+                break;
             case R.id.tvLinkPartner:
                 if(!getActivity().getLocalClassName().contains("LinkPartnerActivity")){
                     getActivity().finish();
                     startActivity(new Intent(getContext(),LinkPartnerActivity.class));
                 }
-                
             break;
         }
 
@@ -123,6 +123,7 @@ public class NavbarFragment extends Fragment {
         binding.btnNavToggle.setOnClickListener(this::ToggleNavDrawer);
         binding.tvLogOut.setOnClickListener(this::logout);
         binding.tvSwipe.setOnClickListener(this::SwitchIntent);
+        binding.tvLinkPartner.setOnClickListener(this::SwitchIntent);
         binding.tvViewLiked.setOnClickListener(this::SwitchIntent);
         View view = binding.getRoot();
         return view;

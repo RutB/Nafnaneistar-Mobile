@@ -21,8 +21,11 @@ import android.widget.Toast;
 import com.android.volley.Request;
 import com.android.volley.toolbox.JsonObjectRequest;
 import com.google.gson.Gson;
+import com.google.gson.JsonArray;
+import com.google.gson.JsonObject;
 
 import org.apache.http.client.utils.URIBuilder;
+import org.json.JSONArray;
 import org.json.JSONException;
 
 import java.net.URISyntaxException;
@@ -46,6 +49,13 @@ public class LinkPartnerActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         binding = DataBindingUtil.setContentView(this, R.layout.activity_link_partner);
+        binding.btnLink.setOnClickListener(view -> {
+            try {
+                CheckLink(view);
+            } catch (URISyntaxException e) {
+                e.printStackTrace();
+            }
+        });
         prefs = new Prefs(LinkPartnerActivity.this);
         binding.btnLink.setOnClickListener(this::CheckLink);
 
@@ -92,58 +102,41 @@ public class LinkPartnerActivity extends AppCompatActivity {
         ApiController.getInstance().addToRequestQueue(jsonObjReq);
     }
 
-
-        public void checkLink(View view) throws URISyntaxException {
+    public void CheckLink(View view) throws URISyntaxException {
         String[] user = prefs.getUser();
-        String email = user[0];
+        String user_email = user[0];
         String pass = user[1];
-
-        String listeningPath = "/linkpartner/checkemail";
-        URIBuilder b = new URIBuilder(ApiController.getDomainURL() + listeningPath);
-        b.addParameter("email", email);
-        b.addParameter("pass", pass);
-
-
-        String inEmail = binding.etEmail2.getText().toString().trim();
+        String email = binding.etEmail2.getText().toString().trim();
         Pattern pattern = Pattern.compile("^.+@.+\\..+$");
         Matcher matcher = pattern.matcher(email);
-        if (email.length() == 0) {
-            Toast.makeText(LinkPartnerActivity.this, R.string.errorEmptyStrings, Toast.LENGTH_SHORT).show();
+        /*if (email.length() == 0) {
+            Toast.makeText(LinkPartnerActivity.this, R.string.errorEmptyStrings, Toast.LENGTH_SHORT)
+                    .show();
             return;
         } else if (!matcher.matches()) {
             Toast.makeText(LinkPartnerActivity.this, R.string.errorInvalidEmail, Toast.LENGTH_SHORT).show();
             return;
-        }
+        }*/
+        String linkUrl = String.format("%slink?&email=%s", ApiController.getDomainURL(), email);
+        String listeningPath = "linkpartner";
 
-        JsonObjectRequest jsonObjReq = new JsonObjectRequest(Request.Method.GET, b.build().toString(), null,
+        URIBuilder b = new URIBuilder(ApiController.getDomainURL() + listeningPath);
+        b.addParameter("email", user_email);
+        b.addParameter("pass", pass);
+        Log.d("Test", "CheckLink: "+ b.toString());
+        JsonObjectRequest jsonObjReq = new JsonObjectRequest(Request.Method.GET, b.toString(), null,
                 response -> {
-                    Gson g = new Gson();
-                    User newUser = g.fromJson(String.valueOf(response), User.class);
-                    binding.tvLinkName.setText(newUser.getName());
-                    binding.tvLinkEmail.setText(newUser.getEmail());
-                    Log.d("link", "linkEmail: " + response.toString());
-
-
-                    if (newUser.getName()  != null) {
-                        Toast.makeText(LinkPartnerActivity.this, R.string.linkSuccess, Toast.LENGTH_SHORT).show();
-                        // prefs.saveUser(email);
-
-                        prefs.getUser(); // ef rétt skila þessu
-                        Intent intent = getIntent();
-                        setResult(RESULT_OK, intent);
-                        // finish();
-
-                        // setja í töflu
-                    } else {
-                        String message = null;
-                        try {
-                            message = response.getString("message");
-                            Toast.makeText(LinkPartnerActivity.this, message, Toast.LENGTH_SHORT).show();
-                        } catch (JSONException e) {
-                            Toast.makeText(LinkPartnerActivity.this, R.string.errorEmptyStrings, Toast.LENGTH_SHORT).show();
-                            e.printStackTrace();
+                    JSONArray resp = new JSONArray();
+                    try {
+                        resp = response.getJSONArray("partners");
+                        for(int i = 0; i < resp.length(); i++){
+                            JsonObject bla = (JsonObject) resp.get(i);
+                            Log.d("partners", "CheckLink: ");
                         }
+                    } catch (JSONException e) {
+                        e.printStackTrace();
                     }
+                    Log.d("partners", "CheckLink: " +resp );
 
                 }, error -> {
             Toast.makeText(LinkPartnerActivity.this, R.string.errorEmptyStrings, Toast.LENGTH_SHORT).show();

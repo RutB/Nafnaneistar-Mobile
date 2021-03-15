@@ -30,7 +30,7 @@ public class UserController {
     /**
      * Constructor for UserController, it needs a UserService and a NameService to
      * function
-     * 
+     *
      * @param userService
      * @param nameService
      */
@@ -44,7 +44,7 @@ public class UserController {
      * login is activated as the / on the domain. to access /login the user is not
      * logged in. the user is redirect to /login from other sites if there is no
      * session of currentUser
-     * 
+     *
      * @param model   manages the data for the viewing template
      * @param session manages the session of the user
      * @return on a valid session, the user is rendered the Login template
@@ -60,7 +60,7 @@ public class UserController {
 
     /**
      * On the domain, if the user is logged in the model is populated with data
-     * 
+     *
      * @param email    String that has to correspond to user
      * @param password String that has to correspond to same user
      * @param model    manages the data for the viewing template
@@ -76,11 +76,11 @@ public class UserController {
     /**
      * signup is activated when the user accesses /signup on the domain. to access
      * /signup the user is not logged in and has not an active session.
-     * 
+     *
      * @param model manages the data for the viewing template
      * @return signup template
      */
-    @RequestMapping(value = "/signup", method = RequestMethod.GET)
+    @RequestMapping(value = "/signup_OLD", method = RequestMethod.GET)
     public String signupForm(Model model) {
         model.addAttribute("users", userService.findAll());
         model.addAttribute("user", new User());
@@ -90,7 +90,7 @@ public class UserController {
     /**
      * logout is activated when the user accesses /logout on the domain. to access
      * /logout the user is logged in and has an active session
-     * 
+     *
      * @param model   manages the data for the viewing template
      * @param session manages the session of the user
      * @return
@@ -105,12 +105,12 @@ public class UserController {
      * linkpartner is activated when the user accesses /linkpartner on the domain.
      * to access /linkpartner the user is not logged in and has not an active
      * session.
-     * 
+     *
      * @param model   manages the data for the viewing template
      * @param session manages the session of the user
      * @return linkpartner template
      */
-    @RequestMapping(value = "/linkpartner", method = RequestMethod.GET)
+    @RequestMapping(value = "/linkpartner_OLD", method = RequestMethod.GET)
     public String linkpartnerForm(Model model, HttpSession session) {
         User currentUser = (User) session.getAttribute("currentUser");
         if (currentUser == null)
@@ -131,23 +131,22 @@ public class UserController {
 
     /**
      * populates the model with data and
-     * 
+     *
      * @param user   Object user that is the current user
      * @param result manages the retrieval of validation errors
      * @param model  manages the data for the viewing template
      * @return signup template
      */
 
-    /**
-     * Populates the model with data and saves changes of linked partners
-     * 
-     * @param email   String
-     * @param model   manages the data for the viewing template
-     * @param session manages the session of the user
-     * @return linkpartner template
-     */
-    @RequestMapping(value = "/linkpartner", method = RequestMethod.POST)
-    public String linkpartner(@RequestParam(value = "email", required = true) String email, Model model,
+     /**
+      * Populates the model with data and saves changes of linked partners
+      * @param email String
+      * @param model manages the data for the viewing template
+      * @param session manages the session of the user
+      * @return linkpartner template
+      */
+    @RequestMapping(value = "/linkpartner_OLD", method = RequestMethod.POST)
+    public String linkpartner_old(@RequestParam(value = "email", required = true) String email, Model model,
             HttpSession session) {
         User currentUser = (User) session.getAttribute("currentUser");
 
