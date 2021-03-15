@@ -145,7 +145,7 @@ public class NameController {
      * @return searchname template
      */
     @RequestMapping(value="/searchname_OLD", method = RequestMethod.POST)
-    public String searchName(
+    public String searchName_OLD(
             @RequestParam(required = true) String searchedName,
             @RequestParam(required = true) String gender,
             Model model, HttpSession session) {
