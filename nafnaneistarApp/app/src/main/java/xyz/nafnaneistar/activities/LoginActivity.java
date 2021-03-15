@@ -113,11 +113,11 @@ public class LoginActivity extends AppCompatActivity {
     public void CheckLogin(View view) throws URISyntaxException {
         String email = binding.etEmail.getText().toString().trim();
         String pass = binding.etPassword.getText().toString().trim();
-        if(email.length() == 0 || pass.length()==0){
+/*        if(email.length() == 0 || pass.length()==0){
             Toast.makeText(LoginActivity.this, R.string.errorEmptyStrings ,Toast.LENGTH_SHORT)
                     .show();
             return;
-        }
+        }*/
         String listeningPath = "login/check";
         URIBuilder b = new URIBuilder(ApiController.getDomainURL()+listeningPath);
         b.addParameter("email",email);

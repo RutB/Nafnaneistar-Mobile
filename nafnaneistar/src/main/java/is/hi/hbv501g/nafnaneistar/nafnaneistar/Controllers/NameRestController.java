@@ -1,10 +1,16 @@
 package is.hi.hbv501g.nafnaneistar.nafnaneistar.Controllers;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Optional;
 import java.util.Set;
+import org.apache.commons.lang3.StringUtils;
 
 import javax.servlet.http.HttpSession;
+
+import com.google.gson.Gson;
+import com.google.gson.JsonArray;
+import com.google.gson.JsonObject;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -273,4 +279,30 @@ public class NameRestController {
             return false;
         }
     }
+
+    /**
+     * 
+     * 
+     * 
+     * 
+     */
+    @GetMapping(path="/searchname/", produces = "application/json")
+    public String searchName(
+        //@RequestParam String email,
+        //@RequestParam String pass,
+        @RequestParam String query) {
+        //Checkum hvort user sé logged in. 
+        //if (!UserUtils.isAuthenticated(userService, email, pass)) return "{}";
+        String searchedName = query.toLowerCase();
+        ArrayList<JsonObject> searchResultJson = new ArrayList<JsonObject>();
+        ArrayList<NameCard> searchResultNamecard = new ArrayList<NameCard>();
+        searchResultNamecard = (ArrayList<NameCard>) nameService.findAllByNameLike(StringUtils.capitalize(searchedName.concat("%")));
+        System.out.println("searchResultNameCard: ");
+        System.out.println(searchResultNamecard);
+
+        String test = "test";
+        return test;
+        }
+
+
 }

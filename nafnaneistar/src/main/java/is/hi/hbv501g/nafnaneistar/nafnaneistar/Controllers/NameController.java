@@ -135,6 +135,8 @@ public class NameController {
     }
 
     /**
+     * DEPRICATED
+     * 
      * Takes input from user and populates the model with names that are like the users input 
      * @param searchedName String which is used for a search of available names
      * @param model Model populated with related data
@@ -142,7 +144,7 @@ public class NameController {
      * @param gender A string that signifies gender: 0 is male, 1 is female, 3 are all.
      * @return searchname template
      */
-    @RequestMapping(value="/searchname", method = RequestMethod.POST)
+    @RequestMapping(value="/searchname_OLD", method = RequestMethod.POST)
     public String searchName(
             @RequestParam(required = true) String searchedName,
             @RequestParam(required = true) String gender,
@@ -175,4 +177,6 @@ public class NameController {
         model.addAttribute("names", searchedList);
         return "searchname";
     }
+
+    
 }

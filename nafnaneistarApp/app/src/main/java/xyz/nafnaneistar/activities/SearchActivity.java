@@ -6,6 +6,9 @@ import androidx.databinding.DataBindingUtil;
 import android.os.Bundle;
 import android.view.View;
 
+import org.apache.http.client.utils.URIBuilder;
+
+import xyz.nafnaneistar.controller.ApiController;
 import xyz.nafnaneistar.helpers.Prefs;
 import xyz.nafnaneistar.loginactivity.R;
 
@@ -45,10 +48,11 @@ public class SearchActivity extends AppCompatActivity {
      * @return
      */
     public NameCard[] SearchName(View view){
-        String nameQuery = binding.etNameSearch.getText().toString();
+        String nameQuery = binding.etNameSearch.getText().toString().trim();
 
+        // URIBuilder b = new URIBuilder(ApiController.getDomainURL()+listeningPath)
 
-        binding.textView13.setText("LOL");
+        // binding.textView13.setText("LOL");
 
         return null;
     }
