@@ -182,7 +182,6 @@ public class SwipeActivity extends AppCompatActivity {
         binding.tvName.setText("");
         binding.tvTexti.setText("");
     }
-
     private void onClick(View view) {
         try {
             chooseName(view);
