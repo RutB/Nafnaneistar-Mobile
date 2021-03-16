@@ -71,4 +71,5 @@
     <string name="Comboname_getName">Fá Nafn</string>
     <string name="comboname_name_and_middle">Fá Nafn &amp; Millinafn </string>
     <string name="settu_inn_eftirnafn_og_f_u_upp_stungur_fyrir_nafn">Settu inn eftirnafn og fáðu uppástungur fyrir nafn</string>
+    <string name="systemError">Kerfisvilla...</string>
 </resources>

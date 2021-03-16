@@ -86,12 +86,12 @@ public class SignupActivity extends AppCompatActivity {
         String pass = binding.etPassword.getText().toString();
         Pattern pattern = Pattern.compile("^.+@.+\\..+$");
         Matcher matcher = pattern.matcher(email);
-        if(name.length() == 0 || email.length() == 0 || pass.length() == 0){
+        if(name.length() == 0 || email.length() == 0 | pass.length() == 0){
             Toast.makeText(SignupActivity.this, R.string.errorEmptyStrings ,Toast.LENGTH_SHORT)
                     .show();
             return;
         }
-        if(!matcher.matches()){
+        else if(!matcher.matches()){
             Toast.makeText(SignupActivity.this, R.string.errorInvalidEmail ,Toast.LENGTH_SHORT)
                     .show();
             return;
@@ -129,7 +129,7 @@ public class SignupActivity extends AppCompatActivity {
                     }
 
                 },error -> {
-            Toast.makeText(SignupActivity.this, R.string.errorEmptyStrings ,Toast.LENGTH_SHORT)
+            Toast.makeText(SignupActivity.this, getResources().getString(R.string.systemError) ,Toast.LENGTH_SHORT)
                     .show();
             Log.d("Test", "CheckLogin: " + error.toString());
         });

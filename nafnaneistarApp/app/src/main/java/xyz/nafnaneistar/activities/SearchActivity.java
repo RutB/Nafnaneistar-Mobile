@@ -20,6 +20,8 @@ import org.json.JSONException;
 import java.net.URISyntaxException;
 import java.util.jar.Attributes;
 
+import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentManager;
 import xyz.nafnaneistar.controller.ApiController;
 import xyz.nafnaneistar.helpers.Prefs;
 import xyz.nafnaneistar.loginactivity.R;
@@ -51,6 +53,17 @@ public class SearchActivity extends AppCompatActivity {
                 e.printStackTrace();
             }
         });
+
+        //Initialize the navbar fragment
+        FragmentManager fragmentManager = getSupportFragmentManager();
+        Fragment navbar = fragmentManager.findFragmentById(R.id.navbar);
+
+        if (navbar == null) {
+            navbar = new NavbarFragment();
+            fragmentManager.beginTransaction()
+                    .add(id.SearchNameContainer, navbar)
+                    .commit();
+        }
     }
 
     /**
