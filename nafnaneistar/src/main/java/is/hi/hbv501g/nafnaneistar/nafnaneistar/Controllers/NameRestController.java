@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Optional;
 import java.util.Set;
+import org.apache.commons.lang3.StringUtils;
 
 import javax.servlet.http.HttpSession;
 
@@ -423,4 +424,38 @@ public class NameRestController {
             return false;
         }
     }
+
+    /**
+     * 
+     * 
+     * 
+     *  //@RequestParam String email,
+     *  //@RequestParam String pass,
+     */
+    @GetMapping(path="/searchname", produces = "application/json")
+    public String searchName(
+        @RequestParam String query) {
+        //Checkum hvort user sé logged in. 
+        //if (!UserUtils.isAuthenticated(userService, email, pass)) return "{}";
+        String searchedName = query.toLowerCase();
+        ArrayList<JsonObject> searchResultJson = new ArrayList<JsonObject>();
+        ArrayList<NameCard> searchResultNamecard = new ArrayList<NameCard>();
+        searchResultNamecard = (ArrayList<NameCard>) nameService.findAllByNameLike(StringUtils.capitalize(searchedName.concat("%")));
+        for (int i = 0; i < searchResultNamecard.size(); i++) {
+            JsonObject nameData = new JsonObject();
+            nameData.addProperty("id", searchResultNamecard.get(i).getId());
+            nameData.addProperty("name", searchResultNamecard.get(i).getName());
+            searchResultJson.add(nameData);
+        }
+
+        Gson gson = new Gson();
+        JsonArray nameCardJson = gson.toJsonTree(searchResultJson).getAsJsonArray();
+        JsonObject nameCardObj = new JsonObject();
+        nameCardObj.add("results", nameCardJson);
+        System.out.println("Searchname query results: ");
+        System.out.println(nameCardObj.toString());
+        return nameCardObj.toString();
+        }
+
+
 }

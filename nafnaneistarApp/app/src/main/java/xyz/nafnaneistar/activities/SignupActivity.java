@@ -86,12 +86,12 @@ public class SignupActivity extends AppCompatActivity {
         String pass = binding.etPassword.getText().toString();
         Pattern pattern = Pattern.compile("^.+@.+\\..+$");
         Matcher matcher = pattern.matcher(email);
-        if(name.length() == 0 || email.length() == 0 | pass.length() == 0){
+        if(name.length() == 0 || email.length() == 0 || pass.length() == 0){
             Toast.makeText(SignupActivity.this, R.string.errorEmptyStrings ,Toast.LENGTH_SHORT)
                     .show();
             return;
         }
-        else if(!matcher.matches()){
+        if(!matcher.matches()){
             Toast.makeText(SignupActivity.this, R.string.errorInvalidEmail ,Toast.LENGTH_SHORT)
                     .show();
             return;

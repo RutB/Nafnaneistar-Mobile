@@ -61,22 +61,26 @@ public class NavbarFragment extends Fragment {
                     getActivity().finish();
                     startActivity(new Intent(getContext(),SwipeActivity.class));
                 }
-                break;
+            break;
             case R.id.tvViewLiked:
                 if(!getActivity().getLocalClassName().contains("ViewLikedActivity")){
                     getActivity().finish();
                     startActivity(new Intent(getContext(),ViewLikedActivity.class));
                 }
-                break;
+            break;
             case R.id.tvLinkPartner:
                 if(!getActivity().getLocalClassName().contains("LinkPartnerActivity")){
                     getActivity().finish();
                     startActivity(new Intent(getContext(),LinkPartnerActivity.class));
                 }
             break;
+            case R.id.tvSearchName:
+                if (!getActivity().getLocalClassName().contains("SearchActivity")){
+                    getActivity().finish();
+                    startActivity(new Intent(getContext(),SearchActivity.class));
+                }
+            break;
         }
-
-
     }
 
     public void createIcons() {
@@ -125,6 +129,7 @@ public class NavbarFragment extends Fragment {
         binding.tvSwipe.setOnClickListener(this::SwitchIntent);
         binding.tvLinkPartner.setOnClickListener(this::SwitchIntent);
         binding.tvViewLiked.setOnClickListener(this::SwitchIntent);
+        binding.tvSearchName.setOnClickListener(this::SwitchIntent);
         View view = binding.getRoot();
         return view;
     }
