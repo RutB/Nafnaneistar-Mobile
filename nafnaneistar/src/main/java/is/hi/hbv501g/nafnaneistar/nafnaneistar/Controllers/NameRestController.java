@@ -83,8 +83,8 @@ public class NameRestController {
      * @return a new NameCard
      */
     @GetMapping(path = "/swipe/approve", produces = "application/json")
-    public String approveName(@RequestParam(required = false) String id, @RequestParam(required = false) String email,
-            @RequestParam(required = false) String pass, @RequestParam(required = false) String male,
+    public String approveName(@RequestParam(required = true) String id, @RequestParam(required = true) String email,
+            @RequestParam(required = true) String pass, @RequestParam(required = false) String male,
             @RequestParam(required = false) String female) {
         System.out.println("approve");
         int gender = 3;
@@ -117,7 +117,7 @@ public class NameRestController {
      */
     @GetMapping(path = "/swipe/disapprove", produces = "application/json")
     public String disapproveName(@RequestParam(required = false) String id,
-            @RequestParam(required = false) String email, @RequestParam(required = false) String pass,
+            @RequestParam(required = true) String email, @RequestParam(required = true) String pass,
             @RequestParam(required = false) String male, @RequestParam(required = false) String female) {
         System.out.println("disapprove");
         int gender = 3;
@@ -267,8 +267,8 @@ public class NameRestController {
      * @param session to get the User session
      * @return
      */
-    @GetMapping(path = "/viewliked/namemaker", produces = "application/json")
-    public String[] getRandomName(@RequestParam(required = false) String middle,
+    @GetMapping(path = "/viewliked/namemaker_OLD", produces = "application/json")
+    public String[] getRandomNameOLD(@RequestParam(required = false) String middle,
             @RequestParam(required = false) String gender, HttpSession session) {
         User currentUser = (User) session.getAttribute("currentUser");
         if (currentUser.getApprovedNames().size() <= 2) {
@@ -284,6 +284,30 @@ public class NameRestController {
             middlename += " " + nc.get().getName();
         }
         return new String[] { name, middlename };
+
+    }
+
+    @GetMapping(path = "/viewliked/namemaker", produces = "application/json")
+    public String getRandomName(
+        @RequestParam(required = true) String email, @RequestParam(required = true) String pass,
+        @RequestParam(required = true) String gender, @RequestParam(required = false) String middle) {
+        if (UserUtils.isAuthenticated(userService, email, pass)) {
+            User currentUser = userService.findByEmail(email);
+            if (currentUser.getApprovedNames().size() <= 2) {
+                return "{'message':'Þú þarft að skoða fleiri nöfn'}";
+            }
+            Optional<NameCard> nc = nameService.findById(currentUser.getRandomNameId(UserUtils
+                    .getGenderList(currentUser.getApprovedNames().keySet(), nameService, Integer.parseInt(gender))));
+            String name = nc.get().getName();
+            String middlename = "";
+            if (middle != null) {
+                nc = nameService.findById(currentUser.getRandomNameId(UserUtils
+                        .getGenderList(currentUser.getApprovedNames().keySet(), nameService, Integer.parseInt(gender))));
+                middlename += " " + nc.get().getName();
+            }
+            return "{'name':'"+name+"','middle':'"+middlename+"'}";
+        }
+        return "{'message':'Villa í auðkenningu'}";
 
     }
 
