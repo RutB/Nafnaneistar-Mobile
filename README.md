@@ -3,16 +3,18 @@
 Heimasíða:
 http://www.nafnaneistar.xyz/
 
+Allar bakgrunns upplýsingar, uml, user stories ofl. er geymt í möppunni **Skjöl**
+
 # Keyrsla
 Það þarf að vera með á vélinni sem keyrir forritið Java 11 eða nýrra.
 Það ætti að vera hægt bara að clone-a repoið eða sækja repo-ið og keyra í Android Studio.
 Ekki þarf að setja upp bakenda þar sem hann keyrir á http://46.22.102.179:7979 eins og sést í ApiController
 
 # Ef notaður er eigin bakendi
-Forritið keyrir sjálfgefið á http://localhost:7979/ og taka skal eftir að það er port 7979 svo ef að það port er í notkun þarf að slökkva á þeirri þjónustu sem er keyrand þar.
+Forritið keyrir sjálfgefið á http://localhost:7979/ og taka skal eftir að það er port 7979 svo ef að það port er í notkun þarf að slökkva á þeirri þjónustu sem er keyrandi þar.
 * ef að repo-ið er sótt er hægt að breyta sjálfgefnu porti í application.properties skránni og breyta línunni sem inniheldur: server.port=7979 og breyta þá 7979 í eitthvað annað.
 
-Það þarf að setja http://localhost:7979/ á form með ip tölunni eins og sést er í domainURL í ApiController
+Það þarf að setja http://localhost:7979/ á form með IP tölunni eins og sést er í domainURL í ApiController
 
 Það ætti að vera hægt bara að clone-a repoið eða sækja repo-ið og keyra í VsCode með springboot extension pakkanum eða í öðrum studdum ritlum (t.d. Eclipse).
 
@@ -24,8 +26,7 @@ Forritið keyrir sjálfgefið á http://localhost:7979/ og taka skal eftir að �
     - Swipe hægri/vinstri
     - Kynja val
   - Tengja saman partnera
-    - Tengir partnera saman
-    - Sýnir tengda partnera
+    - Tengir partnera saman, ekki sést í appinu
   - Valin nöfn
     - Sýnir fjölda samþykktanafna
     - Nafna samsetningar
