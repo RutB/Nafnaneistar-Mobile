@@ -27,9 +27,9 @@ Forritið keyrir sjálfgefið á http://localhost:7979/ og taka skal eftir að �
     - Kynja val
   - Tengja saman partnera
     - Tengir partnera saman
-    - Sýnir einn tengdan partner
+    - Sýnir lista af tengdum partnerum
   - Valin nöfn
-    - Sýnir fjölda samþykktanafna
+    - Sýnir fjölda samþykktra nafna
     - Nafna samsetningar
 
 
