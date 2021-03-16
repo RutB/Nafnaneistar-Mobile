@@ -5,6 +5,22 @@ http://www.nafnaneistar.xyz/
 
 Allar bakgrunns upplýsingar, uml, user stories ofl. er geymt í möppunni **Skjöl**
 
+# Skipting á möppum í Repo
+## nafnaneistar
+Inniheldur bakendann eða þá Springboot verkefni sem byggist á verkefninu fyrir Hugbúnaðarverkefni 1. Hægt er að opna þá möppu í texta ritli, t.d. vscode eða öðrum ritli sem er með stuðning fyrir springboot verkefni og keyra
+við keyrslu ræsist bakendi á porti 7979 sem tekur við beiðnum.
+(ATH að sá bakendi er einnig ræstur á http://46.22.102.179:7979 og hægt er að senda beiðnir þangað)
+
+## nafnaneistarApp
+Inniheldur Android Studio verkefnið og viðeiandi skrár til að opna on keyra verkefnið í Android Studio.
+
+## Skjöl
+Inniheldur skilaverkefnin tengd Hugbúnaðarverkefni 2 áfanganum
+
+## Annað
+möppur eins og out, .vscode og dist má bara hunsa og eru ekki nauðsynlegar fyrir verkefnið.
+
+
 # Keyrsla
 Það þarf að vera með á vélinni sem keyrir forritið Java 11 eða nýrra.
 Það ætti að vera hægt bara að clone-a repoið eða sækja repo-ið og keyra í Android Studio.
