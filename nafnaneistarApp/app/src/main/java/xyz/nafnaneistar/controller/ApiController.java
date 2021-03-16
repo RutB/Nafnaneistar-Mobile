@@ -13,7 +13,7 @@ import com.android.volley.toolbox.Volley;
 public class ApiController extends Application {
     private static ApiController instance;
     //nafnaneistar.xyz
-     private static String domainURL = "http://46.22.102.179:7979/";
+    private static String domainURL = "http://46.22.102.179:7979/";
     //Óli
     //private static String domainURL = "http://192.168.1.207:7979/";
     private RequestQueue requestQueue;
