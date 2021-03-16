@@ -61,11 +61,6 @@ public class LinkPartnerActivity extends AppCompatActivity {
                     .add(R.id.LinkContainer, navbar)
                     .commit();
         }
-        try {
-            CheckLink();
-        } catch (URISyntaxException e) {
-            e.printStackTrace();
-        }
     }
 
     public void CheckLink(View view) throws URISyntaxException {
@@ -75,7 +70,7 @@ public class LinkPartnerActivity extends AppCompatActivity {
         String email = binding.etEmail2.getText().toString().trim();
         Pattern pattern = Pattern.compile("^.+@.+\\..+$");
         Matcher matcher = pattern.matcher(email);
-        /*if (email.length() == 0) {
+        if (email.length() == 0) {
             Toast.makeText(LinkPartnerActivity.this, R.string.errorEmptyStrings, Toast.LENGTH_SHORT)
                     .show();
             return;
@@ -83,7 +78,7 @@ public class LinkPartnerActivity extends AppCompatActivity {
             Toast.makeText(LinkPartnerActivity.this, R.string.errorInvalidEmail, Toast.LENGTH_SHORT)
                     .show();
             return;
-        }*/
+        }
         String linkUrl = String.format("%slink?&email=%s", ApiController.getDomainURL(), email);
         String listeningPath = "linkpartner";
 
@@ -113,4 +108,6 @@ public class LinkPartnerActivity extends AppCompatActivity {
         ApiController.getInstance().addToRequestQueue(jsonObjReq);
 
     }
+
+
 }

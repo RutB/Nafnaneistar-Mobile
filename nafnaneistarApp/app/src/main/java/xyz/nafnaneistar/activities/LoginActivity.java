@@ -127,7 +127,7 @@ public class LoginActivity extends AppCompatActivity {
                         Toast.makeText(LoginActivity.this, R.string.loginSuccess ,Toast.LENGTH_SHORT)
                                 .show();
                         prefs.saveUser(email,pass);
-                        startActivity(new Intent( LoginActivity.this, LinkPartnerActivity.class));
+                        startActivity(new Intent( LoginActivity.this, SwipeActivity.class));
                     }
                     else {
                         Snackbar.make(binding.etEmail,R.string.loginFailed, Snackbar.LENGTH_INDEFINITE)
