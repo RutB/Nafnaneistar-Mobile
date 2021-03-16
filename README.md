@@ -3,13 +3,9 @@
 Heimasíða:
 http://www.nafnaneistar.xyz/
 
-# Bakgrunnsupplýsingar fyrir code exchange
-  * Class diagrams: https://notendur.hi.is/ojv1/hugbo2/ass2/Nafnaneistar.svg
-  *
 # Keyrsla
 Það þarf að vera með á vélinni sem keyrir forritið Java 11 eða nýrra.
 Það ætti að vera hægt bara að clone-a repoið eða sækja repo-ið og keyra í Android Studio.
-
 Ekki þarf að setja upp bakenda þar sem hann keyrir á http://46.22.102.179:7979 eins og sést í ApiController
 
 # Ef notaður er eigin bakendi
