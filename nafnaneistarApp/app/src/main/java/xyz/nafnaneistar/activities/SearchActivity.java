@@ -43,7 +43,6 @@ public class SearchActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         // setContentView(R.layout.activity_search);
         prefs = new Prefs(SearchActivity.this);
-
         binding = DataBindingUtil.setContentView(this, layout.activity_search);
         binding.btnSearchName.setOnClickListener(view -> {
             try {
@@ -52,53 +51,38 @@ public class SearchActivity extends AppCompatActivity {
                 e.printStackTrace();
             }
         });
-
-
-        // binding.textView13.setText("LOL");
-        binding.textView13.getText();
-
     }
 
     /**
      * TODO:
-     *  Taka inn leitarstreng
-     *  Nota leitarstreng til að fá results
-     *  Mata results inn í töflu
+     *  User authentication.
+     *  Mata gögn inn viðmótið í lista.
+     *  Add og Remove hnappar á lista við hvert nafn.
+     *
+     * WIP: Eins og er þá skilar þetta fall leitarniðustöðu í Logcat.
      * @param view
-     * @return
+     * @return null
      */
-    public NameCard[] SearchName(View view) throws URISyntaxException {
+    public void SearchName(View view) throws URISyntaxException {
         String nameQuery = binding.etNameSearch.getText().toString().trim();
         String listeningPath = "searchname";
-
-        /**
-         * TODO:
-         * Senda username og pass með query fyrir authentication.
-         */
-
         URIBuilder b = new URIBuilder(ApiController.getDomainURL()+listeningPath);
         b.addParameter("query",nameQuery);
         String requestURL = b.build().toString();
-
-        // binding.textView13.setText("LOL");
-
-        JsonObjectRequest jsonObjReq = new JsonObjectRequest(Request.Method.POST,requestURL,null,
+        Log.d("TEST",requestURL);
+        JsonObjectRequest jsonObjReq = new JsonObjectRequest(Request.Method.GET,requestURL,null,
                 response -> {
                     Gson g = new Gson();
                     NameCard queryResults = g.fromJson(String.valueOf(response), NameCard.class);
-                    Log.d("nameSearch", "Searchname: "+response.toString());
-
+                    try {
+                        Log.d("nameSearch", "Searchname: "+response.getJSONArray("results").toString());
+                    } catch (JSONException e) {
+                        e.printStackTrace();
+                    }
                 },error -> {
-
-
-            /*
-            Toast.makeText(SignupActivity.this, R.string.errorEmptyStrings ,Toast.LENGTH_SHORT)
-                    .show();
-             */
-            Log.d("Test", "CheckLogin: " + error.toString());
+                    Log.d("searchActivity", "searchActivity " + error.toString());
         });
-
-        return null;
+        ApiController.getInstance().addToRequestQueue(jsonObjReq);
     }
 
 

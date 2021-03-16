@@ -124,8 +124,8 @@ public class NameController {
      * @param session manages the session of the user
      * @return searchname template rendered
      */
-    @RequestMapping(value = "/searchname", method = RequestMethod.GET)
-    public String searchName(Model model, HttpSession session) {
+    @RequestMapping(value = "/searchname_OLD", method = RequestMethod.GET)
+    public String searchName_OLD(Model model, HttpSession session) {
         User currentUser = (User) session.getAttribute("currentUser");
         if(!UserUtils.isLoggedIn(currentUser))
             return "redirect:/login";
