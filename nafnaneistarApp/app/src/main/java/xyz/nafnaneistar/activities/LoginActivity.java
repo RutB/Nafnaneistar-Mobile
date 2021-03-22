@@ -61,8 +61,6 @@ public class LoginActivity extends AppCompatActivity {
         });
         binding.btnSignup.setOnClickListener(this::Signup);
 
-
-
     }
 
     /**

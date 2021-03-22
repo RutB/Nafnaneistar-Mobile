@@ -17,121 +17,35 @@
 
         <!-- TODO: Update blank fragment layout -->
 
-        <ImageView
-            android:id="@+id/btnNavToggle"
-            android:layout_width="64dp"
-            android:layout_height="50dp"
-            android:layout_marginEnd="16dp"
-            android:layout_marginStart="70dp"
-            android:background="@drawable/ic_menu"
-            android:contextClickable="true"
-            android:textAlignment="center"
+        <com.google.android.material.bottomnavigation.BottomNavigationView
+            android:id="@+id/navViewTop"
+            android:layout_width="0dp"
+            android:layout_height="49dp"
+            android:background="@color/btn_color"
+            app:itemIconSize="26dp"
+            app:itemIconTint="@color/menuFont"
+            app:itemTextColor="@color/menuFont"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toEndOf="@+id/navViewDrawer"
+            app:layout_constraintHorizontal_bias="1.0"
+            app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
-            app:layout_constraintVertical_bias="0.023" />
+            app:layout_constraintVertical_bias="0.0"
+            app:menu="@menu/menu_items" />
 
         <com.google.android.material.navigation.NavigationView
             android:id="@+id/navViewDrawer"
-            android:layout_width="232dp"
-            android:layout_height="512dp"
+            android:layout_width="176dp"
+            android:layout_height="220dp"
             android:animateLayoutChanges="true"
             android:background="@color/nav"
+            android:visibility="visible"
+            app:itemTextColor="@color/menuFont"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintHorizontal_bias="0.0"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent">
-
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:layout_gravity="center"
-                android:clickable="true"
-                android:clipChildren="false"
-                android:clipToPadding="false"
-                android:focusable="true"
-                android:importantForAccessibility="yes"
-                android:layoutDirection="inherit"
-                android:orientation="vertical"
-                android:padding="8dp"
-                android:showDividers="beginning|end"
-                android:textAlignment="center">
-
-                <TextView
-                    android:id="@+id/tvSearchName"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_gravity="center"
-                    android:layout_marginBottom="20dp"
-                    android:layout_marginTop="20dp"
-                    android:gravity="center"
-                    android:text="@string/navbarSearchname"
-                    android:textAlignment="center"
-                    android:textSize="24sp"
-                    android:textStyle="bold" />
-
-                <TextView
-                    android:id="@+id/tvSwipe"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginBottom="20dp"
-                    android:layout_marginTop="20dp"
-                    android:gravity="center"
-                    android:text="@string/navbarSwipe"
-                    android:textAlignment="center"
-                    android:textSize="24sp"
-                    android:textStyle="bold" />
-
-                <TextView
-                    android:id="@+id/tvViewLiked"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginBottom="20dp"
-                    android:layout_marginTop="20dp"
-                    android:gravity="center"
-                    android:text="@string/navbarvviewliked"
-                    android:textAlignment="center"
-                    android:textSize="24sp"
-                    android:textStyle="bold" />
-
-                <TextView
-                    android:id="@+id/tvLinkPartner"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginBottom="20dp"
-                    android:layout_marginTop="20dp"
-                    android:gravity="center"
-                    android:text="@string/navbarLinkPartner"
-                    android:textAlignment="center"
-                    android:textSize="24sp"
-                    android:textStyle="bold" />
-
-                <TextView
-                    android:id="@+id/tvSettings"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginBottom="20dp"
-                    android:layout_marginTop="20dp"
-                    android:gravity="center"
-                    android:text="@string/navbarSettings"
-                    android:textAlignment="center"
-                    android:textSize="24sp"
-                    android:textStyle="bold" />
-
-                <TextView
-                    android:id="@+id/tvLogOut"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginBottom="20dp"
-                    android:layout_marginTop="20dp"
-                    android:gravity="center"
-                    android:text="@string/navLogout"
-                    android:textAlignment="center"
-                    android:textSize="24sp"
-                    android:textStyle="bold" />
-            </LinearLayout>
-        </com.google.android.material.navigation.NavigationView>
+            app:layout_constraintTop_toBottomOf="@+id/navViewTop"
+            app:menu="@menu/side_menu" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 </layout>

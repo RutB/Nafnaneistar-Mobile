@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <item
+        android:id="@+id/navSwipe"
+        android:icon="@drawable/ic_swipe"
+        android:title="@string/navbarvviewliked" />
+
+    <item
+        android:id="@+id/navViewLiked"
+        android:icon="@drawable/ic_star"
+        android:title="@string/navbarSwipe" />
+
+    <item
+        android:id="@+id/navMenu"
+        android:icon="@drawable/ic_menu"
+        android:title="@string/navMenu" />
+
+</menu>
