@@ -98,38 +98,6 @@ public class NavbarFragment extends Fragment {
         return false;
     }
 
-   /* public void createIcons() {
-        String searchName = getString(R.string.navbarSearchname);
-        SpannableStringBuilder searchNamessb = new SpannableStringBuilder(searchName + "  ");
-        searchNamessb.setSpan(new ImageSpan(getContext(), R.drawable.ic_search, DynamicDrawableSpan.ALIGN_CENTER), searchName.length() + 1, searchName.length() + 2, Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
-        binding.tvSearchName.setText(searchNamessb, TextView.BufferType.SPANNABLE);
-
-        String selectNames = getString(R.string.navbarSwipe);
-        SpannableStringBuilder selectNamesssb = new SpannableStringBuilder(selectNames + "  ");
-        selectNamesssb.setSpan(new ImageSpan(getContext(), R.drawable.ic_swipe, DynamicDrawableSpan.ALIGN_CENTER), selectNames.length() + 1, selectNames.length() + 2, Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
-        binding.tvSwipe.setText(selectNamesssb, TextView.BufferType.SPANNABLE);
-
-        String viewLiked = getString(R.string.navbarvviewliked);
-        SpannableStringBuilder viewLikedssb = new SpannableStringBuilder(viewLiked + "  ");
-        viewLikedssb.setSpan(new ImageSpan(getContext(), R.drawable.ic_star, DynamicDrawableSpan.ALIGN_CENTER), viewLiked.length() + 1, viewLiked.length() + 2, Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
-        binding.tvViewLiked.setText(viewLikedssb, TextView.BufferType.SPANNABLE);
-
-        String linkPartner = getString(R.string.navbarLinkPartner);
-        SpannableStringBuilder linkPartnerssb = new SpannableStringBuilder(linkPartner + "  ");
-        linkPartnerssb.setSpan(new ImageSpan(getContext(), R.drawable.ic_partner, DynamicDrawableSpan.ALIGN_CENTER), linkPartner.length() + 1, linkPartner.length() + 2, Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
-        binding.tvLinkPartner.setText(linkPartnerssb, TextView.BufferType.SPANNABLE);
-
-        String settings = getString(R.string.navbarSettings);
-        SpannableStringBuilder settingsssb = new SpannableStringBuilder(settings + "  ");
-        settingsssb.setSpan(new ImageSpan(getContext(), R.drawable.ic_settings, DynamicDrawableSpan.ALIGN_CENTER), settings.length() + 1, settings.length() + 2, Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
-        binding.tvSettings.setText(settingsssb, TextView.BufferType.SPANNABLE);
-
-        String logout = getString(R.string.navLogout);
-        SpannableStringBuilder logoutssb = new SpannableStringBuilder(logout + "  ");
-        logoutssb.setSpan(new ImageSpan(getContext(), R.drawable.ic_logout, DynamicDrawableSpan.ALIGN_CENTER), logout.length() + 1, logout.length() + 2, Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
-        binding.tvLogOut.setText(logoutssb, TextView.BufferType.SPANNABLE);
-    }
-*/
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {

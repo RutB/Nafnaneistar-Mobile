@@ -1,0 +1,32 @@
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
+
+    <data>
+
+    </data>
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_marginTop="56sp"
+        android:background="@color/background"
+        tools:context="xyz.nafnaneistar.activities.ViewLikedFragments.ComboListManagerFragment">
+
+        <!-- TODO: Update blank fragment layout -->
+
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/rvComboList"
+            android:layout_width="338dp"
+            android:layout_height="479dp"
+            android:background="@color/btn_color_lg"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.493"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintVertical_bias="0.29"
+            tools:listitem="@layout/combolist" />
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+</layout>

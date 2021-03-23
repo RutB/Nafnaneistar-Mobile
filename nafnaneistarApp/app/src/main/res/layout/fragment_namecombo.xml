@@ -12,7 +12,7 @@
         android:layout_height="match_parent">
 
         <androidx.constraintlayout.widget.ConstraintLayout
-            android:id="@+id/clNameCombo"
+            android:id="@+id/clComboList"
             android:layout_width="364dp"
             android:layout_height="353dp"
             android:background="@color/btn_color_lg"

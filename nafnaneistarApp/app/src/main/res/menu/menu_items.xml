@@ -4,12 +4,12 @@
     <item
         android:id="@+id/navSwipe"
         android:icon="@drawable/ic_swipe"
-        android:title="@string/navbarvviewliked" />
+        android:title="@string/navbarSwipe" />
 
     <item
         android:id="@+id/navViewLiked"
         android:icon="@drawable/ic_star"
-        android:title="@string/navbarSwipe" />
+        android:title="@string/navbarvviewliked" />
 
     <item
         android:id="@+id/navMenu"

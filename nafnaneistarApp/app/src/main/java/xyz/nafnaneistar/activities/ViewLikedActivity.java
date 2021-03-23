@@ -4,6 +4,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.databinding.DataBindingUtil;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
+import xyz.nafnaneistar.activities.ViewLikedFragments.ComboListFragment;
 import xyz.nafnaneistar.activities.ViewLikedFragments.NameComboFragment;
 import xyz.nafnaneistar.controller.ApiController;
 import xyz.nafnaneistar.helpers.Prefs;
@@ -37,6 +38,7 @@ public class ViewLikedActivity extends AppCompatActivity {
     private Prefs prefs;
     private User currentUser;
     FragmentManager fragmentManager;
+    private String[] FragmentTags = new String[]{"nameCombo","comboList"};
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -61,6 +63,7 @@ public class ViewLikedActivity extends AppCompatActivity {
         fixStatsTitle();
         binding.tvViewLikedMenuYfirlit.setOnClickListener(view -> loadStatMenu());
         binding.tvViewLikedMenuNameCombo.setOnClickListener(view -> loadComboNameMenu());
+        binding.tvViewLikedMenuCombinedList.setOnClickListener(view -> loadComboListMenu());
 
 
 
@@ -73,14 +76,23 @@ public class ViewLikedActivity extends AppCompatActivity {
         binding.clNameStats.setVisibility(View.VISIBLE);
     }
 
+    private void loadComboListMenu(){
+        changedSelectedMenu(binding.tvViewLikedMenuCombinedList);
+        hideAllMenuPages();
+        Fragment f = fragmentManager.findFragmentById(R.layout.fragment_combo_list);
 
+        if (f == null) {
+            f = new ComboListFragment();
+            fragmentManager.beginTransaction()
+                    .add(R.id.clFragmentContainer, f, "comboList")
+                    .commit();
+        }
+    }
 
     private void loadComboNameMenu(){
         changedSelectedMenu(binding.tvViewLikedMenuNameCombo);
         hideAllMenuPages();
-
         addFragment(R.layout.fragment_namecombo,"nameCombo");
-
     }
 
     private void addFragment(int id,String tag){
@@ -106,7 +118,9 @@ public class ViewLikedActivity extends AppCompatActivity {
     private void hideAllMenuPages(){
 
         binding.clNameStats.setVisibility(View.INVISIBLE);
-        removeFragment("nameCombo");
+        for (String tag: FragmentTags) {
+            removeFragment(tag);
+        }
 
     }
 

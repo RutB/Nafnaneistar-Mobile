@@ -74,4 +74,7 @@
     <string name="systemError">Kerfisvilla...</string>
     <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name="viewlikedComboList">Skoða Sameiginlegan lista</string>
+    <string name="errorGettingPartners">Villa við að ná í gögn</string>
+    <string name="delete">Eyða</string>
 </resources>

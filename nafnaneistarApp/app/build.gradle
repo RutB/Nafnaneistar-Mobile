@@ -44,6 +44,7 @@ dependencies {
     implementation 'org.jetbrains:annotations:15.0'
     implementation 'org.apache.httpcomponents:com.springsource.org.apache.httpcomponents.httpclient:4.2.1'
     implementation 'com.fasterxml.jackson.core:com.springsource.com.fasterxml.jackson.core.jackson-annotations:2.0.2'
+    implementation 'androidx.recyclerview:recyclerview:1.1.0'
 
     testImplementation 'junit:junit:4.+'
     androidTestImplementation 'androidx.test.ext:junit:1.1.2'

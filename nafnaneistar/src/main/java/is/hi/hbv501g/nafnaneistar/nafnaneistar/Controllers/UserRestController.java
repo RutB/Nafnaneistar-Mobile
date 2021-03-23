@@ -202,6 +202,7 @@ public class UserRestController {
             User partner = userService.findById(id).get();
             p.addProperty("name", partner.getName());
             p.addProperty("email", partner.getEmail());
+            p.addProperty("id", partner.getId());
             partners.add(p);
         }
 
