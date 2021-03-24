@@ -1,10 +1,11 @@
 package xyz.nafnaneistar.activities;
 
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.appcompat.widget.AppCompatRadioButton;
 import androidx.databinding.DataBindingUtil;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
+import xyz.nafnaneistar.activities.ViewLikedFragments.ComboListFragment;
+import xyz.nafnaneistar.activities.ViewLikedFragments.NameComboFragment;
 import xyz.nafnaneistar.controller.ApiController;
 import xyz.nafnaneistar.helpers.Prefs;
 import xyz.nafnaneistar.loginactivity.R;
@@ -19,14 +20,12 @@ import android.text.style.DynamicDrawableSpan;
 import android.text.style.ImageSpan;
 import android.util.Log;
 import android.view.View;
-import android.widget.RadioButton;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import com.android.volley.Request;
 import com.android.volley.toolbox.JsonObjectRequest;
 import com.google.gson.Gson;
-import com.google.gson.JsonObject;
 
 import org.apache.http.client.utils.URIBuilder;
 import org.json.JSONArray;
@@ -38,13 +37,15 @@ public class ViewLikedActivity extends AppCompatActivity {
     private ActivityViewLikedBinding binding;
     private Prefs prefs;
     private User currentUser;
+    FragmentManager fragmentManager;
+    private String[] FragmentTags = new String[]{"nameCombo","comboList"};
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         binding =  DataBindingUtil.setContentView(this, R.layout.activity_view_liked);
         prefs = new Prefs(ViewLikedActivity.this);
+        fragmentManager = getSupportFragmentManager();
         //Initialize the navbar fragment
-        FragmentManager fragmentManager = getSupportFragmentManager();
         Fragment navbar = fragmentManager.findFragmentById(R.id.navbar);
 
         if (navbar == null) {
@@ -62,10 +63,9 @@ public class ViewLikedActivity extends AppCompatActivity {
         fixStatsTitle();
         binding.tvViewLikedMenuYfirlit.setOnClickListener(view -> loadStatMenu());
         binding.tvViewLikedMenuNameCombo.setOnClickListener(view -> loadComboNameMenu());
-        binding.rbNameComboFemale.setOnClickListener(this::radioCheck);
-        binding.rbNameComboMale.setOnClickListener(this::radioCheck);
-        binding.btComboNameMiddle.setOnClickListener(this::generateComboName);
-        binding.btComboName.setOnClickListener(this::generateComboName);
+        binding.tvViewLikedMenuCombinedList.setOnClickListener(view -> loadComboListMenu());
+
+
 
     }
 
@@ -76,28 +76,52 @@ public class ViewLikedActivity extends AppCompatActivity {
         binding.clNameStats.setVisibility(View.VISIBLE);
     }
 
-    private void radioCheck(View view){
-        if(view == binding.rbNameComboFemale){
-            binding.rbNameComboMale.setChecked(false);
-            binding.rbNameComboFemale.setChecked(true);
-        }
-        else {
-            binding.rbNameComboMale.setChecked(true);
-            binding.rbNameComboFemale.setChecked(false);
-        }
+    private void loadComboListMenu(){
+        changedSelectedMenu(binding.tvViewLikedMenuCombinedList);
+        hideAllMenuPages();
+        Fragment f = fragmentManager.findFragmentById(R.layout.fragment_combo_list);
 
+        if (f == null) {
+            f = new ComboListFragment();
+            fragmentManager.beginTransaction()
+                    .add(R.id.clFragmentContainer, f, "comboList")
+                    .commit();
+        }
     }
 
     private void loadComboNameMenu(){
         changedSelectedMenu(binding.tvViewLikedMenuNameCombo);
         hideAllMenuPages();
-        binding.clNameCombo.setVisibility(View.VISIBLE);
-        binding.tvComboNameTitle.setText(R.string.viewlikednamecombo);
+        addFragment(R.layout.fragment_namecombo,"nameCombo");
+    }
 
+    private void addFragment(int id,String tag){
+        Fragment f = fragmentManager.findFragmentById(id);
+
+        if (f == null) {
+            f = new NameComboFragment();
+            fragmentManager.beginTransaction()
+                    .add(R.id.clFragmentContainer, f, tag)
+                    .commit();
+        }
+    }
+
+    private void removeFragment(String tag) {
+
+        Fragment f = fragmentManager.findFragmentByTag(tag);
+        if (f != null) {
+            fragmentManager.beginTransaction()
+                    .remove(f)
+                    .commit();
+        }
     }
     private void hideAllMenuPages(){
-        binding.clNameCombo.setVisibility(View.INVISIBLE);
+
         binding.clNameStats.setVisibility(View.INVISIBLE);
+        for (String tag: FragmentTags) {
+            removeFragment(tag);
+        }
+
     }
 
     private void fixStatsTitle(){
@@ -173,55 +197,7 @@ public class ViewLikedActivity extends AppCompatActivity {
         ApiController.getInstance().addToRequestQueue(jsonObjReq);
     }
 
-    private void generateComboName(View view){
-        String [] user = prefs.getUser();
-        String email = user[0];
-        String pass = user[1];
-        boolean middle = view == binding.btComboNameMiddle;
-        Log.d("viewliked", "generateComboName: " + String.valueOf(middle));
-        int gender = (binding.rbNameComboFemale.isChecked()) ? 1 : 0;
-        String listeningPath = "viewliked/namemaker";
-        URIBuilder b = null;
-        String url = "";
-        try {
-            b = new URIBuilder(ApiController.getDomainURL()+listeningPath);
-            b.addParameter("email",email);
-            b.addParameter("pass",pass);
-            b.addParameter("middle", String.valueOf(middle));
-            b.addParameter("gender", String.valueOf(gender));
-            url = b.build().toString();
-        } catch (URISyntaxException e) {
-            e.printStackTrace();
-        }
 
-        JsonObjectRequest jsonObjReq = new JsonObjectRequest(Request.Method.GET,url,null,
-                response -> {
-                    try {
-
-                        if(response.has("message")){
-                            Toast.makeText(ViewLikedActivity.this, response.getString("message") ,Toast.LENGTH_SHORT)
-                                    .show();
-                            return;
-                        }
-                        String name = response.getString("name");
-                        if(middle)
-                            name = name.concat(String.format("%s", response.getString("middle")));
-                        name = name.concat(" " + binding.etComboNameLastName.getText());
-                        binding.tvCombonameReslt.setText(name);
-                    } catch (JSONException e) {
-                        e.printStackTrace();
-                    }
-                },error -> {
-            Toast.makeText(ViewLikedActivity.this, getResources().getString(R.string.errorRetrievingData) ,Toast.LENGTH_SHORT)
-                    .show();
-            Intent i = new Intent(ViewLikedActivity.this, LoginActivity.class);
-            finish();
-            prefs.Logout();
-            startActivity(i);
-            Log.d("viewliked", "getData: " + error.getMessage());
-        });
-        ApiController.getInstance().addToRequestQueue(jsonObjReq);
-    }
 
     /**
      * checks if the user is already loggedn in

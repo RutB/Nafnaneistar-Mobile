@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Optional;
 import java.util.Set;
+import org.apache.commons.lang3.StringUtils;
 
 import javax.servlet.http.HttpSession;
 
@@ -189,7 +190,7 @@ public class NameRestController {
 
             return userInfo.toString();
         }
-        return "{}";
+        return "{'message':'Villa í auðkenningu'}";
     }
 
     /**
@@ -338,8 +339,8 @@ public class NameRestController {
      * @param partnerid - the id of the linked partner
      * @return a list of information of the joint names and avarage rating
      */
-    @GetMapping(path = "/viewliked/combolist", produces = "application/json")
-    public HashMap<String, Integer> getComboList(HttpSession session, @RequestParam String partnerid) {
+    @GetMapping(path = "/viewliked/combolist__OLD", produces = "application/json")
+    public HashMap<String, Integer> getComboList__old(HttpSession session, @RequestParam String partnerid) {
         Long pID = Long.parseLong(partnerid);
         User partner = userService.findById(pID).orElse(null);
         User currentUser = (User) session.getAttribute("currentUser");
@@ -357,6 +358,54 @@ public class NameRestController {
             }
         }
         return ncs;
+    }
+        /**
+     * Gets the joint list of approved names from the current user and the selected
+     * id of the partner returns information containing the name, id and gender and
+     * the avarage grade of combined rating
+     * 
+     * @param session   - to get the current user session
+     * @param partnerid - the id of the linked partner
+     * @return a list of information of the joint names and avarage rating
+     */
+    @GetMapping(path = "/viewliked/combolist", produces = "application/json")
+    public String getComboList(@RequestParam(required = true) String email, @RequestParam(required = true) String pass,  @RequestParam(required = true) String pid) {
+        Long pID = Long.parseLong(pid);
+        System.out.println(pid);
+        User partner = userService.findById(pID).orElse(null);
+        if (partner == null )
+            return "{'message':'Notandi finnst ekki'}";
+        if (UserUtils.isAuthenticated(userService, email, pass)) {
+            User currentUser = userService.findByEmail(email);
+
+      
+            HashMap<String, Integer> ncs = new HashMap<>();
+            Set<Integer> pids = partner.getApprovedNames().keySet();
+            Set<Integer> ids = currentUser.getApprovedNames().keySet();
+            JsonArray jsonarr = new JsonArray();
+            
+            for (Integer id : ids) {
+                if (pids.contains(id)) {
+                    NameCard nc = nameService.findById(id).orElse(null);
+                    JsonObject namecard = new JsonObject();
+                    int avg = (currentUser.getApprovedNames().get(id) + partner.getApprovedNames().get(id));
+                    avg = (avg == 0) ? avg : avg / 2;
+                    ncs.put(nc.getName() + "-" + nc.getId() + "-" + nc.getGender(), avg);
+                    namecard.addProperty("name", nc.getName());
+                    namecard.addProperty("id", nc.getId());
+                    namecard.addProperty("rating", avg);
+                    namecard.addProperty("gender", nc.getGender());
+                    jsonarr.add(namecard);
+                }
+            }
+            
+            JsonObject userInfo = new JsonObject();
+            
+            //System.out.println(ncsAndrating);
+            userInfo.add("namecards",jsonarr);
+            return userInfo.toString();
+        }
+        return "{'message':'Villa í auðkenningu'}";
     }
 
     /**
@@ -423,4 +472,38 @@ public class NameRestController {
             return false;
         }
     }
+
+    /**
+     * 
+     * 
+     * 
+     *  //@RequestParam String email,
+     *  //@RequestParam String pass,
+     */
+    @GetMapping(path="/searchname", produces = "application/json")
+    public String searchName(
+        @RequestParam String query) {
+        //Checkum hvort user sé logged in. 
+        //if (!UserUtils.isAuthenticated(userService, email, pass)) return "{}";
+        String searchedName = query.toLowerCase();
+        ArrayList<JsonObject> searchResultJson = new ArrayList<JsonObject>();
+        ArrayList<NameCard> searchResultNamecard = new ArrayList<NameCard>();
+        searchResultNamecard = (ArrayList<NameCard>) nameService.findAllByNameLike(StringUtils.capitalize(searchedName.concat("%")));
+        for (int i = 0; i < searchResultNamecard.size(); i++) {
+            JsonObject nameData = new JsonObject();
+            nameData.addProperty("id", searchResultNamecard.get(i).getId());
+            nameData.addProperty("name", searchResultNamecard.get(i).getName());
+            searchResultJson.add(nameData);
+        }
+
+        Gson gson = new Gson();
+        JsonArray nameCardJson = gson.toJsonTree(searchResultJson).getAsJsonArray();
+        JsonObject nameCardObj = new JsonObject();
+        nameCardObj.add("results", nameCardJson);
+        System.out.println("Searchname query results: ");
+        System.out.println(nameCardObj.toString());
+        return nameCardObj.toString();
+        }
+
+
 }

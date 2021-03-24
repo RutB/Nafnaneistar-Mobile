@@ -61,8 +61,6 @@ public class LoginActivity extends AppCompatActivity {
         });
         binding.btnSignup.setOnClickListener(this::Signup);
 
-
-
     }
 
     /**
@@ -135,7 +133,6 @@ public class LoginActivity extends AppCompatActivity {
                                     Log.d("Snack", "showInfo: SnackBarMore");
                                     Intent i = new Intent(LoginActivity.this, SignupActivity.class);
                                     startActivity(i);
-
                                 })
                                 .show();
                     }

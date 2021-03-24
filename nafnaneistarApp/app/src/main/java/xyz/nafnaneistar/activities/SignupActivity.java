@@ -129,7 +129,7 @@ public class SignupActivity extends AppCompatActivity {
                     }
 
                 },error -> {
-            Toast.makeText(SignupActivity.this, R.string.errorEmptyStrings ,Toast.LENGTH_SHORT)
+            Toast.makeText(SignupActivity.this, getResources().getString(R.string.systemError) ,Toast.LENGTH_SHORT)
                     .show();
             Log.d("Test", "CheckLogin: " + error.toString());
         });

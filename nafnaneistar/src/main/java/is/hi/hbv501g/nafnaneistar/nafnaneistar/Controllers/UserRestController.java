@@ -64,7 +64,7 @@ public class UserRestController {
         if(user != null)
             return "{'message':'Netfang núþegar skráð'}";
         String generatedPass = BCrypt.hashpw(password, BCrypt.gensalt(12));
-        User newUser = new User(name,email,generatedPass,UserUtils.getAvailableNames(nameService));
+        User newUser = new User(name,email.toLowerCase(),generatedPass,UserUtils.getAvailableNames(nameService));
         userService.save(newUser);
         return newUser.toJsonString();
     }
@@ -202,6 +202,7 @@ public class UserRestController {
             User partner = userService.findById(id).get();
             p.addProperty("name", partner.getName());
             p.addProperty("email", partner.getEmail());
+            p.addProperty("id", partner.getId());
             partners.add(p);
         }
 

@@ -10,6 +10,7 @@ import android.text.style.DynamicDrawableSpan;
 import android.text.style.ImageSpan;
 import android.util.Log;
 import android.view.LayoutInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.animation.Animation;
@@ -17,6 +18,9 @@ import android.view.animation.AnimationUtils;
 import android.widget.Switch;
 import android.widget.TextView;
 
+import com.google.android.material.navigation.NavigationView;
+
+import androidx.annotation.NonNull;
 import androidx.databinding.DataBindingUtil;
 import androidx.fragment.app.Fragment;
 import xyz.nafnaneistar.helpers.Prefs;
@@ -53,62 +57,45 @@ public class NavbarFragment extends Fragment {
 
     }
 
-    public void SwitchIntent(View view){
+    public Boolean onNavigationItemSelected(MenuItem view){
         Log.d("partners", "SwitchIntent: " + "click?");
-        switch (view.getId()){
-            case R.id.tvSwipe:
+        switch (view.getItemId()){
+            case R.id.navSwipe:
                 if(!getActivity().getLocalClassName().toString().contains("SwipeActivity")){
                     getActivity().finish();
                     startActivity(new Intent(getContext(),SwipeActivity.class));
+                    return true;
                 }
-                break;
-            case R.id.tvViewLiked:
+            break;
+            case R.id.navViewLiked:
                 if(!getActivity().getLocalClassName().contains("ViewLikedActivity")){
                     getActivity().finish();
                     startActivity(new Intent(getContext(),ViewLikedActivity.class));
+                    return true;
                 }
-                break;
-            case R.id.tvLinkPartner:
+            break;
+            case R.id.navLinkPartner:
                 if(!getActivity().getLocalClassName().contains("LinkPartnerActivity")){
                     getActivity().finish();
                     startActivity(new Intent(getContext(),LinkPartnerActivity.class));
+                    return true;
+                }
+                break;
+            case R.id.navMenu:
+                ToggleNavDrawer();
+                return true;
+            case R.id.navSearch:
+                if (!getActivity().getLocalClassName().contains("SearchActivity")){
+                    getActivity().finish();
+                    startActivity(new Intent(getContext(),SearchActivity.class));
+                    return true;
                 }
             break;
+            case R.id.navLogout:
+                logout();
+                return true;
         }
-
-
-    }
-
-    public void createIcons() {
-        String searchName = getString(R.string.navbarSearchname);
-        SpannableStringBuilder searchNamessb = new SpannableStringBuilder(searchName + "  ");
-        searchNamessb.setSpan(new ImageSpan(getContext(), R.drawable.ic_search, DynamicDrawableSpan.ALIGN_CENTER), searchName.length() + 1, searchName.length() + 2, Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
-        binding.tvSearchName.setText(searchNamessb, TextView.BufferType.SPANNABLE);
-
-        String selectNames = getString(R.string.navbarSwipe);
-        SpannableStringBuilder selectNamesssb = new SpannableStringBuilder(selectNames + "  ");
-        selectNamesssb.setSpan(new ImageSpan(getContext(), R.drawable.ic_swipe, DynamicDrawableSpan.ALIGN_CENTER), selectNames.length() + 1, selectNames.length() + 2, Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
-        binding.tvSwipe.setText(selectNamesssb, TextView.BufferType.SPANNABLE);
-
-        String viewLiked = getString(R.string.navbarvviewliked);
-        SpannableStringBuilder viewLikedssb = new SpannableStringBuilder(viewLiked + "  ");
-        viewLikedssb.setSpan(new ImageSpan(getContext(), R.drawable.ic_star, DynamicDrawableSpan.ALIGN_CENTER), viewLiked.length() + 1, viewLiked.length() + 2, Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
-        binding.tvViewLiked.setText(viewLikedssb, TextView.BufferType.SPANNABLE);
-
-        String linkPartner = getString(R.string.navbarLinkPartner);
-        SpannableStringBuilder linkPartnerssb = new SpannableStringBuilder(linkPartner + "  ");
-        linkPartnerssb.setSpan(new ImageSpan(getContext(), R.drawable.ic_partner, DynamicDrawableSpan.ALIGN_CENTER), linkPartner.length() + 1, linkPartner.length() + 2, Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
-        binding.tvLinkPartner.setText(linkPartnerssb, TextView.BufferType.SPANNABLE);
-
-        String settings = getString(R.string.navbarSettings);
-        SpannableStringBuilder settingsssb = new SpannableStringBuilder(settings + "  ");
-        settingsssb.setSpan(new ImageSpan(getContext(), R.drawable.ic_settings, DynamicDrawableSpan.ALIGN_CENTER), settings.length() + 1, settings.length() + 2, Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
-        binding.tvSettings.setText(settingsssb, TextView.BufferType.SPANNABLE);
-
-        String logout = getString(R.string.navLogout);
-        SpannableStringBuilder logoutssb = new SpannableStringBuilder(logout + "  ");
-        logoutssb.setSpan(new ImageSpan(getContext(), R.drawable.ic_logout, DynamicDrawableSpan.ALIGN_CENTER), logout.length() + 1, logout.length() + 2, Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
-        binding.tvLogOut.setText(logoutssb, TextView.BufferType.SPANNABLE);
+        return false;
     }
 
     @Override
@@ -118,18 +105,17 @@ public class NavbarFragment extends Fragment {
         binding = DataBindingUtil.inflate(inflater, R.layout.fragment_navbar, container, false);
         binding.navViewDrawer.setVisibility(View.INVISIBLE);
         binding.navViewDrawer.bringToFront();
-        binding.btnNavToggle.bringToFront();
-        createIcons();
-        binding.btnNavToggle.setOnClickListener(this::ToggleNavDrawer);
-        binding.tvLogOut.setOnClickListener(this::logout);
-        binding.tvSwipe.setOnClickListener(this::SwitchIntent);
-        binding.tvLinkPartner.setOnClickListener(this::SwitchIntent);
-        binding.tvViewLiked.setOnClickListener(this::SwitchIntent);
+        //createIcons();
+        binding.navViewTop.setOnNavigationItemSelectedListener(this::onNavigationItemSelected);
+        binding.navViewDrawer.setNavigationItemSelectedListener(this::onNavigationItemSelected);
+
         View view = binding.getRoot();
         return view;
     }
 
-    public void logout(View view) {
+
+
+    public void logout() {
         prefs.Logout();
         context.finish();
         Intent i = new Intent(context, LoginActivity.class);
@@ -142,7 +128,7 @@ public class NavbarFragment extends Fragment {
      *
      * @param view
      */
-    public void ToggleNavDrawer(View view) {
+    public void ToggleNavDrawer() {
 
         if (binding.navViewDrawer.getVisibility() == View.VISIBLE) {
             Animation slideOut = AnimationUtils.loadAnimation(getContext(), R.anim.slide_out);

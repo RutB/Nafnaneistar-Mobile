@@ -43,12 +43,12 @@ public class UserServiceImplementation implements UserService {
 
     @Override
     public User findByEmailAndPassword(String email, String password) {
-        return repository.findByEmailAndPassword(email, password);
+        return repository.findByEmailAndPassword(email.toLowerCase(), password);
     }
 
     @Override
     public User findByEmail(String email) {
-        return repository.findByEmail(email);
+        return repository.findByEmail(email.toLowerCase());
     }
 
     @Override
