@@ -89,7 +89,7 @@ public class UserRestController {
      * @param email - the desired email to signup with
      * @return true or false depending on if the email is valid or not
      */
-    @GetMapping(path="/linkpartner/checkemail", produces = "application/json")
+   @GetMapping(path="/linkpartner/checkemail", produces = "application/json")
     public boolean validateEmailPartner(@RequestParam String email, HttpSession session)
     {   User user = userService.findByEmail(email);
         User curr = (User) session.getAttribute("currentUser");
@@ -250,14 +250,15 @@ public class UserRestController {
         if (!UserUtils.isAuthenticated(userService, email, pass)) return "{}";
         User currentUser = userService.findByEmail(email);
         User linkPartner = userService.findByEmail(partner);
-        if(partner == null) return "'messge':'Notandi ekki til'";
+        if(linkPartner == null) return "'message':'Notandi ekki til'";
         System.out.print(currentUser.getLinkedPartners());
+        ArrayList<JsonObject> partners = new ArrayList<JsonObject>();
+
         if(helperValidatingPartner(currentUser, linkPartner)){
             currentUser.addLinkedPartner(linkPartner.getId());
             linkPartner.addLinkedPartner(currentUser.getId());
             userService.save(currentUser);
-        }
-        ArrayList<JsonObject> partners = new ArrayList<JsonObject>();
+
         for(Long id : currentUser.getLinkedPartners()){
             JsonObject p = new JsonObject();
             User mapartner = userService.findById(id).get();
@@ -265,12 +266,15 @@ public class UserRestController {
             p.addProperty("email", mapartner.getEmail());
             partners.add(p);
         }
+
         Gson gson = new Gson();
         JsonArray partnerJSON = gson.toJsonTree(partners).getAsJsonArray();
         JsonObject partnersObj = new JsonObject();
         partnersObj.add("partners", partnerJSON);
 
         return partnersObj.toString();
+        }
+        return "'message': Þú ert nú þegar tengdur";
 
     }
 
