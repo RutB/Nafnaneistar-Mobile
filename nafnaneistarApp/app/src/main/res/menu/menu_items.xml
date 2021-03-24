@@ -8,7 +8,7 @@
 
     <item
         android:id="@+id/navViewLiked"
-        android:icon="@drawable/ic_star"
+        android:icon="@drawable/ic_heart"
         android:title="@string/navbarvviewliked" />
 
     <item

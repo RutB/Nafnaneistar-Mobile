@@ -131,7 +131,7 @@ public class ComboListFragment extends Fragment implements  AdapterView.OnItemSe
             bundle.putLong("partnerId",currentSelectedPartnerId);
             f.setArguments(bundle);
             fragmentManager.beginTransaction()
-                    .add(R.id.viewLikedContainer, f)
+                    .add(R.id.viewLikedContainer, f, "listViewCombo")
                     .commit();
         }
     }

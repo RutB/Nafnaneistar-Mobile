@@ -10,12 +10,15 @@
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
+        android:background="@color/black"
         tools:context="xyz.nafnaneistar.activities.SplashActivity">
 
         <VideoView
             android:id="@+id/videoView"
             android:layout_width="0dp"
             android:layout_height="0dp"
+            android:layout_marginLeft="32sp"
+            android:layout_marginRight="32sp"
             android:clickable="false"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
@@ -24,8 +27,8 @@
 
         <ImageView
             android:id="@+id/imageView3"
-            android:layout_width="121dp"
-            android:layout_height="139dp"
+            android:layout_width="116dp"
+            android:layout_height="115dp"
             android:rotationY="180"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
