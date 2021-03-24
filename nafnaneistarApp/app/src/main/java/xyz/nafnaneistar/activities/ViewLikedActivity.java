@@ -5,6 +5,7 @@ import androidx.databinding.DataBindingUtil;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 import xyz.nafnaneistar.activities.ViewLikedFragments.ComboListFragment;
+import xyz.nafnaneistar.activities.ViewLikedFragments.ComboListManagerFragment;
 import xyz.nafnaneistar.activities.ViewLikedFragments.NameComboFragment;
 import xyz.nafnaneistar.controller.ApiController;
 import xyz.nafnaneistar.helpers.Prefs;
@@ -88,6 +89,19 @@ public class ViewLikedActivity extends AppCompatActivity {
                     .commit();
         }
     }
+    @Override
+    public void onBackPressed() {
+
+        Fragment f = fragmentManager.findFragmentByTag("listViewCombo");
+
+        if (f.isVisible()) {
+            Log.d("count", "onBackPressed: " + "deleteit");
+            removeFragment("listViewCombo");
+        } else {
+            super.onBackPressed();
+        }
+
+    }
 
     private void loadComboNameMenu(){
         changedSelectedMenu(binding.tvViewLikedMenuNameCombo);
@@ -98,7 +112,7 @@ public class ViewLikedActivity extends AppCompatActivity {
     private void addFragment(int id,String tag){
         Fragment f = fragmentManager.findFragmentById(id);
 
-        if (f == null) {
+        if (f != null) {
             f = new NameComboFragment();
             fragmentManager.beginTransaction()
                     .add(R.id.clFragmentContainer, f, tag)

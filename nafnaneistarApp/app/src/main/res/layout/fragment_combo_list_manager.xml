@@ -74,5 +74,18 @@
             app:layout_constraintVertical_bias="0.406"
             tools:listitem="@layout/combolist" />
 
+        <Button
+            android:id="@+id/btnViewLikedGoBack"
+            style="@style/buttonStyle"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/goBack"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.118"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/rvComboList"
+            app:layout_constraintVertical_bias="0.36" />
+
     </androidx.constraintlayout.widget.ConstraintLayout>
 </layout>

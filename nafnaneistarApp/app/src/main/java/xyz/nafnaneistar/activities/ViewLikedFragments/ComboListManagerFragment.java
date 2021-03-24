@@ -1,5 +1,6 @@
 package xyz.nafnaneistar.activities.ViewLikedFragments;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -17,12 +18,16 @@ import org.json.JSONObject;
 
 import java.net.URISyntaxException;
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
 
 import androidx.databinding.DataBindingUtil;
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.DefaultItemAnimator;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
+import xyz.nafnaneistar.activities.LoginActivity;
+import xyz.nafnaneistar.activities.SignupActivity;
 import xyz.nafnaneistar.activities.items.ComboListItem;
 import xyz.nafnaneistar.controller.ApiController;
 import xyz.nafnaneistar.controller.VolleyCallBack;
@@ -38,6 +43,7 @@ import xyz.nafnaneistar.loginactivity.databinding.FragmentComboListManagerBindin
 public class ComboListManagerFragment extends Fragment {
     private FragmentComboListManagerBinding binding;
     private Prefs prefs;
+    ComboListNameCardRecyclerViewAdapter adapter;
     private Long partnerId;
     private ArrayList<ComboListItem> comboList;
     private RecyclerView recyclerView;
@@ -63,7 +69,7 @@ public class ComboListManagerFragment extends Fragment {
     }
 
     private void setAdapater() {
-        ComboListNameCardRecyclerViewAdapter adapter = new ComboListNameCardRecyclerViewAdapter(comboList);
+        adapter = new ComboListNameCardRecyclerViewAdapter(comboList);
         RecyclerView.LayoutManager layoutManager = new LinearLayoutManager(getActivity().getApplicationContext());
         binding.rvComboList.setItemAnimator(new DefaultItemAnimator());
         binding.rvComboList.setLayoutManager(layoutManager);
@@ -76,12 +82,34 @@ public class ComboListManagerFragment extends Fragment {
         // Inflate the layout for this fragment
         binding = DataBindingUtil.inflate(inflater, R.layout.fragment_combo_list_manager, container, false);
         View view = binding.getRoot();
+
+
+
         getNameCardsAndRating(partnerId, (VolleyCallBack) () -> {
             setAdapater();
+            Collections.sort(comboList, (item1, item2) -> item1.getName().compareToIgnoreCase(item2.getName()));
+            adapter.notifyDataSetChanged();
         });
 
+        binding.btnViewLikedGoBack.setOnClickListener(this::removeListView);
         return view;
     }
+
+    public void onBackPressed() {
+        removeListView(binding.btnViewLikedGoBack);
+    }
+
+    public void removeListView(View view){
+        Fragment f = getParentFragmentManager().findFragmentByTag("listViewCombo");
+        if (f != null) {
+            getParentFragmentManager().beginTransaction()
+                    .remove(f)
+                    .commit();
+        }
+    }
+
+
+
 
     public void getNameCardsAndRating(Long partnerId, final VolleyCallBack cb) {
         String[] user = prefs.getUser();
