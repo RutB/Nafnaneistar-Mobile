@@ -180,9 +180,9 @@ public class UserRestController {
     @GetMapping(path="/viewliked/remove", produces = "application/json")
     public String removeFromApproved(
         @RequestParam(required=true) String email,
-        @RequestParam(required=true)  String pass, @RequestParam(required=true)  String id){  
+        @RequestParam(required=true)  String password, @RequestParam(required=true)  String id){  
         
-            if (UserUtils.isAuthenticated(userService, email, pass)) {
+            if (UserUtils.isAuthenticated(userService, email, password)) {
                 User user = userService.findByEmail(email);
             try {
                 user.removeApprovedName(Integer.parseInt(id));

@@ -63,15 +63,15 @@
 
         <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/rvComboList"
-            android:layout_width="343dp"
-            android:layout_height="480dp"
+            android:layout_width="344dp"
+            android:layout_height="447dp"
             android:background="@color/btn_color_lg"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHorizontal_bias="0.558"
+            app:layout_constraintHorizontal_bias="0.567"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
-            app:layout_constraintVertical_bias="0.406"
+            app:layout_constraintVertical_bias="0.326"
             tools:listitem="@layout/combolist" />
 
         <Button
@@ -91,14 +91,26 @@
             android:id="@+id/swOrderBy"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginTop="19dp"
+            android:layout_marginTop="8dp"
             android:text="@string/GroupByNameOrRating"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHorizontal_bias="0.571"
+            app:layout_constraintHorizontal_bias="0.314"
             app:layout_constraintStart_toEndOf="@+id/btnViewLikedGoBack"
             app:layout_constraintTop_toBottomOf="@+id/rvComboList"
-            app:layout_constraintVertical_bias="0.407" />
+            app:layout_constraintVertical_bias="0.0" />
+
+        <Switch
+            android:id="@+id/swToggleGender"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/ShowGenderNames"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.183"
+            app:layout_constraintStart_toEndOf="@+id/btnViewLikedGoBack"
+            app:layout_constraintTop_toBottomOf="@+id/swOrderBy"
+            app:layout_constraintVertical_bias="0.387" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 </layout>

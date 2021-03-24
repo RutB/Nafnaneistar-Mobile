@@ -82,4 +82,6 @@
     <string name="GroupByNameOrRating">Flokka eftir: Nafni/Einkunn</string>
     <string name="NoComboNames">Engin Sameiginleg Nöfn</string>
     <string name="SwipeMoreNames">Skoða fleiri nöfn?</string>
+    <string name="operationSuccess">Aðgerð Tókst</string>
+    <string name="ShowGenderNames">Sýna KVK/KK Nöfn</string>
 </resources>

@@ -7,7 +7,6 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.CompoundButton;
-import android.widget.Switch;
 import android.widget.Toast;
 
 import com.android.volley.Request;
@@ -29,8 +28,6 @@ import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.DefaultItemAnimator;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
-import xyz.nafnaneistar.activities.LoginActivity;
-import xyz.nafnaneistar.activities.SignupActivity;
 import xyz.nafnaneistar.activities.SwipeActivity;
 import xyz.nafnaneistar.activities.items.ComboListItem;
 import xyz.nafnaneistar.controller.ApiController;
@@ -44,14 +41,18 @@ import xyz.nafnaneistar.loginactivity.databinding.FragmentComboListManagerBindin
  * Use the {@link ComboListManagerFragment#newInstance} factory method to
  * create an instance of this fragment.
  */
-public class ComboListManagerFragment extends Fragment {
+public class ComboListManagerFragment extends Fragment implements  ComboListNameCardRecyclerViewAdapter.OnItemListener {
     private FragmentComboListManagerBinding binding;
     private Prefs prefs;
     ComboListNameCardRecyclerViewAdapter adapter;
     private Long partnerId;
     private ArrayList<ComboListItem> comboList;
+    private ArrayList<ComboListItem> comboListAll = new ArrayList<>();
     private RecyclerView recyclerView;
-    private int switchState = 0;
+
+    private int sortingSwitchState = 0;
+    private int genderSwitchState = 0;
+    
 
     public ComboListManagerFragment() {
         // Required empty public constructor
@@ -71,25 +72,38 @@ public class ComboListManagerFragment extends Fragment {
         partnerId = getArguments().getLong("partnerId");
         comboList = new ArrayList<>();
 
+
     }
 
 
     private void setAdapater() {
-        adapter = new ComboListNameCardRecyclerViewAdapter(comboList);
+        adapter = new ComboListNameCardRecyclerViewAdapter(comboList, this);
         RecyclerView.LayoutManager layoutManager = new LinearLayoutManager(getActivity().getApplicationContext());
         binding.rvComboList.setItemAnimator(new DefaultItemAnimator());
         binding.rvComboList.setLayoutManager(layoutManager);
         binding.rvComboList.setAdapter(adapter);
         binding.swOrderBy.setOnCheckedChangeListener(this::onCheckedChanged);
+        binding.swToggleGender.setOnCheckedChangeListener(this::onGenderCheckedChange);
     }
     public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
         if(isChecked) {
             sortByRating(comboList);
-            switchState = 1;
+            sortingSwitchState = 1;
         } else {
             sortByName(comboList);
-            switchState = 0;
+            sortingSwitchState = 0;
         }
+    }
+
+    public void onGenderCheckedChange(CompoundButton buttonView, boolean isChecked) {
+        if(isChecked) {
+            filterByGender(comboList,0);
+            genderSwitchState = 0;
+        } else {
+            filterByGender(comboList,1);
+            genderSwitchState = 1;
+        }
+        adapter.notifyDataSetChanged();
     }
 
 
@@ -103,16 +117,21 @@ public class ComboListManagerFragment extends Fragment {
 
         getNameCardsAndRating(partnerId, (VolleyCallBack) () -> {
             setAdapater();
+            comboListAll.addAll(comboList);
             if(comboList.size()==0){
-                Snackbar.make(binding.rvComboList, R.string.NoComboNames, Snackbar.LENGTH_INDEFINITE)
+                Snackbar.make(binding.rvComboList, R.string.NoComboNames, Snackbar.LENGTH_SHORT)
                         .setAction(R.string.SwipeMoreNames, view1 -> {
                             Intent i = new Intent(getActivity(), SwipeActivity.class);
                             getActivity().finish();
                             startActivity(i);
-                        })
-                        .show();
+                        }).show();
             }
-            sortByName(comboList);
+            else {
+                if(genderSwitchState == 0) filterByGender(comboList,1);
+                else filterByGender(comboList,0);
+                sortByName(comboList);
+            }
+
         });
         binding.btnViewLikedGoBack.setOnClickListener(this::removeListView);
         return view;
@@ -127,6 +146,28 @@ public class ComboListManagerFragment extends Fragment {
         Collections.sort(comboList, comboListItemComparator.reversed());
         adapter.notifyDataSetChanged();
     }
+
+    public void filterByGender(ArrayList<ComboListItem> comboList, int gender){
+        ArrayList<ComboListItem> filteredList = new ArrayList<>();
+        if(gender != 0 || gender != 1){
+            comboList.clear();
+            comboList.addAll(comboListAll);
+        }
+
+        comboList.forEach((key)-> {
+           if(key.getGender() == gender){
+               filteredList.add(key);
+           }
+        });
+
+        comboList.clear();
+        comboList.addAll(filteredList);
+        if(sortingSwitchState == 0) sortByName(comboList);
+        else sortByRating(comboList);
+        adapter.notifyDataSetChanged();
+
+    }
+
 
     public void removeListView(View view){
         Fragment f = getParentFragmentManager().findFragmentByTag("listViewCombo");
@@ -166,9 +207,9 @@ public class ComboListManagerFragment extends Fragment {
                         try {
                             JSONObject nc = (JSONObject) namecards.get(i);
                             comboList.add(new ComboListItem(
+                                    nc.getInt("id"),
                                     nc.getString("name"),
                                     nc.getInt("rating"),
-                                    "Operations",
                                     nc.getInt("gender")
                             ));
 
@@ -178,6 +219,7 @@ public class ComboListManagerFragment extends Fragment {
                         }
                     }
                     Log.d("list", "getNameCardsAndRating: JOB DONE");
+
                     cb.onSuccess();
 
                 }, error -> {
@@ -186,5 +228,43 @@ public class ComboListManagerFragment extends Fragment {
             Log.d("Test", "CheckLogin: " + error.toString());
         });
         ApiController.getInstance().addToRequestQueue(jsonObjReq);
+    }
+
+    @Override
+    public void onItemClick(int position) {
+       removeFromApprovedList(comboList.get(position).getId(),position);
+    }
+
+    public void removeFromApprovedList(int namecardId, int position){
+        String [] user = prefs.getUser();
+        String email = user[0];
+        String pass = user[1];
+        String listeningPath = "viewliked/remove";
+        URIBuilder b = null;
+        String url = "";
+        try {
+            b = new URIBuilder(ApiController.getDomainURL()+listeningPath);
+            b.addParameter("email",email);
+            b.addParameter("password",pass);
+            b.addParameter("id", String.valueOf(namecardId));
+
+            url = b.build().toString();
+        } catch (URISyntaxException e) {
+            e.printStackTrace();
+        }
+
+        JsonObjectRequest jsonObjReq = new JsonObjectRequest(Request.Method.GET,url,null,
+                response -> {
+                    Toast.makeText(getContext(), getResources().getString(R.string.operationSuccess) ,Toast.LENGTH_SHORT)
+                            .show();
+                    comboList.remove(position);
+                    adapter.notifyDataSetChanged();
+
+                },error -> {
+                Toast.makeText(getContext(), getResources().getString(R.string.errorRetrievingData) ,Toast.LENGTH_SHORT)
+                        .show();
+        });
+        ApiController.getInstance().addToRequestQueue(jsonObjReq);
+
     }
 }
