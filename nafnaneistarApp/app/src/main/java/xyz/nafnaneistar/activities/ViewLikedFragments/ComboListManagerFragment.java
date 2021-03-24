@@ -59,7 +59,7 @@ public class ComboListManagerFragment extends Fragment {
         prefs = new Prefs(getActivity());
         partnerId = getArguments().getLong("partnerId");
         comboList = new ArrayList<>();
-        
+
     }
 
     private void setAdapater() {

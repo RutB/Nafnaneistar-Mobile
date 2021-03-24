@@ -77,4 +77,5 @@
     <string name="viewlikedComboList">Skoða Sameiginlegan lista</string>
     <string name="errorGettingPartners">Villa við að ná í gögn</string>
     <string name="delete">Eyða</string>
+    <string name="placeholderHearts">🤍🤍🤍🤍🤍</string>
 </resources>

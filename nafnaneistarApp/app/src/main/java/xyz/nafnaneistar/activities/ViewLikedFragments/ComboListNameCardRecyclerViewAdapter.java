@@ -48,8 +48,12 @@ public class ComboListNameCardRecyclerViewAdapter extends RecyclerView.Adapter<C
         String name = comboList.get(position).getName();
         int rating = comboList.get(position).getRating();
         holder.name.setText(name);
-        holder.rating.setText(String.valueOf(rating));
-        holder.delete.setText(R.string.delete);
+        String ratingString = "";
+        for(int i = 0; i < 5; i++){
+            if(i < rating) ratingString += "❤";
+            else ratingString +="🤍";
+        }
+        holder.rating.setText(ratingString);
 
 
 
