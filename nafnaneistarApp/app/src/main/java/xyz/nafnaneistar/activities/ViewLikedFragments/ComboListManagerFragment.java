@@ -51,6 +51,7 @@ public class ComboListManagerFragment extends Fragment {
     private Long partnerId;
     private ArrayList<ComboListItem> comboList;
     private RecyclerView recyclerView;
+    private int switchState = 0;
 
     public ComboListManagerFragment() {
         // Required empty public constructor
@@ -72,6 +73,7 @@ public class ComboListManagerFragment extends Fragment {
 
     }
 
+
     private void setAdapater() {
         adapter = new ComboListNameCardRecyclerViewAdapter(comboList);
         RecyclerView.LayoutManager layoutManager = new LinearLayoutManager(getActivity().getApplicationContext());
@@ -83,8 +85,10 @@ public class ComboListManagerFragment extends Fragment {
     public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
         if(isChecked) {
             sortByRating(comboList);
+            switchState = 1;
         } else {
             sortByName(comboList);
+            switchState = 0;
         }
     }
 
@@ -95,7 +99,6 @@ public class ComboListManagerFragment extends Fragment {
         // Inflate the layout for this fragment
         binding = DataBindingUtil.inflate(inflater, R.layout.fragment_combo_list_manager, container, false);
         View view = binding.getRoot();
-
 
 
         getNameCardsAndRating(partnerId, (VolleyCallBack) () -> {
@@ -110,9 +113,7 @@ public class ComboListManagerFragment extends Fragment {
                         .show();
             }
             sortByName(comboList);
-
         });
-
         binding.btnViewLikedGoBack.setOnClickListener(this::removeListView);
         return view;
     }
