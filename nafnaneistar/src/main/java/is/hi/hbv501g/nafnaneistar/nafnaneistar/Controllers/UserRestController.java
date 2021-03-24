@@ -108,6 +108,7 @@ public class UserRestController {
         return false;
     }
 
+
     /**
      * Processes if the User wants to remove a partner from linked partners, and removes the partner from the
      * linked partners
@@ -223,7 +224,8 @@ public class UserRestController {
         User currentUser = userService.findByEmail(email);
         User linkPartner = userService.findByEmail(partner);
         if(partner == null) return "'messge':'Notandi ekki til'";
-        if(!currentUser.getLinkedPartners().contains(linkPartner.getId())){
+        System.out.print(currentUser.getLinkedPartners());
+        if(helperValidatingPartner(currentUser, linkPartner)){
             currentUser.addLinkedPartner(linkPartner.getId());
             linkPartner.addLinkedPartner(currentUser.getId());
             userService.save(currentUser);
@@ -243,6 +245,20 @@ public class UserRestController {
 
         return partnersObj.toString();
 
+    }
+
+    public boolean helperValidatingPartner(
+        User currentUser,
+        User linkPartner){
+        if(currentUser.getId() != linkPartner.getId()){
+            for (Long id : currentUser.getLinkedPartners()){
+                if(linkPartner.getId() == id){
+                    return false;
+                }
+            }
+            return true;
+        }
+        return false;
     }
 
 
