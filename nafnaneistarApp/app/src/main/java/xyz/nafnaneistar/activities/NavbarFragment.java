@@ -68,6 +68,9 @@ public class NavbarFragment extends Fragment {
                 }
             break;
             case R.id.navViewLiked:
+                if(getActivity().getLocalClassName().contains("ViewLikedActivity")){
+                    removeFragment("listViewCombo");
+                }
                 if(!getActivity().getLocalClassName().contains("ViewLikedActivity")){
                     getActivity().finish();
                     startActivity(new Intent(getContext(),ViewLikedActivity.class));
@@ -96,6 +99,15 @@ public class NavbarFragment extends Fragment {
                 return true;
         }
         return false;
+    }
+    private void removeFragment(String tag) {
+
+        Fragment f = getParentFragmentManager().findFragmentByTag(tag);
+        if (f != null) {
+            getParentFragmentManager().beginTransaction()
+                    .remove(f)
+                    .commit();
+        }
     }
 
     @Override

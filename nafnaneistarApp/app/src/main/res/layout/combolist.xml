@@ -24,7 +24,9 @@
         android:autoSizeMinTextSize="10sp"
         android:autoSizeStepGranularity="2sp"
         android:autoSizeTextType="uniform"
-        android:gravity="center|fill"
+        android:gravity="center_horizontal|fill_horizontal"
+        android:paddingBottom="8dp"
+        android:paddingTop="8dp"
         android:text="@string/viewLikedPlaceholderName"
         android:textAppearance="?attr/textAppearanceListItem"
         app:autoSizeMaxTextSize="16sp"
@@ -36,9 +38,10 @@
         android:id="@+id/comboListRating"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_margin="@dimen/text_margin"
         android:layout_weight="1"
         android:gravity="center|fill"
+        android:paddingBottom="8dp"
+        android:paddingTop="8dp"
         android:text="@string/placeholderHearts"
         android:textAlignment="center"
         android:textAppearance="?attr/textAppearanceListItem" />
@@ -46,14 +49,13 @@
     <Button
         android:id="@+id/comboListOperations"
         style="@style/Widget.AppCompat.Button.Colored"
-        android:layout_width="5dp"
+        android:layout_width="4dp"
         android:layout_height="match_parent"
         android:layout_gravity="center"
         android:layout_marginStart="8dp"
         android:layout_weight="1"
         android:background="@color/ambiant"
         android:backgroundTint="@color/ambiant"
-        android:gravity="center"
         android:insetBottom="0dp"
         android:insetTop="0dp"
         android:minWidth="2dp"
@@ -67,7 +69,7 @@
         app:icon="@android:drawable/ic_delete"
         app:iconGravity="textTop"
         app:iconPadding="0dp"
-        app:iconSize="36dp"
+        app:iconSize="40dp"
         app:iconTint="@color/ambiant" />
 
 </LinearLayout>

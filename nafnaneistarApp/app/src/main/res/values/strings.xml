@@ -79,4 +79,7 @@
     <string name="delete">Eyða</string>
     <string name="placeholderHearts">🤍🤍🤍🤍🤍</string>
     <string name="goBack">Til Baka</string>
+    <string name="GroupByNameOrRating">Flokka eftir: Nafni/Einkunn</string>
+    <string name="NoComboNames">Engin Sameiginleg Nöfn</string>
+    <string name="SwipeMoreNames">Skoða fleiri nöfn?</string>
 </resources>

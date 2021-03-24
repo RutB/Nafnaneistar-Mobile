@@ -393,6 +393,7 @@ public class NameRestController {
                     ncs.put(nc.getName() + "-" + nc.getId() + "-" + nc.getGender(), avg);
                     namecard.addProperty("name", nc.getName());
                     namecard.addProperty("id", nc.getId());
+                    avg = (Math.random() > 0.5) ? avg : avg+2;
                     namecard.addProperty("rating", avg);
                     namecard.addProperty("gender", nc.getGender());
                     jsonarr.add(namecard);

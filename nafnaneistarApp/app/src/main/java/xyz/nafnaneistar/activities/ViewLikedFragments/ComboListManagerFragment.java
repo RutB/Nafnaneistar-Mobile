@@ -6,10 +6,13 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.CompoundButton;
+import android.widget.Switch;
 import android.widget.Toast;
 
 import com.android.volley.Request;
 import com.android.volley.toolbox.JsonObjectRequest;
+import com.google.android.material.snackbar.Snackbar;
 
 import org.apache.http.client.utils.URIBuilder;
 import org.json.JSONArray;
@@ -28,6 +31,7 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 import xyz.nafnaneistar.activities.LoginActivity;
 import xyz.nafnaneistar.activities.SignupActivity;
+import xyz.nafnaneistar.activities.SwipeActivity;
 import xyz.nafnaneistar.activities.items.ComboListItem;
 import xyz.nafnaneistar.controller.ApiController;
 import xyz.nafnaneistar.controller.VolleyCallBack;
@@ -74,7 +78,16 @@ public class ComboListManagerFragment extends Fragment {
         binding.rvComboList.setItemAnimator(new DefaultItemAnimator());
         binding.rvComboList.setLayoutManager(layoutManager);
         binding.rvComboList.setAdapter(adapter);
+        binding.swOrderBy.setOnCheckedChangeListener(this::onCheckedChanged);
     }
+    public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+        if(isChecked) {
+            sortByRating(comboList);
+        } else {
+            sortByName(comboList);
+        }
+    }
+
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -87,16 +100,31 @@ public class ComboListManagerFragment extends Fragment {
 
         getNameCardsAndRating(partnerId, (VolleyCallBack) () -> {
             setAdapater();
-            Collections.sort(comboList, (item1, item2) -> item1.getName().compareToIgnoreCase(item2.getName()));
-            adapter.notifyDataSetChanged();
+            if(comboList.size()==0){
+                Snackbar.make(binding.rvComboList, R.string.NoComboNames, Snackbar.LENGTH_INDEFINITE)
+                        .setAction(R.string.SwipeMoreNames, view1 -> {
+                            Intent i = new Intent(getActivity(), SwipeActivity.class);
+                            getActivity().finish();
+                            startActivity(i);
+                        })
+                        .show();
+            }
+            sortByName(comboList);
+
         });
 
         binding.btnViewLikedGoBack.setOnClickListener(this::removeListView);
         return view;
     }
 
-    public void onBackPressed() {
-        removeListView(binding.btnViewLikedGoBack);
+    public void sortByName(ArrayList<ComboListItem> comboList){
+        Collections.sort(comboList, (item1, item2) -> item1.getName().compareToIgnoreCase(item2.getName()));
+        adapter.notifyDataSetChanged();
+    }
+    public void sortByRating(ArrayList<ComboListItem> comboList){
+        Comparator<ComboListItem> comboListItemComparator = Comparator.comparingInt(ComboListItem::getRating);
+        Collections.sort(comboList, comboListItemComparator.reversed());
+        adapter.notifyDataSetChanged();
     }
 
     public void removeListView(View view){
