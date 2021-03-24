@@ -10,6 +10,7 @@ import com.google.gson.JsonArray;
 import com.google.gson.JsonObject;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Required;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -156,8 +157,8 @@ public class UserRestController {
      * @param session
      * @return
      */
-    @GetMapping(path="/viewliked/remove", produces = "application/json")
-    public boolean removeFromApproved(@RequestParam String id, HttpSession session)
+    @GetMapping(path="/viewliked/remove__OLD", produces = "application/json")
+    public boolean removeFromApproved__OLD(@RequestParam String id, HttpSession session)
     {  User user = (User) session.getAttribute("currentUser");
         try {
             user.removeApprovedName(Integer.parseInt(id));
@@ -166,6 +167,32 @@ public class UserRestController {
         } catch(Error e){
             return false;
         }
+    }
+
+        /**
+     * Processes if the User wants to remove name from approved Names, and removes the name from the
+     * approved names
+     * @param id
+     * @param session
+     * @return
+     */
+    @GetMapping(path="/viewliked/remove", produces = "application/json")
+    public String removeFromApproved(
+        @RequestParam(required=true) String email,
+        @RequestParam(required=true)  String pass, @RequestParam(required=true)  String id){  
+        
+            if (UserUtils.isAuthenticated(userService, email, pass)) {
+                User user = userService.findByEmail(email);
+            try {
+                user.removeApprovedName(Integer.parseInt(id));
+                userService.save(user);
+                return "{'result':'true'}";
+            } catch(Error e){
+                return "{'result':'false'}";
+            }
+        }
+        return "{'message':'Villa í auðkenningu'}";
+
     }
 
     /**

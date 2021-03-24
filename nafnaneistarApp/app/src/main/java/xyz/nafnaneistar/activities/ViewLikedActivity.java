@@ -95,7 +95,6 @@ public class ViewLikedActivity extends AppCompatActivity {
         Fragment f = fragmentManager.findFragmentByTag("listViewCombo");
 
         if (f.isVisible()) {
-            Log.d("count", "onBackPressed: " + "deleteit");
             removeFragment("listViewCombo");
         } else {
             super.onBackPressed();
@@ -112,7 +111,7 @@ public class ViewLikedActivity extends AppCompatActivity {
     private void addFragment(int id,String tag){
         Fragment f = fragmentManager.findFragmentById(id);
 
-        if (f != null) {
+        if (f == null) {
             f = new NameComboFragment();
             fragmentManager.beginTransaction()
                     .add(R.id.clFragmentContainer, f, tag)

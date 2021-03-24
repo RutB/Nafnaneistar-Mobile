@@ -1,0 +1,51 @@
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
+
+    <data>
+
+    </data>
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/navbar"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+
+        android:background="#00FFFFFF"
+        android:backgroundTint="#00FFFFFF"
+        tools:context="xyz.nafnaneistar.activities.NavbarFragment">
+
+        <!-- TODO: Update blank fragment layout -->
+
+        <com.google.android.material.bottomnavigation.BottomNavigationView
+            android:id="@+id/navViewTop"
+            android:layout_width="0dp"
+            android:layout_height="61dp"
+            android:background="@color/btn_color"
+            app:itemIconSize="26dp"
+            app:itemIconTint="@color/menuFont"
+            app:itemTextColor="@color/menuFont"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.0"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintVertical_bias="0.0"
+            app:menu="@menu/menu_items_landscape" />
+
+        <com.google.android.material.navigation.NavigationView
+            android:id="@+id/navViewDrawer"
+            android:layout_width="176dp"
+            android:layout_height="220dp"
+            android:animateLayoutChanges="true"
+            android:background="@color/nav"
+            android:visibility="visible"
+            app:itemTextColor="@color/menuFont"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.0"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/navViewTop"
+            app:menu="@menu/side_menu_landscape" />
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+</layout>

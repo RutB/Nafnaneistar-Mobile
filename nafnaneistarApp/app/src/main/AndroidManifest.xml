@@ -11,7 +11,7 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.LoginActivity"
         android:usesCleartextTraffic="true">
-        <activity android:name="xyz.nafnaneistar.activities.ViewLikedActivity"></activity>
+        <activity android:name="xyz.nafnaneistar.activities.ViewLikedActivity" />
         <activity android:name="xyz.nafnaneistar.activities.SplashActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
