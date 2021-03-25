@@ -13,7 +13,6 @@ import xyz.nafnaneistar.model.User;
 import xyz.nafnaneistar.loginactivity.databinding.ActivityLoginBinding;
 
 import android.app.Activity;
-import android.app.ProgressDialog;
 import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
@@ -116,7 +115,6 @@ public class LoginActivity extends AppCompatActivity {
      * @param view
      */
     public void CheckLogin(View view) throws URISyntaxException {
-        ProgressDialog dialog = Loaders.initDialog("Skrái inn", view.getContext(),true);
         String email = binding.etEmail.getText().toString().trim();
         String pass = binding.etPassword.getText().toString().trim();
         if(email.length() == 0 || pass.length()==0){
@@ -131,7 +129,6 @@ public class LoginActivity extends AppCompatActivity {
                     Toast.makeText(LoginActivity.this, R.string.loginSuccess ,Toast.LENGTH_SHORT)
                             .show();
                     prefs.saveUser(email,pass);
-                    dialog.dismiss();
                     startActivity(new Intent( LoginActivity.this, SwipeActivity.class));
                     finish();
                 }
@@ -153,7 +150,6 @@ public class LoginActivity extends AppCompatActivity {
 
             @Override
             public void onError(String error) {
-                dialog.dismiss();
                 Toast.makeText(LoginActivity.this, R.string.loginFailed ,Toast.LENGTH_SHORT)
                         .show();
             }

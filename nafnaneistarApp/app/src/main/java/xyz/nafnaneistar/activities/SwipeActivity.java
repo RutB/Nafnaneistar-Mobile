@@ -40,7 +40,7 @@ public class SwipeActivity extends AppCompatActivity {
         binding = DataBindingUtil.setContentView(this, R.layout.activity_swipe);
         binding.btnDislike.setForeground(getDrawable(R.drawable.ic_arrow_dislike));
         prefs = new Prefs(SwipeActivity.this);
-        binding.btnApprove.setOnClickListener(this::onClick2);
+        binding.btnApprove.setOnClickListener(this::onClick);
         binding.btnDislike.setOnClickListener(this::onClick);
         binding.cbGenderMale.setOnClickListener(view -> {
             try {
@@ -102,7 +102,7 @@ public class SwipeActivity extends AppCompatActivity {
     }
 
     public void chooseName(View view) throws URISyntaxException {
-        if(currentCard == null) return;
+        if (currentCard == null) return;
         initLoading();
         String[] user = prefs.getUser();
         String email = user[0];
@@ -177,20 +177,13 @@ public class SwipeActivity extends AppCompatActivity {
         ApiController.getInstance().addToRequestQueue(jsonObjReq);
     }
 
-    private void initLoading(){
+    private void initLoading() {
         binding.llLoadingContainer.setVisibility(View.VISIBLE);
         binding.tvName.setText("");
         binding.tvTexti.setText("");
     }
-    private void onClick(View view) {
-        try {
-            chooseName(view);
-        } catch (URISyntaxException e) {
-            e.printStackTrace();
-        }
-    }
 
-    private void onClick2(View view) {
+    private void onClick(View view) {
         try {
             chooseName(view);
         } catch (URISyntaxException e) {

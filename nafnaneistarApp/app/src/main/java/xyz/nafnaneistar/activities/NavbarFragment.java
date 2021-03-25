@@ -94,6 +94,13 @@ public class NavbarFragment extends Fragment {
                     return true;
                 }
             break;
+            case R.id.navSettings:
+                if (!getActivity().getLocalClassName().contains("SettingsActivity")){
+                    getActivity().finish();
+                    startActivity(new Intent(getContext(),SettingsActivity.class));
+                    return true;
+                }
+                break;
             case R.id.navLogout:
                 logout();
                 return true;
@@ -117,8 +124,6 @@ public class NavbarFragment extends Fragment {
         binding = DataBindingUtil.inflate(inflater, R.layout.fragment_navbar, container, false);
         binding.navViewDrawer.setVisibility(View.INVISIBLE);
         binding.navViewDrawer.bringToFront();
-
-
         binding.navViewTop.setOnNavigationItemSelectedListener(this::onNavigationItemSelected);
         binding.navViewDrawer.setNavigationItemSelectedListener(this::onNavigationItemSelected);
 

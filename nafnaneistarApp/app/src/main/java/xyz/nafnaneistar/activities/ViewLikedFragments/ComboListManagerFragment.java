@@ -1,6 +1,5 @@
 package xyz.nafnaneistar.activities.ViewLikedFragments;
 
-import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
@@ -9,6 +8,8 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.CompoundButton;
+import android.widget.LinearLayout;
+import android.widget.ProgressBar;
 import android.widget.Toast;
 
 import com.android.volley.Request;
@@ -127,7 +128,8 @@ public class ComboListManagerFragment extends Fragment implements  ComboListName
         String[] user = prefs.getUser();
         String user_email = user[0];
         String pass = user[1];
-        ProgressDialog dialog = Loaders.initDialog("Sæki listann...",getContext(),true);
+ 
+
         ApiController.getInstance().getNameCardsAndRating(partnerId, user_email, pass, new VolleyCallBack<ArrayList<ComboListItem>>() {
 
             @Override
@@ -140,7 +142,6 @@ public class ComboListManagerFragment extends Fragment implements  ComboListName
                 setAdapater();
                 comboList.addAll(response);
                 comboListAll.addAll(comboList);
-                dialog.dismiss();
                 if(comboList.size()==0){
                     Snackbar.make(binding.rvComboList, R.string.NoComboNames, Snackbar.LENGTH_SHORT)
                             .setAction(R.string.SwipeMoreNames, view1 -> {
@@ -158,7 +159,6 @@ public class ComboListManagerFragment extends Fragment implements  ComboListName
 
             @Override
             public void onError(String error) {
-                dialog.dismiss();
                 Toast.makeText(getContext(), error, Toast.LENGTH_SHORT)
                         .show();
             }

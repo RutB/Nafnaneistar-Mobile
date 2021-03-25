@@ -1,31 +1,22 @@
 package xyz.nafnaneistar.controller;
 
 import android.app.Application;
-import android.content.Intent;
-import android.util.Log;
-import android.widget.Toast;
 
 import com.android.volley.Request;
 import com.android.volley.RequestQueue;
-import com.android.volley.Response;
-import com.android.volley.VolleyError;
 import com.android.volley.toolbox.JsonObjectRequest;
 import com.android.volley.toolbox.Volley;
-import com.google.android.material.snackbar.Snackbar;
 import com.google.gson.Gson;
+import com.google.gson.JsonObject;
 
 import org.apache.http.client.utils.URIBuilder;
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
-import java.lang.reflect.Array;
 import java.net.URISyntaxException;
 import java.util.ArrayList;
 
-import xyz.nafnaneistar.activities.LoginActivity;
-import xyz.nafnaneistar.activities.SignupActivity;
-import xyz.nafnaneistar.activities.SwipeActivity;
 import xyz.nafnaneistar.activities.items.ComboListItem;
 import xyz.nafnaneistar.loginactivity.R;
 import xyz.nafnaneistar.model.User;
@@ -110,6 +101,17 @@ public class ApiController extends Application {
             User p = g.fromJson(String.valueOf(response), User.class);
             volleyCallBack.onResponse(p);
         }, error -> volleyCallBack.onError(getString(R.string.loginError)));
+        ApiController.getInstance().addToRequestQueue(jsonObjReq);
+    }
+    public void signup(VolleyCallBack<JSONObject> volleyCallBack, String name, String email, String pass) throws URISyntaxException {
+        String listeningPath = "signup";
+        URIBuilder b = new URIBuilder(ApiController.getDomainURL()+listeningPath);
+        b.addParameter("name",name);
+        b.addParameter("email",email);
+        b.addParameter("password",pass);
+
+        JsonObjectRequest jsonObjReq = new JsonObjectRequest(Request.Method.POST,b.build().toString(),
+                null, volleyCallBack::onResponse, error -> volleyCallBack.onError(getString(R.string.signupFailed)));
         ApiController.getInstance().addToRequestQueue(jsonObjReq);
     }
 

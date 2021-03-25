@@ -23,11 +23,6 @@ public class SettingsActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        // setContentView(R.layout.activity_search);
-        prefs = new Prefs(SettingsActivity.this);
-        binding = DataBindingUtil.setContentView(this, R.layout.activity_settings);
-        binding.btnChangePw.setOnClickListener(this::PasswordSettings);
-
         //Initialize the navbar fragment
         FragmentManager fragmentManager = getSupportFragmentManager();
         Fragment navbar = fragmentManager.findFragmentById(R.id.navbar);
@@ -38,6 +33,12 @@ public class SettingsActivity extends AppCompatActivity {
                     .add(R.id.settingsContainer, navbar)
                     .commit();
         }
+        // setContentView(R.layout.activity_search);
+        prefs = new Prefs(SettingsActivity.this);
+        binding = DataBindingUtil.setContentView(this, R.layout.activity_settings);
+        binding.btnChangePw.setOnClickListener(this::PasswordSettings);
+
+
     }
     public void PasswordSettings (View view) {
         
