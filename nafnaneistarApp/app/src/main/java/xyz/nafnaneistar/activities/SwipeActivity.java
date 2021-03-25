@@ -124,6 +124,7 @@ public class SwipeActivity extends AppCompatActivity {
                     binding.llLoadingContainer.setVisibility(View.INVISIBLE);
                     Gson g = new Gson();
                     NameCard nc = g.fromJson(String.valueOf(response), NameCard.class);
+                    ///kanna hvort er fyrir nafn
                     binding.tvTexti.setText(nc.getDescription());
                     SpannableStringBuilder ssb = new SpannableStringBuilder(nc.getName() + "  ");
 
@@ -181,7 +182,6 @@ public class SwipeActivity extends AppCompatActivity {
         binding.tvName.setText("");
         binding.tvTexti.setText("");
     }
-
     private void onClick(View view) {
         try {
             chooseName(view);

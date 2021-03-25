@@ -94,7 +94,7 @@ public class LoginActivity extends AppCompatActivity {
                     Gson g = new Gson();
                     User p = g.fromJson(String.valueOf(response), User.class);
                     if(p.getName() != null){
-                        Intent i = new Intent( LoginActivity.this, SwipeActivity.class);
+                        Intent i = new Intent( LoginActivity.this, LinkPartnerActivity.class);
                         finish();
                         startActivity(i);
                     }

@@ -1,13 +1,19 @@
 package xyz.nafnaneistar.activities;
 
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.widget.LinearLayoutCompat;
+import androidx.core.widget.TextViewCompat;
 import androidx.databinding.DataBindingUtil;
+import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentManager;
 
 import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
+import android.widget.LinearLayout;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.android.volley.Request;
@@ -19,6 +25,7 @@ import com.google.gson.JsonObject;
 import org.apache.http.client.utils.URIBuilder;
 import org.json.JSONArray;
 import org.json.JSONException;
+import org.json.JSONObject;
 
 import java.net.URISyntaxException;
 import java.util.regex.Matcher;
@@ -42,22 +49,63 @@ public class LinkPartnerActivity extends AppCompatActivity {
         binding = DataBindingUtil.setContentView(this, R.layout.activity_link_partner);
         binding.btnLink.setOnClickListener(view -> {
             try {
-                CheckLink(view);
+                putCheckLink(view);
             } catch (URISyntaxException e) {
                 e.printStackTrace();
             }
         });
         prefs = new Prefs(LinkPartnerActivity.this);
+
+        //Initialize the navbar fragment
+        FragmentManager fragmentManager = getSupportFragmentManager();
+        Fragment navbar = fragmentManager.findFragmentById(R.id.navbar);
+
+        if (navbar == null) {
+            navbar = new NavbarFragment();
+            fragmentManager.beginTransaction()
+                    .add(R.id.LinkContainer, navbar)
+                    .commit();
+        }
+        try {
+            getCheckLink();
+            Log.d("partners", "förum við hingaaaað");
+        }catch (URISyntaxException e) {
+            e.printStackTrace();
+        }
     }
 
-    public void CheckLink(View view) throws URISyntaxException {
+    private void fillTable(JSONArray resp) throws JSONException {
+        int childrenCount = binding.llsvPartner.getChildCount();
+        for (int i = 0; i < childrenCount; i++)
+            binding.llsvPartner.removeView(binding.llsvPartner.getChildAt(i));
+        for(int i = 0; i < resp.length(); i++){
+            JSONObject bla = (JSONObject) resp.get(i);
+            String partner = bla.getString("name");
+            String partnerEmail = bla.getString("email");
+            TextView column1 = new TextView(this, null, 0, R.style.linkpartnerItem);
+            TextView column2 = new TextView(this, null, 0, R.style.linkpartnerItem);
+            LinearLayout row = new LinearLayout(this, null, 0, R.style.linkpartnerrow);
+            row.setOrientation(LinearLayout.HORIZONTAL);
+            column1.setText(partner);
+            column2.setText(partnerEmail);
+            row.addView(column1);
+            row.addView(column2);
+            binding.llsvPartner.addView(row);
+            //String sName = "tvLinkName" + String.valueOf(i);
+
+            //Log.d("partners", "CheckLink: ");
+        }
+
+    }
+
+    public void putCheckLink(View view) throws URISyntaxException {
         String[] user = prefs.getUser();
         String user_email = user[0];
         String pass = user[1];
         String email = binding.etEmail2.getText().toString().trim();
         Pattern pattern = Pattern.compile("^.+@.+\\..+$");
         Matcher matcher = pattern.matcher(email);
-        /*if (email.length() == 0) {
+        if (email.length() == 0) {
             Toast.makeText(LinkPartnerActivity.this, R.string.errorEmptyStrings, Toast.LENGTH_SHORT)
                     .show();
             return;
@@ -65,7 +113,42 @@ public class LinkPartnerActivity extends AppCompatActivity {
             Toast.makeText(LinkPartnerActivity.this, R.string.errorInvalidEmail, Toast.LENGTH_SHORT)
                     .show();
             return;
-        }*/
+        }
+        String linkUrl = String.format("%slink?&email=%s", ApiController.getDomainURL(), email);
+        String listeningPath = "linkpartner";
+
+        URIBuilder b = new URIBuilder(ApiController.getDomainURL() + listeningPath);
+        b.addParameter("email", user_email);
+        b.addParameter("pass", pass);
+        b.addParameter("partner", email);
+        Log.d("Test", "CheckLink: "+ b.toString());
+        JsonObjectRequest jsonObjReqBla = new JsonObjectRequest(Request.Method.POST, b.toString(), null,
+                response -> {
+                    JSONArray resp = new JSONArray();
+                    try {
+                        resp = response.getJSONArray("partners");
+                        Log.d("partners", "pruuuuufa");
+
+                        fillTable(resp);
+
+                    } catch (JSONException e) {
+                        e.printStackTrace();
+                    }
+                    Log.d("partners", "CheckLink: " +resp );
+
+                }, error -> {
+            Toast.makeText(LinkPartnerActivity.this, R.string.errorInvalidEmail, Toast.LENGTH_SHORT)
+                    .show();
+            Log.d("Test", "CheckLogin: " + error.toString());
+        });
+        ApiController.getInstance().addToRequestQueue(jsonObjReqBla);
+    }
+
+    public void getCheckLink() throws URISyntaxException {
+        String[] user = prefs.getUser();
+        String user_email = user[0];
+        String pass = user[1];
+        String email = binding.etEmail2.getText().toString().trim();
         String linkUrl = String.format("%slink?&email=%s", ApiController.getDomainURL(), email);
         String listeningPath = "linkpartner";
 
@@ -78,10 +161,8 @@ public class LinkPartnerActivity extends AppCompatActivity {
                     JSONArray resp = new JSONArray();
                     try {
                         resp = response.getJSONArray("partners");
-                        for(int i = 0; i < resp.length(); i++){
-                            JsonObject bla = (JsonObject) resp.get(i);
-                            Log.d("partners", "CheckLink: ");
-                        }
+                        fillTable(resp);
+
                     } catch (JSONException e) {
                         e.printStackTrace();
                     }
@@ -95,4 +176,5 @@ public class LinkPartnerActivity extends AppCompatActivity {
         ApiController.getInstance().addToRequestQueue(jsonObjReq);
 
     }
+
 }
