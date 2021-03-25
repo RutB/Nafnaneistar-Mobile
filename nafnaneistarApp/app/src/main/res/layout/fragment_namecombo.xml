@@ -1,0 +1,136 @@
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
+
+    <data>
+
+    </data>
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/fragmentComboName"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:id="@+id/clComboList"
+            android:layout_width="364dp"
+            android:layout_height="353dp"
+            android:background="@color/btn_color_lg"
+            android:visibility="visible"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent">
+
+            <Button
+                android:id="@+id/btComboName"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="48dp"
+                android:layout_marginTop="16dp"
+                android:text="@string/Comboname_getName"
+                android:textAllCaps="false"
+                android:textColor="@color/font"
+                app:layout_constraintEnd_toStartOf="@+id/btComboNameMiddle"
+                app:layout_constraintHorizontal_bias="0.5"
+                app:layout_constraintHorizontal_chainStyle="spread_inside"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/linearLayout2" />
+
+            <Button
+                android:id="@+id/btComboNameMiddle"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginEnd="52dp"
+                android:layout_marginStart="24dp"
+                android:layout_marginTop="16dp"
+                android:text="@string/comboname_name_and_middle"
+                android:textAllCaps="false"
+                android:textColor="@color/font"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintHorizontal_bias="0.5"
+                app:layout_constraintStart_toEndOf="@+id/btComboName"
+                app:layout_constraintTop_toBottomOf="@+id/linearLayout2" />
+
+            <EditText
+                android:id="@+id/etComboNameLastName"
+                android:layout_width="312dp"
+                android:layout_height="44dp"
+                android:layout_marginTop="20dp"
+                android:autofillHints=""
+                android:background="@color/white"
+                android:ems="10"
+                android:hint="@string/combonameHintLastName"
+                android:inputType="textPersonName"
+                android:padding="8sp"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintHorizontal_bias="0.307"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/textView14" />
+
+            <LinearLayout
+                android:id="@+id/linearLayout2"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:gravity="center"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/etComboNameLastName">
+
+                <RadioButton
+                    android:id="@+id/rbNameComboFemale"
+                    android:layout_width="160dp"
+                    android:layout_height="wrap_content"
+                    android:checked="true"
+                    android:text="@string/female" />
+
+                <RadioButton
+                    android:id="@+id/rbNameComboMale"
+                    android:layout_width="140dp"
+                    android:layout_height="wrap_content"
+                    android:text="@string/cbMale" />
+            </LinearLayout>
+
+            <TextView
+                android:id="@+id/tvComboNameTitle"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:paddingLeft="16sp"
+                android:paddingRight="16sp"
+                android:paddingStart="16sp"
+                android:paddingTop="8sp"
+                android:textSize="24sp"
+                android:textStyle="bold"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintHorizontal_bias="0.0"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+                tools:text="@string/viewlikednamecombo" />
+
+            <TextView
+                android:id="@+id/textView14"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="20dp"
+                android:layout_marginTop="4dp"
+                android:text="@string/settu_inn_eftirnafn_og_f_u_upp_stungur_fyrir_nafn"
+                app:layout_constraintBottom_toTopOf="@+id/etComboNameLastName"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintHorizontal_bias="0.271"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/tvComboNameTitle" />
+
+            <TextView
+                android:id="@+id/tvCombonameReslt"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textSize="24sp"
+                android:textStyle="bold"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/btComboNameMiddle" />
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
+    </androidx.constraintlayout.widget.ConstraintLayout>
+</layout>

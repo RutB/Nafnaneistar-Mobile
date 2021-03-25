@@ -11,6 +11,7 @@ import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
+import android.util.TypedValue;
 import android.view.View;
 import android.widget.LinearLayout;
 import android.widget.TextView;
@@ -68,24 +69,32 @@ public class LinkPartnerActivity extends AppCompatActivity {
         }
         try {
             getCheckLink();
-            Log.d("partners", "förum við hingaaaað");
         }catch (URISyntaxException e) {
             e.printStackTrace();
         }
     }
 
     private void fillTable(JSONArray resp) throws JSONException {
-        int childrenCount = binding.llsvPartner.getChildCount();
-        for (int i = 0; i < childrenCount; i++)
+        for (int i = resp.length()-1; i >= 0 ; i--) {
+            Log.d("fill", "fill" + i+ "    " + binding.llsvPartner.getChildAt(i));
             binding.llsvPartner.removeView(binding.llsvPartner.getChildAt(i));
+        }
+
         for(int i = 0; i < resp.length(); i++){
+            Log.d("for", "for" + i);
             JSONObject bla = (JSONObject) resp.get(i);
             String partner = bla.getString("name");
             String partnerEmail = bla.getString("email");
-            TextView column1 = new TextView(this, null, 0, R.style.linkpartnerItem);
+            TextView column1 = new TextView(this,  null, 0, R.style.linkpartnerItem);
             TextView column2 = new TextView(this, null, 0, R.style.linkpartnerItem);
             LinearLayout row = new LinearLayout(this, null, 0, R.style.linkpartnerrow);
             row.setOrientation(LinearLayout.HORIZONTAL);
+            final float scale = row.getResources().getDisplayMetrics().density;
+            //column1.setWidth(380);
+            column1.setWidth((int) (95 * scale + 0.5f));
+            column1.setHeight((int) (26 * scale + 0.5f));
+            column2.setWidth((int) (135 * scale + 0.5f));
+            Log.d("nafn", "nafn" + partner);
             column1.setText(partner);
             column2.setText(partnerEmail);
             row.addView(column1);
@@ -127,14 +136,17 @@ public class LinkPartnerActivity extends AppCompatActivity {
                     JSONArray resp = new JSONArray();
                     try {
                         resp = response.getJSONArray("partners");
-                        Log.d("partners", "pruuuuufa");
-
+                        Log.d("partners", "pruuuuufa"+  resp);
                         fillTable(resp);
+                        Log.d("partners", "buin með fill");
+                        binding.etEmail2.setText("");
+                        binding.etEmail2.clearFocus();
 
                     } catch (JSONException e) {
                         e.printStackTrace();
                     }
                     Log.d("partners", "CheckLink: " +resp );
+
 
                 }, error -> {
             Toast.makeText(LinkPartnerActivity.this, R.string.errorInvalidEmail, Toast.LENGTH_SHORT)
@@ -142,6 +154,9 @@ public class LinkPartnerActivity extends AppCompatActivity {
             Log.d("Test", "CheckLogin: " + error.toString());
         });
         ApiController.getInstance().addToRequestQueue(jsonObjReqBla);
+    }
+    public void checkPartners() throws URISyntaxException {
+
     }
 
     public void getCheckLink() throws URISyntaxException {

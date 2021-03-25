@@ -46,4 +46,17 @@
         <item name="android:layout_height">match_parent</item>
         <item name="android:orientation">horizontal</item>
     </style>
+
+    <style name="tableStyle">
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:layout_gravity">top</item>
+        <item name="android:background">@drawable/border</item>
+        <item name="android:baselineAligned">true</item>
+        <item name="android:divider">?android:listDivider</item>
+        <item name="android:dividerPadding">8dp</item>
+        <item name="android:gravity">center</item>
+        <item name="android:orientation">horizontal</item>
+        <item name="android:showDividers">middle</item>
+    </style>
 </resources>

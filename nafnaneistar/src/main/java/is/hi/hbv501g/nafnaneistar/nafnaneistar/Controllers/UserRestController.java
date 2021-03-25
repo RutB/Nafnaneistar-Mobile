@@ -10,6 +10,7 @@ import com.google.gson.JsonArray;
 import com.google.gson.JsonObject;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Required;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -64,7 +65,7 @@ public class UserRestController {
         if(user != null)
             return "{'message':'Netfang núþegar skráð'}";
         String generatedPass = BCrypt.hashpw(password, BCrypt.gensalt(12));
-        User newUser = new User(name,email,generatedPass,UserUtils.getAvailableNames(nameService));
+        User newUser = new User(name,email.toLowerCase(),generatedPass,UserUtils.getAvailableNames(nameService));
         userService.save(newUser);
         return newUser.toJsonString();
     }
@@ -88,7 +89,7 @@ public class UserRestController {
      * @param email - the desired email to signup with
      * @return true or false depending on if the email is valid or not
      */
-    @GetMapping(path="/linkpartner/checkemail", produces = "application/json")
+   @GetMapping(path="/linkpartner/checkemail", produces = "application/json")
     public boolean validateEmailPartner(@RequestParam String email, HttpSession session)
     {   User user = userService.findByEmail(email);
         User curr = (User) session.getAttribute("currentUser");
@@ -107,6 +108,7 @@ public class UserRestController {
         }
         return false;
     }
+
 
     /**
      * Processes if the User wants to remove a partner from linked partners, and removes the partner from the
@@ -156,8 +158,8 @@ public class UserRestController {
      * @param session
      * @return
      */
-    @GetMapping(path="/viewliked/remove", produces = "application/json")
-    public boolean removeFromApproved(@RequestParam String id, HttpSession session)
+    @GetMapping(path="/viewliked/remove__OLD", produces = "application/json")
+    public boolean removeFromApproved__OLD(@RequestParam String id, HttpSession session)
     {  User user = (User) session.getAttribute("currentUser");
         try {
             user.removeApprovedName(Integer.parseInt(id));
@@ -166,6 +168,32 @@ public class UserRestController {
         } catch(Error e){
             return false;
         }
+    }
+
+        /**
+     * Processes if the User wants to remove name from approved Names, and removes the name from the
+     * approved names
+     * @param id
+     * @param session
+     * @return
+     */
+    @GetMapping(path="/viewliked/remove", produces = "application/json")
+    public String removeFromApproved(
+        @RequestParam(required=true) String email,
+        @RequestParam(required=true)  String password, @RequestParam(required=true)  String id){  
+        
+            if (UserUtils.isAuthenticated(userService, email, password)) {
+                User user = userService.findByEmail(email);
+            try {
+                user.removeApprovedName(Integer.parseInt(id));
+                userService.save(user);
+                return "{'result':'true'}";
+            } catch(Error e){
+                return "{'result':'false'}";
+            }
+        }
+        return "{'message':'Villa í auðkenningu'}";
+
     }
 
     /**
@@ -202,6 +230,7 @@ public class UserRestController {
             User partner = userService.findById(id).get();
             p.addProperty("name", partner.getName());
             p.addProperty("email", partner.getEmail());
+            p.addProperty("id", partner.getId());
             partners.add(p);
         }
 
@@ -221,13 +250,15 @@ public class UserRestController {
         if (!UserUtils.isAuthenticated(userService, email, pass)) return "{}";
         User currentUser = userService.findByEmail(email);
         User linkPartner = userService.findByEmail(partner);
-        if(partner == null) return "'messge':'Notandi ekki til'";
-        if(!currentUser.getLinkedPartners().contains(linkPartner.getId())){
+        if(linkPartner == null) return "'message':'Notandi ekki til'";
+        System.out.print(currentUser.getLinkedPartners());
+        ArrayList<JsonObject> partners = new ArrayList<JsonObject>();
+
+        if(helperValidatingPartner(currentUser, linkPartner)){
             currentUser.addLinkedPartner(linkPartner.getId());
             linkPartner.addLinkedPartner(currentUser.getId());
             userService.save(currentUser);
-        }
-        ArrayList<JsonObject> partners = new ArrayList<JsonObject>();
+
         for(Long id : currentUser.getLinkedPartners()){
             JsonObject p = new JsonObject();
             User mapartner = userService.findById(id).get();
@@ -235,13 +266,30 @@ public class UserRestController {
             p.addProperty("email", mapartner.getEmail());
             partners.add(p);
         }
+
         Gson gson = new Gson();
         JsonArray partnerJSON = gson.toJsonTree(partners).getAsJsonArray();
         JsonObject partnersObj = new JsonObject();
         partnersObj.add("partners", partnerJSON);
 
         return partnersObj.toString();
+        }
+        return "'message': Þú ert nú þegar tengdur";
 
+    }
+
+    public boolean helperValidatingPartner(
+        User currentUser,
+        User linkPartner){
+        if(currentUser.getId() != linkPartner.getId()){
+            for (Long id : currentUser.getLinkedPartners()){
+                if(linkPartner.getId() == id){
+                    return false;
+                }
+            }
+            return true;
+        }
+        return false;
     }
 
 

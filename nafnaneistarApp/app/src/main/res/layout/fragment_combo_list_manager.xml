@@ -1,0 +1,116 @@
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
+
+    <data>
+
+    </data>
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_marginTop="56sp"
+        android:background="@color/background"
+        tools:context="xyz.nafnaneistar.activities.ViewLikedFragments.ComboListManagerFragment">
+
+        <!-- TODO: Update blank fragment layout -->
+
+        <LinearLayout
+            style="@style/tableStyle"
+            android:layout_width="343dp"
+            android:layout_height="45dp"
+            android:layout_marginBottom="17dp"
+            android:layout_marginTop="6dp"
+            android:background="@drawable/toptableborder"
+            android:orientation="horizontal"
+            app:layout_constraintBottom_toTopOf="@+id/rvComboList"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.558"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintVertical_bias="0.0">
+
+            <TextView
+                android:id="@+id/tvclListTitleNafn"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:gravity="center"
+                android:text="Nafn"
+                android:textSize="18sp"
+                android:textStyle="bold" />
+
+            <TextView
+                android:id="@+id/tvclListTitleRating"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:gravity="center"
+                android:text="Meðaleinkun"
+                android:textSize="18sp"
+                android:textStyle="bold" />
+
+            <TextView
+                android:id="@+id/tvclListTitleOperation"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:gravity="center"
+                android:text="@string/delete"
+                android:textSize="18sp"
+                android:textStyle="bold" />
+        </LinearLayout>
+
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/rvComboList"
+            android:layout_width="344dp"
+            android:layout_height="447dp"
+            android:background="@color/btn_color_lg"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.567"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintVertical_bias="0.326"
+            tools:listitem="@layout/combolist" />
+
+        <Button
+            android:id="@+id/btnViewLikedGoBack"
+            style="@style/buttonStyle"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/goBack"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.118"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/rvComboList"
+            app:layout_constraintVertical_bias="0.36" />
+
+        <Switch
+            android:id="@+id/swOrderBy"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="8dp"
+            android:text="@string/GroupByNameOrRating"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.314"
+            app:layout_constraintStart_toEndOf="@+id/btnViewLikedGoBack"
+            app:layout_constraintTop_toBottomOf="@+id/rvComboList"
+            app:layout_constraintVertical_bias="0.0" />
+
+        <Switch
+            android:id="@+id/swToggleGender"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/ShowGenderNames"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.183"
+            app:layout_constraintStart_toEndOf="@+id/btnViewLikedGoBack"
+            app:layout_constraintTop_toBottomOf="@+id/swOrderBy"
+            app:layout_constraintVertical_bias="0.387" />
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+</layout>

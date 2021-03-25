@@ -74,14 +74,14 @@
 
         <LinearLayout
             android:id="@+id/linearLayout"
-            android:layout_width="333dp"
-            android:layout_height="186dp"
+            android:layout_width="332dp"
+            android:layout_height="270dp"
+            android:layout_marginTop="96dp"
             android:orientation="vertical"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/btnLink"
-            app:layout_constraintVertical_bias="0.494">
+            app:layout_constraintTop_toBottomOf="@+id/btnLink">
 
             <LinearLayout
                 android:layout_width="match_parent"
@@ -90,18 +90,22 @@
 
                 <TextView
                     android:id="@+id/textView7"
-                    android:layout_width="139dp"
+                    android:layout_width="94dp"
                     android:layout_height="match_parent"
                     android:background="@color/btn_color"
+                    android:gravity="center_vertical"
+                    android:paddingStart="10dp"
+                    android:paddingEnd="10dp"
                     android:text="@string/hintNAme"
                     android:textColor="@color/font" />
 
                 <TextView
                     android:id="@+id/textView8"
-                    android:layout_width="87dp"
+                    android:layout_width="124dp"
                     android:layout_height="match_parent"
                     android:layout_weight="1"
                     android:background="@color/btn_color"
+                    android:gravity="center_vertical"
                     android:text="@string/hint_email"
                     android:textColor="@color/font" />
 
@@ -111,6 +115,7 @@
                     android:layout_height="match_parent"
                     android:layout_weight="1"
                     android:background="@color/btn_color"
+                    android:gravity="center_vertical"
                     android:text="@string/hintOption"
                     android:textColor="@color/font" />
             </LinearLayout>
@@ -119,7 +124,7 @@
             <ScrollView
                 android:id="@+id/svPartners"
                 android:layout_width="match_parent"
-                android:layout_height="136dp"
+                android:layout_height="238dp"
                 tools:layout_editor_absoluteX="75dp"
                 tools:layout_editor_absoluteY="532dp">
 
@@ -127,7 +132,7 @@
                     android:id="@+id/llsvPartner"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:orientation="vertical"/>
+                    android:orientation="vertical" />
 
             </ScrollView>
         </LinearLayout>

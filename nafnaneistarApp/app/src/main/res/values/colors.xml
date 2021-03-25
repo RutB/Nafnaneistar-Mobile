@@ -13,5 +13,6 @@
     <color name="btn_color">#A3D9B9</color>
     <color name="btn_color_lg">#C6E8D4</color>
     <color name="font">#7F7F7F</color>
+    <color name="menuFont">#444444</color>
 
 </resources>
