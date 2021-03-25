@@ -144,7 +144,7 @@ public class ViewLikedActivity extends AppCompatActivity {
         binding.tvViewLikedFemaleTitleStats.setText(femaleString, TextView.BufferType.SPANNABLE);
 
         String male = getString(R.string.vtViewLikedNameStatsTitleMale);
-        SpannableStringBuilder maleString = new SpannableStringBuilder(female + "  ");
+        SpannableStringBuilder maleString = new SpannableStringBuilder(male + "  ");
         maleString.setSpan(new ImageSpan(this, R.drawable.ic_gender_male, DynamicDrawableSpan.ALIGN_CENTER), male.length() + 1, male.length() + 2, Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
         binding.tvViewLikedMaleTitleStats.setText(maleString, TextView.BufferType.SPANNABLE);
     }

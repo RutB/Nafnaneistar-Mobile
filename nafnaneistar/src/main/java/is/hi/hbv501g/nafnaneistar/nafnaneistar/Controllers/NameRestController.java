@@ -23,8 +23,6 @@ import is.hi.hbv501g.nafnaneistar.nafnaneistar.Entities.User;
 import is.hi.hbv501g.nafnaneistar.nafnaneistar.Services.NameService;
 import is.hi.hbv501g.nafnaneistar.nafnaneistar.Services.UserService;
 import is.hi.hbv501g.nafnaneistar.utils.*;
-import net.minidev.json.JSONObject;
-
 /**
  * NameRestController contains methonds and function to process fetch calls from
  * the viewing template

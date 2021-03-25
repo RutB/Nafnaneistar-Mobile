@@ -1,5 +1,7 @@
 package xyz.nafnaneistar.activities.ViewLikedFragments;
 
+import android.app.ProgressDialog;
+import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
@@ -28,13 +30,16 @@ import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.DefaultItemAnimator;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
+import xyz.nafnaneistar.activities.NavbarFragment;
 import xyz.nafnaneistar.activities.SwipeActivity;
 import xyz.nafnaneistar.activities.items.ComboListItem;
 import xyz.nafnaneistar.controller.ApiController;
 import xyz.nafnaneistar.controller.VolleyCallBack;
+import xyz.nafnaneistar.helpers.Loaders;
 import xyz.nafnaneistar.helpers.Prefs;
 import xyz.nafnaneistar.loginactivity.R;
 import xyz.nafnaneistar.loginactivity.databinding.FragmentComboListManagerBinding;
+import xyz.nafnaneistar.model.User;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -58,8 +63,6 @@ public class ComboListManagerFragment extends Fragment implements  ComboListName
         // Required empty public constructor
     }
 
-
-    // TODO: Rename and change types and number of parameters
     public static ComboListManagerFragment newInstance() {
         ComboListManagerFragment fragment = new ComboListManagerFragment();
         return fragment;
@@ -71,9 +74,9 @@ public class ComboListManagerFragment extends Fragment implements  ComboListName
         prefs = new Prefs(getActivity());
         partnerId = getArguments().getLong("partnerId");
         comboList = new ArrayList<>();
-
-
     }
+
+
 
 
     private void setAdapater() {
@@ -112,27 +115,55 @@ public class ComboListManagerFragment extends Fragment implements  ComboListName
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         binding = DataBindingUtil.inflate(inflater, R.layout.fragment_combo_list_manager, container, false);
+        Fragment navbar = getParentFragmentManager().findFragmentById(R.id.navbar);
+
+        if (navbar == null) {
+            navbar = new NavbarFragment();
+            getParentFragmentManager().beginTransaction()
+                    .add(R.id.clComboListManager, navbar)
+                    .commit();
+        }
         View view = binding.getRoot();
+        String[] user = prefs.getUser();
+        String user_email = user[0];
+        String pass = user[1];
+        ProgressDialog dialog = Loaders.initDialog("Sæki listann...",getContext(),true);
+        ApiController.getInstance().getNameCardsAndRating(partnerId, user_email, pass, new VolleyCallBack<ArrayList<ComboListItem>>() {
 
-
-        getNameCardsAndRating(partnerId, (VolleyCallBack) () -> {
-            setAdapater();
-            comboListAll.addAll(comboList);
-            if(comboList.size()==0){
-                Snackbar.make(binding.rvComboList, R.string.NoComboNames, Snackbar.LENGTH_SHORT)
-                        .setAction(R.string.SwipeMoreNames, view1 -> {
-                            Intent i = new Intent(getActivity(), SwipeActivity.class);
-                            getActivity().finish();
-                            startActivity(i);
-                        }).show();
-            }
-            else {
-                if(genderSwitchState == 0) filterByGender(comboList,1);
-                else filterByGender(comboList,0);
-                sortByName(comboList);
+            @Override
+            public ArrayList<ComboListItem> onSuccess() {
+                return null;
             }
 
+            @Override
+            public void onResponse(ArrayList<ComboListItem> response) {
+                setAdapater();
+                comboList.addAll(response);
+                comboListAll.addAll(comboList);
+                dialog.dismiss();
+                if(comboList.size()==0){
+                    Snackbar.make(binding.rvComboList, R.string.NoComboNames, Snackbar.LENGTH_SHORT)
+                            .setAction(R.string.SwipeMoreNames, view1 -> {
+                                Intent i = new Intent(getActivity(), SwipeActivity.class);
+                                getActivity().finish();
+                                startActivity(i);
+                            }).show();
+                }
+                else {
+                    if(genderSwitchState == 0) filterByGender(comboList,1);
+                    else filterByGender(comboList,0);
+                    sortByName(comboList);
+                }
+            }
+
+            @Override
+            public void onError(String error) {
+                dialog.dismiss();
+                Toast.makeText(getContext(), error, Toast.LENGTH_SHORT)
+                        .show();
+            }
         });
+
         binding.btnViewLikedGoBack.setOnClickListener(this::removeListView);
         return view;
     }
@@ -219,11 +250,9 @@ public class ComboListManagerFragment extends Fragment implements  ComboListName
                         }
                     }
                     Log.d("list", "getNameCardsAndRating: JOB DONE");
-
                     cb.onSuccess();
-
                 }, error -> {
-            Toast.makeText(getContext(), R.string.errorGettingPartners, Toast.LENGTH_SHORT)
+                Toast.makeText(getContext(), R.string.errorGettingPartners, Toast.LENGTH_SHORT)
                     .show();
             Log.d("Test", "CheckLogin: " + error.toString());
         });

@@ -117,7 +117,8 @@ public class NavbarFragment extends Fragment {
         binding = DataBindingUtil.inflate(inflater, R.layout.fragment_navbar, container, false);
         binding.navViewDrawer.setVisibility(View.INVISIBLE);
         binding.navViewDrawer.bringToFront();
-        //createIcons();
+
+
         binding.navViewTop.setOnNavigationItemSelectedListener(this::onNavigationItemSelected);
         binding.navViewDrawer.setNavigationItemSelectedListener(this::onNavigationItemSelected);
 

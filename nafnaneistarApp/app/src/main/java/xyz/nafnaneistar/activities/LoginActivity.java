@@ -1,34 +1,29 @@
 package xyz.nafnaneistar.activities;
 
-import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.databinding.DataBindingUtil;
 
+import xyz.nafnaneistar.activities.items.ComboListItem;
+import xyz.nafnaneistar.controller.VolleyCallBack;
+import xyz.nafnaneistar.helpers.Loaders;
 import xyz.nafnaneistar.helpers.Prefs;
 import xyz.nafnaneistar.loginactivity.R;
 import xyz.nafnaneistar.controller.ApiController;
 import xyz.nafnaneistar.model.User;
 import xyz.nafnaneistar.loginactivity.databinding.ActivityLoginBinding;
 
-import android.content.Context;
+import android.app.Activity;
+import android.app.ProgressDialog;
 import android.content.Intent;
-import android.graphics.Color;
 import android.os.Bundle;
-import android.text.Layout;
 import android.util.Log;
 import android.view.View;
-import android.widget.EditText;
 import android.widget.Toast;
 
-import com.android.volley.Request;
-import com.android.volley.toolbox.JsonObjectRequest;
 import com.google.android.material.snackbar.Snackbar;
-import com.google.gson.Gson;
-
-import org.apache.http.client.utils.URIBuilder;
 
 import java.net.URISyntaxException;
-import java.util.Set;
+import java.util.ArrayList;
 
 public class LoginActivity extends AppCompatActivity {
     private ActivityLoginBinding binding;
@@ -83,22 +78,37 @@ public class LoginActivity extends AppCompatActivity {
         }
         String email = user[0];
         String pass = user[1];
-        String listeningPath = "login/check";
-        URIBuilder b = new URIBuilder(ApiController.getDomainURL()+listeningPath);
-        b.addParameter("email",email);
-        b.addParameter("password",pass);
-        JsonObjectRequest jsonObjReq = new JsonObjectRequest(Request.Method.GET,b.build().toString(),null,
-                response -> {
-                    Gson g = new Gson();
-                    User p = g.fromJson(String.valueOf(response), User.class);
-                    if(p.getName() != null){
-                        Intent i = new Intent( LoginActivity.this, LinkPartnerActivity.class);
-                        finish();
-                        startActivity(i);
-                    }
-                },error -> {
-        });
-        ApiController.getInstance().addToRequestQueue(jsonObjReq);
+        ApiController.getInstance().login(new VolleyCallBack<User>() {
+            @Override
+            public ArrayList<ComboListItem> onSuccess() {
+                return null;
+            }
+
+            @Override
+            public void onResponse(User p) {
+                if(p.getName() != null){
+                    Toast.makeText(LoginActivity.this, R.string.loginSuccess ,Toast.LENGTH_SHORT)
+                            .show();
+                    prefs.saveUser(email,pass);
+                    startActivity(new Intent( LoginActivity.this, SwipeActivity.class));
+                }
+                else {
+                    Snackbar.make(binding.etEmail,R.string.loginFailed, Snackbar.LENGTH_INDEFINITE)
+                            .setAction(R.string.btnSignup, view1 -> {
+                                Log.d("Snack", "showInfo: SnackBarMore");
+                                Intent i = new Intent(LoginActivity.this, SignupActivity.class);
+                                startActivity(i);
+                            })
+                            .show();
+                }
+            }
+
+            @Override
+            public void onError(String error) {
+                Toast.makeText(LoginActivity.this, R.string.loginFailed ,Toast.LENGTH_SHORT)
+                        .show();
+            }
+        },email,pass);
     }
 
     /**
@@ -106,6 +116,7 @@ public class LoginActivity extends AppCompatActivity {
      * @param view
      */
     public void CheckLogin(View view) throws URISyntaxException {
+        ProgressDialog dialog = Loaders.initDialog("Skrái inn", view.getContext(),true);
         String email = binding.etEmail.getText().toString().trim();
         String pass = binding.etPassword.getText().toString().trim();
         if(email.length() == 0 || pass.length()==0){
@@ -113,35 +124,40 @@ public class LoginActivity extends AppCompatActivity {
                     .show();
             return;
         }
-        String listeningPath = "login/check";
-        URIBuilder b = new URIBuilder(ApiController.getDomainURL()+listeningPath);
-        b.addParameter("email",email);
-        b.addParameter("password",pass);
-        JsonObjectRequest jsonObjReq = new JsonObjectRequest(Request.Method.GET,b.build().toString(),null,
-                response -> {
-                    Gson g = new Gson();
-                    User p = g.fromJson(String.valueOf(response), User.class);
-                    if(p.getName() != null){
-                        Toast.makeText(LoginActivity.this, R.string.loginSuccess ,Toast.LENGTH_SHORT)
-                                .show();
-                        prefs.saveUser(email,pass);
-                        startActivity(new Intent( LoginActivity.this, SwipeActivity.class));
-                    }
-                    else {
-                        Snackbar.make(binding.etEmail,R.string.loginFailed, Snackbar.LENGTH_INDEFINITE)
-                                .setAction(R.string.btnSignup, view1 -> {
-                                    Log.d("Snack", "showInfo: SnackBarMore");
-                                    Intent i = new Intent(LoginActivity.this, SignupActivity.class);
-                                    startActivity(i);
-                                })
-                                .show();
-                    }
+        ApiController.getInstance().login(new VolleyCallBack<User>() {
+            @Override
+            public void onResponse(User p) {
+                if(p.getName() != null){
+                    Toast.makeText(LoginActivity.this, R.string.loginSuccess ,Toast.LENGTH_SHORT)
+                            .show();
+                    prefs.saveUser(email,pass);
+                    dialog.dismiss();
+                    startActivity(new Intent( LoginActivity.this, SwipeActivity.class));
+                    finish();
+                }
+                else {
+                    Snackbar.make(binding.etEmail,R.string.loginFailed, Snackbar.LENGTH_INDEFINITE)
+                            .setAction(R.string.btnSignup, view1 -> {
+                                Log.d("Snack", "showInfo: SnackBarMore");
+                                Intent i = new Intent(LoginActivity.this, SignupActivity.class);
+                                startActivity(i);
+                            })
+                            .show();
+                }
+            }
 
-                },error -> {
+            @Override
+            public ArrayList<ComboListItem> onSuccess() {
+                return null;
+            }
+
+            @Override
+            public void onError(String error) {
+                dialog.dismiss();
                 Toast.makeText(LoginActivity.this, R.string.loginFailed ,Toast.LENGTH_SHORT)
-                    .show();
-        });
-            ApiController.getInstance().addToRequestQueue(jsonObjReq);
+                        .show();
+            }
+        },email,pass);
 
     }
 

@@ -84,4 +84,5 @@
     <string name="SwipeMoreNames">Skoða fleiri nöfn?</string>
     <string name="operationSuccess">Aðgerð Tókst</string>
     <string name="ShowGenderNames">Sýna KVK/KK Nöfn</string>
+    <string name="FetchingList">Sæki lista</string>
 </resources>
