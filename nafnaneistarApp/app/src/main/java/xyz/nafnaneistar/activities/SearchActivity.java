@@ -2,6 +2,9 @@ package xyz.nafnaneistar.activities;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.databinding.DataBindingUtil;
+import androidx.recyclerview.widget.DefaultItemAnimator;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 
 import android.content.Intent;
 import android.os.Bundle;
@@ -18,6 +21,7 @@ import org.apache.http.client.utils.URIBuilder;
 import org.json.JSONException;
 
 import java.net.URISyntaxException;
+import java.util.ArrayList;
 import java.util.jar.Attributes;
 
 import xyz.nafnaneistar.controller.ApiController;
@@ -37,6 +41,11 @@ public class SearchActivity extends AppCompatActivity {
     // private user currentUser = new User();
     private Prefs prefs;
     private String tvNameResult;
+    private ArrayList<NameCard> nameCardList;
+    private RecyclerView recyclerView;
+    SearchNameAdapter adapter;
+
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -44,6 +53,7 @@ public class SearchActivity extends AppCompatActivity {
         // setContentView(R.layout.activity_search);
         prefs = new Prefs(SearchActivity.this);
         binding = DataBindingUtil.setContentView(this, layout.activity_search);
+        recyclerView = binding.rvSearchResults;
         binding.btnSearchName.setOnClickListener(view -> {
             try {
                 SearchName(view);
@@ -51,6 +61,16 @@ public class SearchActivity extends AppCompatActivity {
                 e.printStackTrace();
             }
         });
+        setAdapter();
+    }
+
+    private void setAdapter() {
+        SearchNameAdapter adapter = new SearchNameAdapter(nameCardList);
+        RecyclerView.LayoutManager layoutManager = new LinearLayoutManager(getApplicationContext());
+        recyclerView.setLayoutManager(layoutManager);
+        // TODO: Custom animator
+        recyclerView.setItemAnimator(new DefaultItemAnimator());
+        recyclerView.setAdapter(adapter);
     }
 
     /**
@@ -58,6 +78,7 @@ public class SearchActivity extends AppCompatActivity {
      *  User authentication.
      *  Mata gögn inn viðmótið í lista.
      *  Add og Remove hnappar á lista við hvert nafn.
+     *  Deala við þegar leitarreitur er tómur og ýtt er á "leita"
      *
      * WIP: Eins og er þá skilar þetta fall leitarniðustöðu í Logcat.
      * @param view
@@ -76,11 +97,14 @@ public class SearchActivity extends AppCompatActivity {
                     NameCard queryResults = g.fromJson(String.valueOf(response), NameCard.class);
                     try {
                         Log.d("nameSearch", "Searchname: "+response.getJSONArray("results").toString());
+
                     } catch (JSONException e) {
                         e.printStackTrace();
+
                     }
                 },error -> {
                     Log.d("searchActivity", "searchActivity " + error.toString());
+                    Toast.makeText(SearchActivity.this, R.string.name_search_failed, Toast.LENGTH_SHORT);
         });
         ApiController.getInstance().addToRequestQueue(jsonObjReq);
     }
