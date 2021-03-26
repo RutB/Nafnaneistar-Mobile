@@ -7,7 +7,9 @@ import androidx.fragment.app.FragmentManager;
 import xyz.nafnaneistar.activities.ViewLikedFragments.ComboListFragment;
 import xyz.nafnaneistar.activities.ViewLikedFragments.ComboListManagerFragment;
 import xyz.nafnaneistar.activities.ViewLikedFragments.NameComboFragment;
+import xyz.nafnaneistar.activities.items.ComboListItem;
 import xyz.nafnaneistar.controller.ApiController;
+import xyz.nafnaneistar.controller.VolleyCallBack;
 import xyz.nafnaneistar.helpers.Prefs;
 import xyz.nafnaneistar.loginactivity.R;
 import xyz.nafnaneistar.loginactivity.databinding.ActivityViewLikedBinding;
@@ -31,8 +33,10 @@ import com.google.gson.Gson;
 import org.apache.http.client.utils.URIBuilder;
 import org.json.JSONArray;
 import org.json.JSONException;
+import org.json.JSONObject;
 
 import java.net.URISyntaxException;
+import java.util.ArrayList;
 
 public class ViewLikedActivity extends AppCompatActivity {
     private ActivityViewLikedBinding binding;
@@ -65,9 +69,6 @@ public class ViewLikedActivity extends AppCompatActivity {
         binding.tvViewLikedMenuYfirlit.setOnClickListener(view -> loadStatMenu());
         binding.tvViewLikedMenuNameCombo.setOnClickListener(view -> loadComboNameMenu());
         binding.tvViewLikedMenuCombinedList.setOnClickListener(view -> loadComboListMenu());
-
-
-
     }
 
     private void loadStatMenu(){
@@ -81,7 +82,6 @@ public class ViewLikedActivity extends AppCompatActivity {
         changedSelectedMenu(binding.tvViewLikedMenuCombinedList);
         hideAllMenuPages();
         Fragment f = fragmentManager.findFragmentById(R.layout.fragment_combo_list);
-
         if (f == null) {
             f = new ComboListFragment();
             fragmentManager.beginTransaction()
@@ -91,9 +91,7 @@ public class ViewLikedActivity extends AppCompatActivity {
     }
     @Override
     public void onBackPressed() {
-
         Fragment f = fragmentManager.findFragmentByTag("listViewCombo");
-
         if (f.isVisible()) {
             removeFragment("listViewCombo");
         } else {
@@ -162,60 +160,49 @@ public class ViewLikedActivity extends AppCompatActivity {
     }
 
     private void getStatData(){
-        String [] user = prefs.getUser();
-        String email = user[0];
-        String pass = user[1];
-        String listeningPath = "viewliked";
-        URIBuilder b = null;
-        String url = "";
-        try {
-            b = new URIBuilder(ApiController.getDomainURL()+listeningPath);
-            b.addParameter("email",email);
-            b.addParameter("pass",pass);
-            url = b.build().toString();
-        } catch (URISyntaxException e) {
-            e.printStackTrace();
-        }
+        ApiController.getInstance().getStatData(this, new VolleyCallBack<JSONObject>() {
+            @Override
+            public ArrayList<ComboListItem> onSuccess() {
+                return null;
+            }
 
-        JsonObjectRequest jsonObjReq = new JsonObjectRequest(Request.Method.GET,url,null,
-                response -> {
-                    try {
-                        binding.tvViewLikedUserName.setText(response.getString("name"));
-                        JSONArray maleStats = response.getJSONArray("malestats");
-                        String approvedMale = String.format("Samþykkt %s nöfn", maleStats.get(0).toString());
-                        String disapprovedMale = String.format("Hafnað %s nöfnum", maleStats.get(1).toString());
-                        String leftMale = String.format("%s nöfn ósnert", maleStats.get(2).toString());
-                        binding.tvViewLikedMaleStatsApproved.setText(approvedMale);
-                        binding.tvViewLikedMaleStatsDisapproved.setText(disapprovedMale);
-                        binding.tvViewLikedMaleStatsLeft.setText(leftMale);
-                        JSONArray femaleStats = response.getJSONArray("femalestats");
-                        String approvedFemale = String.format("Samþykkt %s nöfn", femaleStats.get(0).toString());
-                        String disapprovedFemale = String.format("Hafnað %s nöfnum", femaleStats.get(1).toString());
-                        String leftFemale = String.format("%s nöfn ósnert", femaleStats.get(2).toString());
-                        binding.tvFemaleStatApproved.setText(approvedFemale);
-                        binding.tvFemaleStatRejected.setText(disapprovedFemale);
-                        binding.tvFemalestatsLeft.setText(leftFemale);
-                    } catch (JSONException e) {
-                        e.printStackTrace();
-                    }
-                },error -> {
-                    Toast.makeText(ViewLikedActivity.this, getResources().getString(R.string.errorRetrievingData) ,Toast.LENGTH_SHORT)
-                    .show();
-                    Intent i = new Intent(ViewLikedActivity.this, LoginActivity.class);
-                    finish();
-                    prefs.Logout();
-                    startActivity(i);
-            Log.d("viewliked", "getData: " + error.getMessage());
+            @Override
+            public void onResponse(JSONObject response) {
+                try {
+                    binding.tvViewLikedUserName.setText(response.getString("name"));
+                    JSONArray maleStats = response.getJSONArray("malestats");
+                    String approvedMale = String.format("Samþykkt %s nöfn", maleStats.get(0).toString());
+                    String disapprovedMale = String.format("Hafnað %s nöfnum", maleStats.get(1).toString());
+                    String leftMale = String.format("%s nöfn ósnert", maleStats.get(2).toString());
+                    binding.tvViewLikedMaleStatsApproved.setText(approvedMale);
+                    binding.tvViewLikedMaleStatsDisapproved.setText(disapprovedMale);
+                    binding.tvViewLikedMaleStatsLeft.setText(leftMale);
+                    JSONArray femaleStats = response.getJSONArray("femalestats");
+                    String approvedFemale = String.format("Samþykkt %s nöfn", femaleStats.get(0).toString());
+                    String disapprovedFemale = String.format("Hafnað %s nöfnum", femaleStats.get(1).toString());
+                    String leftFemale = String.format("%s nöfn ósnert", femaleStats.get(2).toString());
+                    binding.tvFemaleStatApproved.setText(approvedFemale);
+                    binding.tvFemaleStatRejected.setText(disapprovedFemale);
+                    binding.tvFemalestatsLeft.setText(leftFemale);
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                }
+            }
+
+            @Override
+            public void onError(String error) {
+                Toast.makeText(ViewLikedActivity.this, error ,Toast.LENGTH_SHORT)
+                        .show();
+                Intent i = new Intent(ViewLikedActivity.this, LoginActivity.class);
+                finish();
+                prefs.Logout();
+                startActivity(i);
+            }
         });
-        ApiController.getInstance().addToRequestQueue(jsonObjReq);
     }
 
 
 
-    /**
-     * checks if the user is already loggedn in
-     * @param user
-     */
     public void loadCurrentUser() throws URISyntaxException {
         String[] user = prefs.getUser();
         String email = user[0];

@@ -1,5 +1,6 @@
 package xyz.nafnaneistar.activities.ViewLikedFragments;
 
+import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
@@ -15,6 +16,7 @@ import android.widget.Toast;
 import com.android.volley.Request;
 import com.android.volley.toolbox.JsonObjectRequest;
 import com.google.android.material.snackbar.Snackbar;
+import com.google.gson.JsonObject;
 
 import org.apache.http.client.utils.URIBuilder;
 import org.json.JSONArray;
@@ -128,7 +130,7 @@ public class ComboListManagerFragment extends Fragment implements  ComboListName
         String[] user = prefs.getUser();
         String user_email = user[0];
         String pass = user[1];
- 
+
 
         ApiController.getInstance().getNameCardsAndRating(partnerId, user_email, pass, new VolleyCallBack<ArrayList<ComboListItem>>() {
 
@@ -210,90 +212,30 @@ public class ComboListManagerFragment extends Fragment implements  ComboListName
     }
 
 
-
-
-    public void getNameCardsAndRating(Long partnerId, final VolleyCallBack cb) {
-        String[] user = prefs.getUser();
-        String user_email = user[0];
-        String pass = user[1];
-        String listeningPath = "viewliked/combolist";
-        URIBuilder b = null;
-        try {
-            b = new URIBuilder(ApiController.getDomainURL() + listeningPath);
-        } catch (URISyntaxException e) {
-            e.printStackTrace();
-        }
-        b.addParameter("email", user_email);
-        b.addParameter("pass", pass);
-        b.addParameter("pid", String.valueOf(partnerId));
-        JsonObjectRequest jsonObjReq = new JsonObjectRequest(Request.Method.GET, b.toString(), null,
-                response -> {
-                    JSONArray namecards = null;
-                    try {
-                        namecards = response.getJSONArray("namecards");
-                    } catch (JSONException e) {
-                        e.printStackTrace();
-                    }
-                    for (int i = 0; i < namecards.length(); i++) {
-                        try {
-                            JSONObject nc = (JSONObject) namecards.get(i);
-                            comboList.add(new ComboListItem(
-                                    nc.getInt("id"),
-                                    nc.getString("name"),
-                                    nc.getInt("rating"),
-                                    nc.getInt("gender")
-                            ));
-
-
-                        } catch (JSONException e) {
-                            e.printStackTrace();
-                        }
-                    }
-                    Log.d("list", "getNameCardsAndRating: JOB DONE");
-                    cb.onSuccess();
-                }, error -> {
-                Toast.makeText(getContext(), R.string.errorGettingPartners, Toast.LENGTH_SHORT)
-                    .show();
-            Log.d("Test", "CheckLogin: " + error.toString());
-        });
-        ApiController.getInstance().addToRequestQueue(jsonObjReq);
-    }
-
     @Override
     public void onItemClick(int position) {
        removeFromApprovedList(comboList.get(position).getId(),position);
     }
 
     public void removeFromApprovedList(int namecardId, int position){
-        String [] user = prefs.getUser();
-        String email = user[0];
-        String pass = user[1];
-        String listeningPath = "viewliked/remove";
-        URIBuilder b = null;
-        String url = "";
-        try {
-            b = new URIBuilder(ApiController.getDomainURL()+listeningPath);
-            b.addParameter("email",email);
-            b.addParameter("password",pass);
-            b.addParameter("id", String.valueOf(namecardId));
-
-            url = b.build().toString();
-        } catch (URISyntaxException e) {
-            e.printStackTrace();
-        }
-
-        JsonObjectRequest jsonObjReq = new JsonObjectRequest(Request.Method.GET,url,null,
-                response -> {
-                    Toast.makeText(getContext(), getResources().getString(R.string.operationSuccess) ,Toast.LENGTH_SHORT)
-                            .show();
-                    comboList.remove(position);
-                    adapter.notifyDataSetChanged();
-
-                },error -> {
-                Toast.makeText(getContext(), getResources().getString(R.string.errorRetrievingData) ,Toast.LENGTH_SHORT)
+        ApiController.getInstance().removeFromApprovedList(namecardId,position, (Activity) getContext(), new VolleyCallBack<JSONObject>() {
+            @Override
+            public ArrayList<ComboListItem> onSuccess() {
+                Toast.makeText(getContext(), getResources().getString(R.string.operationSuccess) ,Toast.LENGTH_SHORT)
                         .show();
+                comboList.remove(position);
+                adapter.notifyDataSetChanged();
+                return null;
+            }
+            @Override
+            public void onResponse(JSONObject response) {
+            }
+            @Override
+            public void onError(String error) {
+                Toast.makeText(getContext(), error ,Toast.LENGTH_SHORT)
+                        .show();
+            }
         });
-        ApiController.getInstance().addToRequestQueue(jsonObjReq);
 
     }
 }

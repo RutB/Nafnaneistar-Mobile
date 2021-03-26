@@ -1,6 +1,16 @@
 package xyz.nafnaneistar.controller;
 
+import android.app.Activity;
 import android.app.Application;
+import android.content.Intent;
+import android.text.Spannable;
+import android.text.SpannableStringBuilder;
+import android.text.style.DynamicDrawableSpan;
+import android.text.style.ImageSpan;
+import android.util.Log;
+import android.view.View;
+import android.widget.TextView;
+import android.widget.Toast;
 
 import com.android.volley.Request;
 import com.android.volley.RequestQueue;
@@ -17,8 +27,13 @@ import org.json.JSONObject;
 import java.net.URISyntaxException;
 import java.util.ArrayList;
 
+import xyz.nafnaneistar.activities.LoginActivity;
+import xyz.nafnaneistar.activities.SwipeActivity;
+import xyz.nafnaneistar.activities.ViewLikedActivity;
 import xyz.nafnaneistar.activities.items.ComboListItem;
+import xyz.nafnaneistar.helpers.Prefs;
 import xyz.nafnaneistar.loginactivity.R;
+import xyz.nafnaneistar.model.NameCard;
 import xyz.nafnaneistar.model.User;
 
 /**
@@ -115,6 +130,8 @@ public class ApiController extends Application {
         ApiController.getInstance().addToRequestQueue(jsonObjReq);
     }
 
+
+
     public void getNameCardsAndRating(Long partnerId,String user_email,String pass, VolleyCallBack<ArrayList<ComboListItem>> volleyCallBack) {
         ArrayList<ComboListItem> comboList = new ArrayList<>();
         String listeningPath = "viewliked/combolist";
@@ -157,5 +174,112 @@ public class ApiController extends Application {
         ApiController.getInstance().addToRequestQueue(jsonObjReq);
     }
 
+    public void removeFromApprovedList(int namecardId, int position, Activity context, VolleyCallBack<JSONObject> volleyCallBack){
+        Prefs prefs = new Prefs(context);
+        String [] user = prefs.getUser();
+        String email = user[0];
+        String pass = user[1];
+        String listeningPath = "viewliked/remove";
+        URIBuilder b = null;
+        String url = "";
+        try {
+            b = new URIBuilder(ApiController.getDomainURL()+listeningPath);
+            b.addParameter("email",email);
+            b.addParameter("password",pass);
+            b.addParameter("id", String.valueOf(namecardId));
 
+            url = b.build().toString();
+        } catch (URISyntaxException e) {
+            e.printStackTrace();
+        }
+
+        JsonObjectRequest jsonObjReq = new JsonObjectRequest(Request.Method.GET,url,null,
+                response -> {
+                    volleyCallBack.onSuccess();
+                    volleyCallBack.onResponse(response);
+
+                },error -> {
+                    volleyCallBack.onError(getString(R.string.errorRetrievingData));
+        });
+        ApiController.getInstance().addToRequestQueue(jsonObjReq);
+
+    }
+
+    public void getNewName(boolean male, boolean female, Activity context, VolleyCallBack<NameCard> volleyCallBack) throws URISyntaxException {
+        Prefs prefs = new Prefs(context);
+        String[] user = prefs.getUser();
+        String email = user[0];
+        String pass = user[1];
+        String listeningPath = "swipe/newname";
+        URIBuilder b = new URIBuilder(ApiController.getDomainURL() + listeningPath);
+        b.addParameter("email", email);
+        b.addParameter("pass", pass);
+        if (female)
+            b.addParameter("female", "true");
+        if (male)
+            b.addParameter("male", "true");
+
+        JsonObjectRequest jsonObjReq = new JsonObjectRequest(Request.Method.GET, b.build().toString(), null,
+                response -> {
+
+                    Gson g = new Gson();
+                    NameCard nc = g.fromJson(String.valueOf(response), NameCard.class);
+                    volleyCallBack.onResponse(nc);
+
+                }, error -> {
+                    volleyCallBack.onError(getString(R.string.systemError));
+        });
+        ApiController.getInstance().addToRequestQueue(jsonObjReq);
+    }
+
+    public void chooseName(String action, int currentCardId,boolean male, boolean female, Activity context, VolleyCallBack<NameCard> volleyCallBack) throws URISyntaxException {
+        Prefs prefs = new Prefs(context);
+        String[] user = prefs.getUser();
+        String email = user[0];
+        String pass = user[1];
+        String listeningPath = "swipe/" + action;
+        URIBuilder b = new URIBuilder(ApiController.getDomainURL() + listeningPath);
+        b.addParameter("id", String.valueOf(currentCardId));
+        b.addParameter("email", email);
+        b.addParameter("pass", pass);
+        if (female)
+            b.addParameter("female", "true");
+        if (male)
+            b.addParameter("male", "true");
+        JsonObjectRequest jsonObjReq = new JsonObjectRequest(Request.Method.GET, b.build().toString(), null,
+                response -> {
+                    Gson g = new Gson();
+                    NameCard nc = g.fromJson(String.valueOf(response), NameCard.class);
+                    volleyCallBack.onResponse(nc);
+
+                }, error -> {
+                    volleyCallBack.onError(getString(R.string.systemError));
+        });
+        ApiController.getInstance().addToRequestQueue(jsonObjReq);
+    }
+
+    public void getStatData(Activity context,VolleyCallBack<JSONObject> volleyCallBack){
+        Prefs prefs = new Prefs(context);
+        String [] user = prefs.getUser();
+        String email = user[0];
+        String pass = user[1];
+        String listeningPath = "viewliked";
+        URIBuilder b = null;
+        String url = "";
+        try {
+            b = new URIBuilder(ApiController.getDomainURL()+listeningPath);
+            b.addParameter("email",email);
+            b.addParameter("pass",pass);
+            url = b.build().toString();
+        } catch (URISyntaxException e) {
+            e.printStackTrace();
+        }
+        JsonObjectRequest jsonObjReq = new JsonObjectRequest(Request.Method.GET,url,null,
+                response -> {
+                    volleyCallBack.onResponse(response);
+                },error -> {
+                    volleyCallBack.onError(getString(R.string.errorRetrievingData));
+        });
+        ApiController.getInstance().addToRequestQueue(jsonObjReq);
+    }
 }
