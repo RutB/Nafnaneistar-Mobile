@@ -3,7 +3,6 @@ package xyz.nafnaneistar.activities.ViewLikedFragments;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -14,7 +13,6 @@ import xyz.nafnaneistar.activities.items.ComboListItem;
 import xyz.nafnaneistar.loginactivity.R;
 
 import java.util.ArrayList;
-import java.util.List;
 
 public class ComboListNameCardRecyclerViewAdapter extends RecyclerView.Adapter<ComboListNameCardRecyclerViewAdapter.ViewHolder> {
     private ArrayList<ComboListItem> comboList;
@@ -31,9 +29,9 @@ public class ComboListNameCardRecyclerViewAdapter extends RecyclerView.Adapter<C
 
         public ViewHolder(final View view){
             super(view);
-            name = view.findViewById(R.id.comboListName);
-            rating = view.findViewById(R.id.comboListRating);
-            delete = view.findViewById(R.id.comboListOperations);
+            name = view.findViewById(R.id.linkComboListName);
+            rating = view.findViewById(R.id.LinkComboListEmail);
+            delete = view.findViewById(R.id.LinkComboListDel);
         }
     }
     @NonNull

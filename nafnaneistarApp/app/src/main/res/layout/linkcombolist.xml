@@ -7,13 +7,11 @@
     android:layout_weight="1"
     android:dividerPadding="4dp"
     android:isScrollContainer="true"
-    android:showDividers="middle"><![CDATA[
-
-    />
+    android:showDividers="middle">
 
 
 
-    ]]>
+
 
     <TextView
         android:id="@+id/linkComboListName"
@@ -38,11 +36,11 @@
         android:id="@+id/LinkComboListEmail"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_weight="1"
+        android:layout_weight="2"
         android:gravity="center|fill"
         android:paddingBottom="8dp"
         android:paddingTop="8dp"
-        android:text="@string/placeholderHearts"
+        android:text=""
         android:textAlignment="center"
         android:textAppearance="?attr/textAppearanceListItem" />
 
