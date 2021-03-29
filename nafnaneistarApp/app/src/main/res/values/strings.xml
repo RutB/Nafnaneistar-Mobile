@@ -85,4 +85,5 @@
     <string name="operationSuccess">Aðgerð Tókst</string>
     <string name="ShowGenderNames">Sýna KVK/KK Nöfn</string>
     <string name="FetchingList">Sæki lista</string>
+    <string name="NoNameYet">Enginn Nöfn kominn</string>
 </resources>

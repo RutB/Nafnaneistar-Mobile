@@ -13,7 +13,7 @@ import java.util.ArrayList;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.databinding.DataBindingUtil;
-import xyz.nafnaneistar.activities.items.ComboListItem;
+import xyz.nafnaneistar.activities.items.NameCardItem;
 import xyz.nafnaneistar.controller.ApiController;
 import xyz.nafnaneistar.controller.VolleyCallBack;
 import xyz.nafnaneistar.helpers.Prefs;
@@ -79,7 +79,7 @@ public class LoginActivity extends AppCompatActivity {
         String pass = user[1];
         ApiController.getInstance().login(new VolleyCallBack<User>() {
             @Override
-            public ArrayList<ComboListItem> onSuccess() {
+            public ArrayList<NameCardItem> onSuccess() {
                 return null;
             }
 
@@ -143,7 +143,7 @@ public class LoginActivity extends AppCompatActivity {
             }
 
             @Override
-            public ArrayList<ComboListItem> onSuccess() {
+            public ArrayList<NameCardItem> onSuccess() {
                 return null;
             }
 

@@ -1,23 +1,16 @@
 package xyz.nafnaneistar.activities;
 
 import android.content.Intent;
-import android.content.SharedPreferences;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.View;
 import android.widget.Toast;
 
-import com.android.volley.Request;
-import com.android.volley.toolbox.JsonObjectRequest;
-import com.google.android.material.snackbar.Snackbar;
 import com.google.gson.Gson;
-import com.google.gson.JsonObject;
 
-import org.apache.http.client.utils.URIBuilder;
 import org.json.JSONException;
 import org.json.JSONObject;
 
-import xyz.nafnaneistar.activities.items.ComboListItem;
+import xyz.nafnaneistar.activities.items.NameCardItem;
 import xyz.nafnaneistar.controller.ApiController;
 import xyz.nafnaneistar.controller.VolleyCallBack;
 import xyz.nafnaneistar.helpers.Prefs;
@@ -103,7 +96,7 @@ public class SignupActivity extends AppCompatActivity {
         }
         ApiController.getInstance().signup(new VolleyCallBack<JSONObject>() {
             @Override
-            public ArrayList<ComboListItem> onSuccess() {
+            public ArrayList<NameCardItem> onSuccess() {
                 return null;
             }
 

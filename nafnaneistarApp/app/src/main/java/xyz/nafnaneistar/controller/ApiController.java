@@ -206,6 +206,51 @@ public class ApiController extends Application {
         ApiController.getInstance().addToRequestQueue(jsonObjReq);
     }
 
+    public void getApprovedNames(Activity context, VolleyCallBack<ArrayList<NameCardItem>> volleyCallBack) {
+        Prefs prefs = new Prefs(context);
+        String [] user = prefs.getUser();
+        String email = user[0];
+        String pass = user[1];
+        ArrayList<NameCardItem> approvedList = new ArrayList<>();
+        String listeningPath = "viewliked/approvedlist";
+        URIBuilder b = null;
+        try {
+            b = new URIBuilder(ApiController.getDomainURL() + listeningPath);
+        } catch (URISyntaxException e) {
+            e.printStackTrace();
+        }
+        b.addParameter("email", email);
+        b.addParameter("pass", pass);
+        JsonObjectRequest jsonObjReq = new JsonObjectRequest(Request.Method.GET, b.toString(), null,
+                response -> {
+                    JSONArray namecards = null;
+                    try {
+                        namecards = response.getJSONArray("namecards");
+                    } catch (JSONException e) {
+                        e.printStackTrace();
+                    }
+                    for (int i = 0; i < namecards.length(); i++) {
+                        try {
+                            JSONObject nc = (JSONObject) namecards.get(i);
+                            approvedList.add(new NameCardItem(
+                                    nc.getInt("id"),
+                                    nc.getString("name"),
+                                    nc.getInt("rating"),
+                                    nc.getInt("gender")
+                            ));
+
+
+                        } catch (JSONException e) {
+                            e.printStackTrace();
+                        }
+                    }
+                    volleyCallBack.onResponse((ArrayList<NameCardItem>) approvedList);
+                }, error -> {
+            volleyCallBack.onError( getString(R.string.errorGettingPartners));
+        });
+        ApiController.getInstance().addToRequestQueue(jsonObjReq);
+    }
+
     public void removeFromApprovedList(int namecardId, int position, Activity context, VolleyCallBack<JSONObject> volleyCallBack){
         Prefs prefs = new Prefs(context);
         String [] user = prefs.getUser();

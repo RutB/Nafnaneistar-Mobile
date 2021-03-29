@@ -1,7 +1,6 @@
 package xyz.nafnaneistar.activities;
 
 import android.annotation.SuppressLint;
-import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.text.Spannable;
 import android.text.SpannableStringBuilder;
@@ -11,12 +10,6 @@ import android.view.View;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.android.volley.Request;
-import com.android.volley.toolbox.JsonObjectRequest;
-import com.google.gson.Gson;
-
-import org.apache.http.client.utils.URIBuilder;
-
 import java.net.URISyntaxException;
 import java.util.ArrayList;
 
@@ -24,7 +17,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.databinding.DataBindingUtil;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
-import xyz.nafnaneistar.activities.items.ComboListItem;
+import xyz.nafnaneistar.activities.items.NameCardItem;
 import xyz.nafnaneistar.controller.ApiController;
 import xyz.nafnaneistar.controller.VolleyCallBack;
 import xyz.nafnaneistar.helpers.OnSwipeTouchListener;
@@ -115,7 +108,7 @@ public class SwipeActivity extends AppCompatActivity {
         ApiController.getInstance().chooseName(action, currentID, binding.cbGenderMale.isChecked(),
                 binding.cbGenderFemale.isChecked(), this, new VolleyCallBack<NameCard>() {
                     @Override
-                    public ArrayList<ComboListItem> onSuccess() {
+                    public ArrayList<NameCardItem> onSuccess() {
                         return null;
                     }
 
@@ -146,7 +139,7 @@ public class SwipeActivity extends AppCompatActivity {
         ApiController.getInstance().getNewName(binding.cbGenderMale.isChecked(), binding.cbGenderFemale.isChecked(),
                 this, new VolleyCallBack<NameCard>() {
                     @Override
-                    public ArrayList<ComboListItem> onSuccess() {
+                    public ArrayList<NameCardItem> onSuccess() {
                         return null;
                     }
                     @Override

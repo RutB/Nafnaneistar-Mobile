@@ -4,10 +4,11 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.databinding.DataBindingUtil;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
+import xyz.nafnaneistar.activities.ViewLikedFragments.ApprovedNameListManagerFragment;
 import xyz.nafnaneistar.activities.ViewLikedFragments.ComboListFragment;
 import xyz.nafnaneistar.activities.ViewLikedFragments.ComboListManagerFragment;
 import xyz.nafnaneistar.activities.ViewLikedFragments.NameComboFragment;
-import xyz.nafnaneistar.activities.items.ComboListItem;
+import xyz.nafnaneistar.activities.items.NameCardItem;
 import xyz.nafnaneistar.controller.ApiController;
 import xyz.nafnaneistar.controller.VolleyCallBack;
 import xyz.nafnaneistar.helpers.Prefs;
@@ -21,7 +22,6 @@ import android.text.Spannable;
 import android.text.SpannableStringBuilder;
 import android.text.style.DynamicDrawableSpan;
 import android.text.style.ImageSpan;
-import android.util.Log;
 import android.view.View;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -69,6 +69,7 @@ public class ViewLikedActivity extends AppCompatActivity {
         binding.tvViewLikedMenuYfirlit.setOnClickListener(view -> loadStatMenu());
         binding.tvViewLikedMenuNameCombo.setOnClickListener(view -> loadComboNameMenu());
         binding.tvViewLikedMenuCombinedList.setOnClickListener(view -> loadComboListMenu());
+        binding.tvViewLikedMenuRateName.setOnClickListener(view -> loadApprovedNames());
     }
 
     private void loadStatMenu(){
@@ -89,21 +90,38 @@ public class ViewLikedActivity extends AppCompatActivity {
                     .commit();
         }
     }
-    @Override
-    public void onBackPressed() {
-        Fragment f = fragmentManager.findFragmentByTag("listViewCombo");
-        if (f.isVisible()) {
-            removeFragment("listViewCombo");
-        } else {
-            super.onBackPressed();
+    private void loadApprovedNames(){
+        changedSelectedMenu(binding.tvViewLikedMenuRateName);
+        hideAllMenuPages();
+        binding.clNameStats.setVisibility(View.VISIBLE);
+        Fragment f = fragmentManager.findFragmentById(R.layout.fragment_approved_list_manager);
+        if (f == null) {
+            f = new ApprovedNameListManagerFragment();
+            fragmentManager.beginTransaction()
+                    .add(R.id.clFragmentContainer, f, "ApprovedList")
+                    .commit();
         }
-
     }
+
 
     private void loadComboNameMenu(){
         changedSelectedMenu(binding.tvViewLikedMenuNameCombo);
         hideAllMenuPages();
         addFragment(R.layout.fragment_namecombo,"nameCombo");
+    }
+
+    @Override
+    public void onBackPressed() {
+        Fragment f = fragmentManager.findFragmentByTag("listViewCombo");
+        Fragment f2 = fragmentManager.findFragmentByTag("ApprovedList");
+        if (f.isVisible()) {
+            removeFragment("listViewCombo");
+        } else if (f2.isVisible()) {
+            removeFragment("ApprovedList");
+        }else {
+            super.onBackPressed();
+        }
+
     }
 
     private void addFragment(int id,String tag){
@@ -162,7 +180,7 @@ public class ViewLikedActivity extends AppCompatActivity {
     private void getStatData(){
         ApiController.getInstance().getStatData(this, new VolleyCallBack<JSONObject>() {
             @Override
-            public ArrayList<ComboListItem> onSuccess() {
+            public ArrayList<NameCardItem> onSuccess() {
                 return null;
             }
 

@@ -2,11 +2,10 @@ package xyz.nafnaneistar.controller;
 
 import java.util.ArrayList;
 
-import xyz.nafnaneistar.activities.items.ComboListItem;
-import xyz.nafnaneistar.model.User;
+import xyz.nafnaneistar.activities.items.NameCardItem;
 
 public interface VolleyCallBack<T> {
-    ArrayList<ComboListItem> onSuccess();
+    ArrayList<NameCardItem> onSuccess();
     void onResponse(T response);
     void onError(String error);
 }
