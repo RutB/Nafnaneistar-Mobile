@@ -1,0 +1,73 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+
+    style="@style/tableStyle"
+    android:layout_width="match_parent"
+    android:layout_weight="1"
+    android:dividerPadding="4dp"
+    android:isScrollContainer="true"
+    android:showDividers="middle">
+
+
+
+
+
+    <TextView
+        android:id="@+id/linkComboListName"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_weight="1"
+        android:autoSizeMaxTextSize="100sp"
+        android:autoSizeMinTextSize="10sp"
+        android:autoSizeStepGranularity="2sp"
+        android:autoSizeTextType="uniform"
+        android:gravity="center_horizontal|fill_horizontal"
+        android:paddingBottom="8dp"
+        android:paddingTop="8dp"
+        android:text="@string/viewLikedPlaceholderName"
+        android:textAppearance="?attr/textAppearanceListItem"
+        app:autoSizeMaxTextSize="16sp"
+        app:autoSizeMinTextSize="10sp"
+        app:autoSizeStepGranularity="2sp"
+        app:autoSizeTextType="uniform" />
+
+    <TextView
+        android:id="@+id/LinkComboListEmail"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_weight="2"
+        android:gravity="center|fill"
+        android:paddingBottom="8dp"
+        android:paddingTop="8dp"
+        android:text=""
+        android:textAlignment="center"
+        android:textAppearance="?attr/textAppearanceListItem" />
+
+    <Button
+        android:id="@+id/LinkComboListDel"
+        style="@style/Widget.AppCompat.Button.Colored"
+        android:layout_width="4dp"
+        android:layout_height="match_parent"
+        android:layout_gravity="center"
+        android:layout_marginStart="8dp"
+        android:layout_weight="1"
+        android:background="@color/ambiant"
+        android:backgroundTint="@color/ambiant"
+        android:insetBottom="0dp"
+        android:insetTop="0dp"
+        android:minWidth="2dp"
+        android:paddingBottom="0dp"
+        android:paddingLeft="0dp"
+        android:paddingRight="0dp"
+        android:paddingTop="0dp"
+        android:textAlignment="textStart"
+        android:textAppearance="?attr/textAppearanceListItem"
+        android:textColor="@color/menuFont"
+        app:icon="@android:drawable/ic_delete"
+        app:iconGravity="textTop"
+        app:iconPadding="0dp"
+        app:iconSize="40dp"
+        app:iconTint="@color/ambiant" />
+
+</LinearLayout>
