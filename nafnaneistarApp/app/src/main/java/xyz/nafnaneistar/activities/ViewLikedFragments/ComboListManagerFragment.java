@@ -62,6 +62,7 @@ public class ComboListManagerFragment extends Fragment implements  ComboListName
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         prefs = new Prefs(getActivity());
+        partnerId = getArguments().getLong("partnerId");
         comboList = new ArrayList<>();
     }
 

@@ -3,10 +3,13 @@ package xyz.nafnaneistar.activities.ViewLikedFragments;
 import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.CompoundButton;
+import android.widget.LinearLayout;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.google.android.material.snackbar.Snackbar;
@@ -37,10 +40,10 @@ import xyz.nafnaneistar.loginactivity.databinding.FragmentComboListManagerBindin
  * Use the {@link ApprovedNameListManagerFragment#newInstance} factory method to
  * create an instance of this fragment.
  */
-public class ApprovedNameListManagerFragment extends Fragment implements  ComboListNameCardRecyclerViewAdapter.OnItemListener {
+public class ApprovedNameListManagerFragment extends Fragment implements  ApprovedListCardRecyclerViewAdapter.OnItemListener {
     private FragmentApprovedListManagerBinding binding;
     private Prefs prefs;
-    ComboListNameCardRecyclerViewAdapter adapter;
+    static ApprovedListCardRecyclerViewAdapter adapter;
     private ArrayList<NameCardItem> approvedList;
     private ArrayList<NameCardItem> approvedListAll = new ArrayList<>();
     private RecyclerView recyclerView;
@@ -69,7 +72,7 @@ public class ApprovedNameListManagerFragment extends Fragment implements  ComboL
 
 
     private void setAdapater() {
-        adapter = new ComboListNameCardRecyclerViewAdapter(approvedList, this);
+        adapter = new ApprovedListCardRecyclerViewAdapter(approvedList, this);
         RecyclerView.LayoutManager layoutManager = new LinearLayoutManager(getActivity().getApplicationContext());
         binding.rvComboList.setItemAnimator(new DefaultItemAnimator());
         binding.rvComboList.setLayoutManager(layoutManager);
@@ -121,6 +124,7 @@ public class ApprovedNameListManagerFragment extends Fragment implements  ComboL
 
             @Override
             public void onResponse(ArrayList<NameCardItem> list) {
+                setAdapater();
                 approvedList.addAll(list);
                 approvedListAll.addAll(list);
                 if(approvedList.size()==0){
@@ -182,7 +186,7 @@ public class ApprovedNameListManagerFragment extends Fragment implements  ComboL
 
 
     public void removeListView(View view){
-        Fragment f = getParentFragmentManager().findFragmentByTag("listViewCombo");
+        Fragment f = getParentFragmentManager().findFragmentByTag("ApprovedList");
         if (f != null) {
             getParentFragmentManager().beginTransaction()
                     .remove(f)
@@ -193,7 +197,70 @@ public class ApprovedNameListManagerFragment extends Fragment implements  ComboL
 
     @Override
     public void onItemClick(int position) {
-       removeFromApprovedList(approvedList.get(position).getId(),position);
+        if(sortingSwitchState == 0) sortByName(approvedList);
+        else sortByRating(approvedList);
+        removeFromApprovedList(approvedList.get(position).getId(),position);
+        adapter.notifyDataSetChanged();
+    }
+
+    public void ratingClick(View view, LinearLayout ratingContainer){
+        TextView tv = (TextView) ratingContainer.getChildAt(5);
+        int nameCardId = Integer.parseInt(String.valueOf(tv.getText()));
+
+        int nameCardRating = 0;
+        switch (view.getId()){
+            case R.id.r1:
+                nameCardRating = 1;
+                updateNameCardRating(nameCardId,nameCardRating, (Activity) view.getContext());
+                break;
+            case R.id.r2:
+                nameCardRating = 2;
+                updateNameCardRating(nameCardId,nameCardRating, (Activity) view.getContext());
+                break;
+            case R.id.r3:
+                nameCardRating = 3;
+                updateNameCardRating(nameCardId,nameCardRating, (Activity) view.getContext());
+                break;
+            case R.id.r4:
+                nameCardRating = 4;
+                updateNameCardRating(nameCardId,nameCardRating, (Activity) view.getContext());
+                break;
+            case R.id.r5:
+                nameCardRating = 5;
+                updateNameCardRating(nameCardId,nameCardRating, (Activity) view.getContext());
+                break;
+            default:
+                break;
+        }
+        TextView tv1;
+        for (int i = 0; i < 5; i++){
+            tv1 = (TextView) ratingContainer.getChildAt(i);
+            tv1.setText("🤍");
+        }
+        for (int i = 0; i < nameCardRating; i++){
+            tv1 = (TextView) ratingContainer.getChildAt(i);
+            tv1.setText("❤");
+        }
+    }
+    public void updateNameCardRating(int id, int rating, Activity context){
+
+        ApiController.getInstance().updateRating(id, rating, context, new VolleyCallBack<JSONObject>() {
+            @Override
+            public ArrayList<NameCardItem> onSuccess() { return null;
+            }
+
+            @Override
+            public void onResponse(JSONObject response) {
+                Toast.makeText(context, context.getResources().getString(R.string.operationSuccess) ,Toast.LENGTH_SHORT)
+                        .show();
+            }
+
+            @Override
+            public void onError(String error) {
+                Toast.makeText(context, error ,Toast.LENGTH_SHORT)
+                        .show();
+            }
+        });
     }
 
     public void removeFromApprovedList(int namecardId, int position){

@@ -22,6 +22,7 @@ import android.text.Spannable;
 import android.text.SpannableStringBuilder;
 import android.text.style.DynamicDrawableSpan;
 import android.text.style.ImageSpan;
+import android.util.Log;
 import android.view.View;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -98,7 +99,7 @@ public class ViewLikedActivity extends AppCompatActivity {
         if (f == null) {
             f = new ApprovedNameListManagerFragment();
             fragmentManager.beginTransaction()
-                    .add(R.id.clFragmentContainer, f, "ApprovedList")
+                    .add(R.id.viewLikedContainer, f, "ApprovedList")
                     .commit();
         }
     }
@@ -114,9 +115,11 @@ public class ViewLikedActivity extends AppCompatActivity {
     public void onBackPressed() {
         Fragment f = fragmentManager.findFragmentByTag("listViewCombo");
         Fragment f2 = fragmentManager.findFragmentByTag("ApprovedList");
-        if (f.isVisible()) {
+
+        if (f != null) {
             removeFragment("listViewCombo");
-        } else if (f2.isVisible()) {
+            Log.d("clickety click", "onBackPressed: " + f.toString());
+        } else if (f2 != null) {
             removeFragment("ApprovedList");
         }else {
             super.onBackPressed();

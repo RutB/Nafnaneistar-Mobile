@@ -240,11 +240,10 @@ public class UserRestController {
         return ncs;
 
     }
-    @GetMapping(path = "/viewliked/approvedList", produces = "application/json")
+    @GetMapping(path = "/viewliked/approvedlist", produces = "application/json")
     public String getComboList(@RequestParam(required = true) String email, @RequestParam(required = true) String pass) {
         if (UserUtils.isAuthenticated(userService, email, pass)) {
             User currentUser = userService.findByEmail(email);
-            HashMap<String, Integer> ncs = new HashMap<>();
             Set<Integer> ids = currentUser.getApprovedNames().keySet();
             JsonArray jsonarr = new JsonArray();
             
@@ -253,7 +252,7 @@ public class UserRestController {
                 JsonObject namecard = new JsonObject();
                 namecard.addProperty("name", nc.getName());
                 namecard.addProperty("id", nc.getId());
-                namecard.addProperty("rating", (currentUser.getApprovedNames().get(id)) ;
+                namecard.addProperty("rating", (currentUser.getApprovedNames().get(id))) ;
                 namecard.addProperty("gender", nc.getGender());
                 jsonarr.add(namecard);
             }

@@ -249,7 +249,7 @@ public class ApiController extends Application {
             b.addParameter("email",email);
             b.addParameter("password",pass);
             b.addParameter("id", String.valueOf(namecardId));
-            b.addParameter("rating", String.valueOf(namecardId));
+            b.addParameter("rating", String.valueOf(rating));
             url = b.build().toString();
         } catch (URISyntaxException e) {
             e.printStackTrace();

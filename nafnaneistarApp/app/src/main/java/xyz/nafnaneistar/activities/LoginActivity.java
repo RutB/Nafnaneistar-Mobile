@@ -77,6 +77,7 @@ public class LoginActivity extends AppCompatActivity {
         }
         String email = user[0];
         String pass = user[1];
+
         ApiController.getInstance().login(new VolleyCallBack<User>() {
             @Override
             public ArrayList<NameCardItem> onSuccess() {
@@ -103,7 +104,7 @@ public class LoginActivity extends AppCompatActivity {
 
             @Override
             public void onError(String error) {
-                Toast.makeText(LoginActivity.this, R.string.loginFailed, Toast.LENGTH_SHORT)
+                Toast.makeText(LoginActivity.this, error, Toast.LENGTH_SHORT)
                         .show();
             }
         }, email, pass);
