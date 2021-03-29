@@ -33,7 +33,8 @@
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintHorizontal_bias="1.0"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent" />
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintVertical_bias="1.0" />
 
         <Button
             android:id="@+id/btnChangePw"
@@ -76,8 +77,10 @@
             android:text="Núllstilla nafnalista"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="1.0"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent" />
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintVertical_bias="1.0" />
 
         <Switch
             android:id="@+id/switchGetNotifications"
@@ -85,7 +88,7 @@
             android:layout_height="57dp"
             android:layout_marginStart="18dp"
             android:layout_marginEnd="19dp"
-            android:layout_marginBottom="325dp"
+            android:layout_marginBottom="324dp"
             android:text="Fá tilkynningar í síma"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
