@@ -2,22 +2,12 @@ package xyz.nafnaneistar.controller;
 
 import android.app.Activity;
 import android.app.Application;
-import android.content.Intent;
-import android.text.Spannable;
-import android.text.SpannableStringBuilder;
-import android.text.style.DynamicDrawableSpan;
-import android.text.style.ImageSpan;
-import android.util.Log;
-import android.view.View;
-import android.widget.TextView;
-import android.widget.Toast;
 
 import com.android.volley.Request;
 import com.android.volley.RequestQueue;
 import com.android.volley.toolbox.JsonObjectRequest;
 import com.android.volley.toolbox.Volley;
 import com.google.gson.Gson;
-import com.google.gson.JsonObject;
 
 import org.apache.http.client.utils.URIBuilder;
 import org.json.JSONArray;
@@ -27,10 +17,7 @@ import org.json.JSONObject;
 import java.net.URISyntaxException;
 import java.util.ArrayList;
 
-import xyz.nafnaneistar.activities.LoginActivity;
-import xyz.nafnaneistar.activities.SwipeActivity;
-import xyz.nafnaneistar.activities.ViewLikedActivity;
-import xyz.nafnaneistar.activities.items.ComboListItem;
+import xyz.nafnaneistar.activities.items.NameCardItem;
 import xyz.nafnaneistar.helpers.Prefs;
 import xyz.nafnaneistar.loginactivity.R;
 import xyz.nafnaneistar.model.NameCard;
@@ -132,8 +119,8 @@ public class ApiController extends Application {
 
 
 
-    public void getNameCardsAndRating(Long partnerId,String user_email,String pass, VolleyCallBack<ArrayList<ComboListItem>> volleyCallBack) {
-        ArrayList<ComboListItem> comboList = new ArrayList<>();
+    public void getNameCardsAndRating(Long partnerId,String user_email,String pass, VolleyCallBack<ArrayList<NameCardItem>> volleyCallBack) {
+        ArrayList<NameCardItem> comboList = new ArrayList<>();
         String listeningPath = "viewliked/combolist";
         URIBuilder b = null;
         try {
@@ -155,7 +142,7 @@ public class ApiController extends Application {
                     for (int i = 0; i < namecards.length(); i++) {
                         try {
                             JSONObject nc = (JSONObject) namecards.get(i);
-                            comboList.add(new ComboListItem(
+                            comboList.add(new NameCardItem(
                                     nc.getInt("id"),
                                     nc.getString("name"),
                                     nc.getInt("rating"),
@@ -167,9 +154,54 @@ public class ApiController extends Application {
                             e.printStackTrace();
                         }
                     }
-                    volleyCallBack.onResponse((ArrayList<ComboListItem>) comboList);
+                    volleyCallBack.onResponse((ArrayList<NameCardItem>) comboList);
                 }, error -> {
                 volleyCallBack.onError( getString(R.string.errorGettingPartners));
+        });
+        ApiController.getInstance().addToRequestQueue(jsonObjReq);
+    }
+
+    public void getApprovedNames(Activity context, VolleyCallBack<ArrayList<NameCardItem>> volleyCallBack) {
+        Prefs prefs = new Prefs(context);
+        String [] user = prefs.getUser();
+        String email = user[0];
+        String pass = user[1];
+        ArrayList<NameCardItem> approvedList = new ArrayList<>();
+        String listeningPath = "viewliked/approvedlist";
+        URIBuilder b = null;
+        try {
+            b = new URIBuilder(ApiController.getDomainURL() + listeningPath);
+        } catch (URISyntaxException e) {
+            e.printStackTrace();
+        }
+        b.addParameter("email", email);
+        b.addParameter("pass", pass);
+        JsonObjectRequest jsonObjReq = new JsonObjectRequest(Request.Method.GET, b.toString(), null,
+                response -> {
+                    JSONArray namecards = null;
+                    try {
+                        namecards = response.getJSONArray("namecards");
+                    } catch (JSONException e) {
+                        e.printStackTrace();
+                    }
+                    for (int i = 0; i < namecards.length(); i++) {
+                        try {
+                            JSONObject nc = (JSONObject) namecards.get(i);
+                            approvedList.add(new NameCardItem(
+                                    nc.getInt("id"),
+                                    nc.getString("name"),
+                                    nc.getInt("rating"),
+                                    nc.getInt("gender")
+                            ));
+
+
+                        } catch (JSONException e) {
+                            e.printStackTrace();
+                        }
+                    }
+                    volleyCallBack.onResponse((ArrayList<NameCardItem>) approvedList);
+                }, error -> {
+            volleyCallBack.onError( getString(R.string.errorGettingPartners));
         });
         ApiController.getInstance().addToRequestQueue(jsonObjReq);
     }
@@ -202,7 +234,36 @@ public class ApiController extends Application {
                     volleyCallBack.onError(getString(R.string.errorRetrievingData));
         });
         ApiController.getInstance().addToRequestQueue(jsonObjReq);
+    }
 
+    public void updateRating(int namecardId, int rating, Activity context, VolleyCallBack<JSONObject> volleyCallBack){
+        Prefs prefs = new Prefs(context);
+        String [] user = prefs.getUser();
+        String email = user[0];
+        String pass = user[1];
+        String listeningPath = "viewliked/updaterating";
+        URIBuilder b = null;
+        String url = "";
+        try {
+            b = new URIBuilder(ApiController.getDomainURL()+listeningPath);
+            b.addParameter("email",email);
+            b.addParameter("password",pass);
+            b.addParameter("id", String.valueOf(namecardId));
+            b.addParameter("rating", String.valueOf(namecardId));
+            url = b.build().toString();
+        } catch (URISyntaxException e) {
+            e.printStackTrace();
+        }
+
+        JsonObjectRequest jsonObjReq = new JsonObjectRequest(Request.Method.GET,url,null,
+                response -> {
+                    volleyCallBack.onSuccess();
+                    volleyCallBack.onResponse(response);
+
+                },error -> {
+            volleyCallBack.onError(getString(R.string.errorRetrievingData));
+        });
+        ApiController.getInstance().addToRequestQueue(jsonObjReq);
     }
 
     public void getNewName(boolean male, boolean female, Activity context, VolleyCallBack<NameCard> volleyCallBack) throws URISyntaxException {

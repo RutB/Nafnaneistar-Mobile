@@ -2,6 +2,7 @@ package is.hi.hbv501g.nafnaneistar.nafnaneistar.Controllers;
 
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.Set;
 
 import javax.servlet.http.HttpSession;
 
@@ -136,7 +137,30 @@ public class UserRestController {
      * @return true or false depending if the operation was a success
      */
     @GetMapping(path="/viewliked/updaterating", produces = "application/json")
-    public boolean updateNameRating(@RequestParam String id,@RequestParam String rating, HttpSession session)
+    public String updateNameRating(
+    @RequestParam(required=true) String email,
+    @RequestParam(required=true)  String password,
+    @RequestParam(required=true)  String id,
+    @RequestParam(required=true)  String rating){  
+        if (UserUtils.isAuthenticated(userService, email, password)) {
+            User user = userService.findByEmail(email);
+        try {
+            Integer nameId = Integer.parseInt(id);
+            Integer nameRating = Integer.parseInt(rating);
+            user.updateRatingById(nameId,nameRating);
+            userService.save(user);
+            return "{'result':'true'}";
+        } catch(Error e){
+            return "{'result':'false'}";
+        }
+    }
+    return "{'message':'Villa í auðkenningu'}";
+
+}
+
+
+    @GetMapping(path="/viewliked/updaterating__OLD", produces = "application/json")
+    public boolean updateNameRating__OLD(@RequestParam String id,@RequestParam String rating, HttpSession session)
     {   User currentUser = (User) session.getAttribute("currentUser");
         if(!UserUtils.isLoggedIn(currentUser)) return false;
         Integer nameId = Integer.parseInt(id);
@@ -215,6 +239,30 @@ public class UserRestController {
         });
         return ncs;
 
+    }
+    @GetMapping(path = "/viewliked/approvedList", produces = "application/json")
+    public String getComboList(@RequestParam(required = true) String email, @RequestParam(required = true) String pass) {
+        if (UserUtils.isAuthenticated(userService, email, pass)) {
+            User currentUser = userService.findByEmail(email);
+            HashMap<String, Integer> ncs = new HashMap<>();
+            Set<Integer> ids = currentUser.getApprovedNames().keySet();
+            JsonArray jsonarr = new JsonArray();
+            
+            for (Integer id : ids) {
+                NameCard nc = nameService.findById(id).orElse(null);
+                JsonObject namecard = new JsonObject();
+                namecard.addProperty("name", nc.getName());
+                namecard.addProperty("id", nc.getId());
+                namecard.addProperty("rating", (currentUser.getApprovedNames().get(id)) ;
+                namecard.addProperty("gender", nc.getGender());
+                jsonarr.add(namecard);
+            }
+            
+            JsonObject userInfo = new JsonObject();
+            userInfo.add("namecards",jsonarr);
+            return userInfo.toString();
+        }
+        return "{'message':'Villa í auðkenningu'}";
     }
 
     @GetMapping(value = "/linkpartner",  produces = "application/json")
