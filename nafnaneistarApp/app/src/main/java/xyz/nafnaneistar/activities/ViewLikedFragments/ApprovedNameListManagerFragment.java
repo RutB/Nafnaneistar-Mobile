@@ -203,65 +203,7 @@ public class ApprovedNameListManagerFragment extends Fragment implements  Approv
         adapter.notifyDataSetChanged();
     }
 
-    public void ratingClick(View view, LinearLayout ratingContainer){
-        TextView tv = (TextView) ratingContainer.getChildAt(5);
-        int nameCardId = Integer.parseInt(String.valueOf(tv.getText()));
 
-        int nameCardRating = 0;
-        switch (view.getId()){
-            case R.id.r1:
-                nameCardRating = 1;
-                updateNameCardRating(nameCardId,nameCardRating, (Activity) view.getContext());
-                break;
-            case R.id.r2:
-                nameCardRating = 2;
-                updateNameCardRating(nameCardId,nameCardRating, (Activity) view.getContext());
-                break;
-            case R.id.r3:
-                nameCardRating = 3;
-                updateNameCardRating(nameCardId,nameCardRating, (Activity) view.getContext());
-                break;
-            case R.id.r4:
-                nameCardRating = 4;
-                updateNameCardRating(nameCardId,nameCardRating, (Activity) view.getContext());
-                break;
-            case R.id.r5:
-                nameCardRating = 5;
-                updateNameCardRating(nameCardId,nameCardRating, (Activity) view.getContext());
-                break;
-            default:
-                break;
-        }
-        TextView tv1;
-        for (int i = 0; i < 5; i++){
-            tv1 = (TextView) ratingContainer.getChildAt(i);
-            tv1.setText("🤍");
-        }
-        for (int i = 0; i < nameCardRating; i++){
-            tv1 = (TextView) ratingContainer.getChildAt(i);
-            tv1.setText("❤");
-        }
-    }
-    public void updateNameCardRating(int id, int rating, Activity context){
-
-        ApiController.getInstance().updateRating(id, rating, context, new VolleyCallBack<JSONObject>() {
-            @Override
-            public ArrayList<NameCardItem> onSuccess() { return null;
-            }
-
-            @Override
-            public void onResponse(JSONObject response) {
-                Toast.makeText(context, context.getResources().getString(R.string.operationSuccess) ,Toast.LENGTH_SHORT)
-                        .show();
-            }
-
-            @Override
-            public void onError(String error) {
-                Toast.makeText(context, error ,Toast.LENGTH_SHORT)
-                        .show();
-            }
-        });
-    }
 
     public void removeFromApprovedList(int namecardId, int position){
         ApiController.getInstance().removeFromApprovedList(namecardId,position, (Activity) getContext(), new VolleyCallBack<JSONObject>() {

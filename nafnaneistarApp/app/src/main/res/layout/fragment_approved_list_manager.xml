@@ -13,8 +13,6 @@
         android:background="@color/background"
         tools:context="xyz.nafnaneistar.activities.ViewLikedFragments.ApprovedNameListManagerFragment">
 
-        <!-- TODO: Update blank fragment layout -->
-
         <Button
             android:id="@+id/btnViewLikedGoBack"
             style="@style/buttonStyle"

@@ -15,8 +15,6 @@
         android:backgroundTint="#00FFFFFF"
         tools:context="xyz.nafnaneistar.activities.NavbarFragment">
 
-        <!-- TODO: Update blank fragment layout -->
-
         <com.google.android.material.bottomnavigation.BottomNavigationView
             android:id="@+id/navViewTop"
             android:layout_width="0dp"

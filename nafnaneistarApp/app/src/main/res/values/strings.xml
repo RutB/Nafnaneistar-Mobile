@@ -32,8 +32,6 @@
     <string name="second_fragment_label">Second Fragment</string>
     <string name="next">Next</string>
     <string name="previous">Previous</string>
-
-    <!-- TODO: Remove or change this placeholder text -->
     <string name="title_activity_swipte" translatable="false">SwipteActivity</string>
     <string name="title_activity_swipe" translatable="false">swipelabel</string>
     <string name="navMenu">Valmynd</string>
@@ -72,7 +70,6 @@
     <string name="comboname_name_and_middle">Fá Nafn &amp; Millinafn </string>
     <string name="settu_inn_eftirnafn_og_f_u_upp_stungur_fyrir_nafn">Settu inn eftirnafn og fáðu uppástungur fyrir nafn</string>
     <string name="systemError">Kerfisvilla...</string>
-    <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>
     <string name="viewlikedComboList">Skoða Sameiginlegan lista</string>
     <string name="errorGettingPartners">Villa við að ná í gögn</string>

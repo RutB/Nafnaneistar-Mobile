@@ -195,6 +195,7 @@ public class ViewLikedActivity extends AppCompatActivity {
                     String approvedMale = String.format("Samþykkt %s nöfn", maleStats.get(0).toString());
                     String disapprovedMale = String.format("Hafnað %s nöfnum", maleStats.get(1).toString());
                     String leftMale = String.format("%s nöfn ósnert", maleStats.get(2).toString());
+                    binding.tvViewLikedStatsMeaning.setText(response.getString("meaning"));
                     binding.tvViewLikedMaleStatsApproved.setText(approvedMale);
                     binding.tvViewLikedMaleStatsDisapproved.setText(disapprovedMale);
                     binding.tvViewLikedMaleStatsLeft.setText(leftMale);

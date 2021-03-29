@@ -12,9 +12,6 @@
         android:layout_height="match_parent"
         android:background="@color/background"
         tools:context="xyz.nafnaneistar.activities.ViewLikedFragments.ComboListManagerFragment">
-
-        <!-- TODO: Update blank fragment layout -->
-
         <Button
             android:id="@+id/btnViewLikedGoBack"
             style="@style/buttonStyle"

@@ -16,8 +16,8 @@
 
         <LinearLayout
             android:id="@+id/llViewLikedMenu"
-            android:layout_width="0dp"
-            android:layout_height="205dp"
+            android:layout_width="358dp"
+            android:layout_height="169dp"
             android:layout_marginBottom="8dp"
             android:layout_marginEnd="24dp"
             android:layout_marginStart="24dp"
@@ -67,18 +67,6 @@
                 android:textStyle="bold" />
 
             <TextView
-                android:id="@+id/tvViewLikedMenuViewByName"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:background="@drawable/menu_item"
-                android:gravity="center"
-                android:padding="8dp"
-                android:singleLine="true"
-                android:text="@string/viewlikedmenugetNamesbyRating"
-                android:textSize="18sp"
-                android:textStyle="bold" />
-
-            <TextView
                 android:id="@+id/tvViewLikedMenuNameCombo"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -91,6 +79,23 @@
                 android:textStyle="bold" />
 
         </LinearLayout>
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:id="@+id/clFragmentContainer"
+            android:layout_width="0dp"
+            android:layout_height="0dp"
+            android:layout_marginBottom="24dp"
+            android:layout_marginEnd="24dp"
+            android:layout_marginStart="24dp"
+            android:layout_marginTop="8dp"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="1.0"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/llViewLikedMenu"
+            app:layout_constraintVertical_bias="0.953">
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
 
         <androidx.constraintlayout.widget.ConstraintLayout
             android:id="@+id/clNameStats"
@@ -111,18 +116,27 @@
 
             <TextView
                 android:id="@+id/tvViewLikedUserName"
-                android:layout_width="363dp"
-                android:layout_height="86dp"
+                android:layout_width="362dp"
+                android:layout_height="64dp"
+                android:layout_marginEnd="1dp"
                 android:padding="16sp"
                 android:text="@string/getting_data"
                 android:textSize="28sp"
                 android:textStyle="bold"
+                app:layout_constraintBottom_toTopOf="@+id/tvViewLikedStatsMeaning"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
+
+            <TextView
+                android:id="@+id/tvViewLikedStatsMeaning"
+                android:layout_width="0dp"
+                android:layout_height="37dp"
+                android:isScrollContainer="true"
                 app:layout_constraintBottom_toTopOf="@+id/tvViewLikedFemaleTitleStats"
                 app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintHorizontal_bias="0.0"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="parent"
-                app:layout_constraintVertical_bias="0.0" />
+                app:layout_constraintTop_toBottomOf="@+id/tvViewLikedUserName" />
 
             <TextView
                 android:id="@+id/tvViewLikedFemaleTitleStats"
@@ -239,19 +253,6 @@
                 app:layout_constraintHorizontal_bias="0.5"
                 app:layout_constraintStart_toEndOf="@+id/tvViewLikedMaleStatsApproved"
                 app:layout_constraintTop_toBottomOf="@+id/tvViewLikedMaleTitleStats" />
-
-        </androidx.constraintlayout.widget.ConstraintLayout>
-
-        <androidx.constraintlayout.widget.ConstraintLayout
-            android:id="@+id/clFragmentContainer"
-            android:layout_width="369dp"
-            android:layout_height="358dp"
-            android:layout_marginBottom="24dp"
-            android:layout_marginEnd="24dp"
-            android:layout_marginStart="24dp"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent">
 
         </androidx.constraintlayout.widget.ConstraintLayout>
 

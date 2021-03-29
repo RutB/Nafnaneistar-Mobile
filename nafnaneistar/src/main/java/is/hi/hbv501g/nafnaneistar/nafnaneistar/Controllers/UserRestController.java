@@ -252,6 +252,8 @@ public class UserRestController {
                 JsonObject namecard = new JsonObject();
                 namecard.addProperty("name", nc.getName());
                 namecard.addProperty("id", nc.getId());
+
+                
                 namecard.addProperty("rating", (currentUser.getApprovedNames().get(id))) ;
                 namecard.addProperty("gender", nc.getGender());
                 jsonarr.add(namecard);
