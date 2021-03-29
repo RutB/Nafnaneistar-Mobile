@@ -27,11 +27,11 @@ import xyz.nafnaneistar.controller.VolleyCallBack;
 import xyz.nafnaneistar.loginactivity.R;
 
 public class ApprovedListCardRecyclerViewAdapter extends RecyclerView.Adapter<ApprovedListCardRecyclerViewAdapter.ViewHolder> {
-    private ArrayList<NameCardItem> comboList;
+    private ArrayList<NameCardItem> approvedList;
     private OnItemListener onItemListener;
 
-    public ApprovedListCardRecyclerViewAdapter(ArrayList<NameCardItem> comboList, OnItemListener onItemListener){
-        this.comboList = comboList;
+    public ApprovedListCardRecyclerViewAdapter(ArrayList<NameCardItem> approvedList, OnItemListener onItemListener){
+        this.approvedList = approvedList;
         this.onItemListener = onItemListener;
     }
 
@@ -59,11 +59,11 @@ public class ApprovedListCardRecyclerViewAdapter extends RecyclerView.Adapter<Ap
 
              switch (view.getId()){
                 case R.id.comboListOperations:
+                    int pos = this.getAdapterPosition();
                     onItemListener.onItemClick(getAdapterPosition());
                 break;
                  default:
                      ratingClick(view,this.getAdapterPosition());
-                     Log.d("rate", "onClick: "+ "RATE ME!");
                  break;
             }
         }
@@ -73,7 +73,6 @@ public class ApprovedListCardRecyclerViewAdapter extends RecyclerView.Adapter<Ap
         LinearLayout ratingContainer = (LinearLayout) view.getParent();
         TextView tv = (TextView) ratingContainer.getChildAt(5);
         int nameCardId = Integer.parseInt(String.valueOf(tv.getText()));
-
         int nameCardRating = 0;
         switch (view.getId()){
             case R.id.r1:
@@ -94,23 +93,20 @@ public class ApprovedListCardRecyclerViewAdapter extends RecyclerView.Adapter<Ap
         default:
             break;
         }
-        comboList.get(position).setRating(nameCardRating);
+        approvedList.get(position).setRating(nameCardRating);
         updateNameCardRating(nameCardId,nameCardRating, (Activity) view.getContext(),ratingContainer);
-
     }
-
     @NonNull
     @Override
     public ApprovedListCardRecyclerViewAdapter.ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
         View itemView = LayoutInflater.from(parent.getContext()).inflate(R.layout.combolist, parent,false);
         return new ViewHolder(itemView, onItemListener);
     }
-
     @Override
     public void onBindViewHolder(@NonNull ApprovedListCardRecyclerViewAdapter.ViewHolder holder, int position) {
-        String name = comboList.get(position).getName();
-        int rating = comboList.get(position).getRating();
-        holder.name.setText(getGenderSign(name,comboList.get(position).getGender(),holder.rating.getContext()),TextView.BufferType.SPANNABLE);
+        String name = approvedList.get(position).getName();
+        int rating = approvedList.get(position).getRating();
+        holder.name.setText(getGenderSign(name, approvedList.get(position).getGender(),holder.rating.getContext()),TextView.BufferType.SPANNABLE);
         for(int i = 0; i < 5; i++){
             String ratingString = "";
             if(i < rating) ratingString += "❤";
@@ -119,20 +115,14 @@ public class ApprovedListCardRecyclerViewAdapter extends RecyclerView.Adapter<Ap
             tv.setText(ratingString);
         }
         TextView tv = (TextView) holder.rating.getChildAt(5);
-        tv.setText(String.valueOf(comboList.get(position).getId()));
+        tv.setText(String.valueOf(approvedList.get(position).getId()));
     }
-
-    public void removeFromList(int position){
-        comboList.remove(position);
-    }
-
     public void updateNameCardRating(int id, int rating, Activity context, LinearLayout ratingContainer){
 
         ApiController.getInstance().updateRating(id, rating, context, new VolleyCallBack<JSONObject>() {
             @Override
             public ArrayList<NameCardItem> onSuccess() { return null;
             }
-
             @Override
             public void onResponse(JSONObject response) {
                 TextView tv1;
@@ -147,7 +137,6 @@ public class ApprovedListCardRecyclerViewAdapter extends RecyclerView.Adapter<Ap
                 Toast.makeText(context, context.getResources().getString(R.string.operationSuccess) ,Toast.LENGTH_SHORT)
                         .show();
             }
-
             @Override
             public void onError(String error) {
                 Toast.makeText(context, error ,Toast.LENGTH_SHORT)
@@ -167,8 +156,6 @@ public class ApprovedListCardRecyclerViewAdapter extends RecyclerView.Adapter<Ap
             stringBuild.setSpan(
                     new ImageSpan(context, R.drawable.ic_gender_female, DynamicDrawableSpan.ALIGN_BASELINE), name.length() + 1, name.length() + 2, Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
         }
-
-
        return stringBuild;
     }
 
@@ -178,6 +165,6 @@ public class ApprovedListCardRecyclerViewAdapter extends RecyclerView.Adapter<Ap
 
     @Override
     public int getItemCount() {
-        return comboList.size();
+        return approvedList.size();
     }
 }

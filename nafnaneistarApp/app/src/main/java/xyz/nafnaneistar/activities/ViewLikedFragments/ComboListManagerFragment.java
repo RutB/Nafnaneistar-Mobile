@@ -198,10 +198,10 @@ public class ComboListManagerFragment extends Fragment implements  ComboListName
         }
     }
 
-
     @Override
     public void onItemClick(int position) {
        removeFromApprovedList(comboList.get(position).getId(),position);
+        adapter.notifyDataSetChanged();
     }
 
     public void removeFromApprovedList(int namecardId, int position){
@@ -210,12 +210,15 @@ public class ComboListManagerFragment extends Fragment implements  ComboListName
             public ArrayList<NameCardItem> onSuccess() {
                 Toast.makeText(getContext(), getResources().getString(R.string.operationSuccess) ,Toast.LENGTH_SHORT)
                         .show();
+                NameCardItem nc = comboList.get(position);
+                comboListAll.remove(nc);
                 comboList.remove(position);
                 adapter.notifyDataSetChanged();
                 return null;
             }
             @Override
             public void onResponse(JSONObject response) {
+
             }
             @Override
             public void onError(String error) {

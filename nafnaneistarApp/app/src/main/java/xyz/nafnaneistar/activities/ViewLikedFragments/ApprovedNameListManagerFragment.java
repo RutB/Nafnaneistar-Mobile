@@ -197,10 +197,12 @@ public class ApprovedNameListManagerFragment extends Fragment implements  Approv
 
     @Override
     public void onItemClick(int position) {
-        if(sortingSwitchState == 0) sortByName(approvedList);
-        else sortByRating(approvedList);
         removeFromApprovedList(approvedList.get(position).getId(),position);
         adapter.notifyDataSetChanged();
+
+        if(sortingSwitchState == 0) sortByName(approvedList);
+        else sortByRating(approvedList);
+
     }
 
 
@@ -211,12 +213,15 @@ public class ApprovedNameListManagerFragment extends Fragment implements  Approv
             public ArrayList<NameCardItem> onSuccess() {
                 Toast.makeText(getContext(), getResources().getString(R.string.operationSuccess) ,Toast.LENGTH_SHORT)
                         .show();
-                approvedList.remove(position);
                 adapter.notifyDataSetChanged();
                 return null;
             }
             @Override
             public void onResponse(JSONObject response) {
+                NameCardItem nc = approvedList.get(position);
+                approvedListAll.remove(nc);
+                approvedList.remove(position);
+                adapter.notifyDataSetChanged();
             }
             @Override
             public void onError(String error) {

@@ -133,6 +133,8 @@
                 android:layout_width="0dp"
                 android:layout_height="37dp"
                 android:isScrollContainer="true"
+                android:paddingEnd="16dp"
+                android:paddingStart="16dp"
                 app:layout_constraintBottom_toTopOf="@+id/tvViewLikedFemaleTitleStats"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
