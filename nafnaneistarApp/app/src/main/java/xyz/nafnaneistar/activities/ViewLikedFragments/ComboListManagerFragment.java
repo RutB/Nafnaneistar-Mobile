@@ -66,9 +66,6 @@ public class ComboListManagerFragment extends Fragment implements  ComboListName
         comboList = new ArrayList<>();
     }
 
-
-
-
     private void setAdapater() {
         adapter = new ComboListNameCardRecyclerViewAdapter(comboList, this);
         RecyclerView.LayoutManager layoutManager = new LinearLayoutManager(getActivity().getApplicationContext());
@@ -99,7 +96,6 @@ public class ComboListManagerFragment extends Fragment implements  ComboListName
         adapter.notifyDataSetChanged();
     }
 
-
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
@@ -118,9 +114,7 @@ public class ComboListManagerFragment extends Fragment implements  ComboListName
         String user_email = user[0];
         String pass = user[1];
 
-
         ApiController.getInstance().getNameCardsAndRating(partnerId, user_email, pass, new VolleyCallBack<ArrayList<NameCardItem>>() {
-
             @Override
             public ArrayList<NameCardItem> onSuccess() {
                 return null;
@@ -145,18 +139,15 @@ public class ComboListManagerFragment extends Fragment implements  ComboListName
                     sortByName(comboList);
                 }
             }
-
             @Override
             public void onError(String error) {
                 Toast.makeText(getContext(), error, Toast.LENGTH_SHORT)
                         .show();
             }
         });
-
         binding.btnViewLikedGoBack.setOnClickListener(this::removeListView);
         return view;
     }
-
     public void sortByName(ArrayList<NameCardItem> comboList){
         Collections.sort(comboList, (item1, item2) -> item1.getName().compareToIgnoreCase(item2.getName()));
         adapter.notifyDataSetChanged();
@@ -166,20 +157,17 @@ public class ComboListManagerFragment extends Fragment implements  ComboListName
         Collections.sort(comboList, comboListItemComparator.reversed());
         adapter.notifyDataSetChanged();
     }
-
     public void filterByGender(ArrayList<NameCardItem> comboList, int gender){
         ArrayList<NameCardItem> filteredList = new ArrayList<>();
         if(gender != 0 || gender != 1){
             comboList.clear();
             comboList.addAll(comboListAll);
         }
-
         comboList.forEach((key)-> {
            if(key.getGender() == gender){
                filteredList.add(key);
            }
         });
-
         comboList.clear();
         comboList.addAll(filteredList);
         if(sortingSwitchState == 0) sortByName(comboList);
@@ -187,8 +175,6 @@ public class ComboListManagerFragment extends Fragment implements  ComboListName
         adapter.notifyDataSetChanged();
 
     }
-
-
     public void removeListView(View view){
         Fragment f = getParentFragmentManager().findFragmentByTag("listViewCombo");
         if (f != null) {
@@ -197,7 +183,6 @@ public class ComboListManagerFragment extends Fragment implements  ComboListName
                     .commit();
         }
     }
-
     @Override
     public void onItemClick(int position) {
        removeFromApprovedList(comboList.get(position).getId(),position);

@@ -1,0 +1,243 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
+
+    <data>
+
+    </data>
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/viewLikedContainer"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="@color/background"
+        android:foregroundGravity="center"
+        tools:context="xyz.nafnaneistar.activities.ViewLikedActivity">
+
+        <LinearLayout
+            android:id="@+id/llViewLikedMenu"
+            android:layout_width="0dp"
+            android:layout_height="0dp"
+            android:layout_marginBottom="32dp"
+            android:layout_marginStart="16dp"
+            android:layout_marginTop="64dp"
+            android:background="@color/ambiant"
+            android:gravity="center"
+            android:orientation="vertical"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toStartOf="@+id/clNameStats"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent">
+
+            <TextView
+                android:id="@+id/tvViewLikedMenuYfirlit"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="@drawable/menu_item"
+                android:gravity="center"
+                android:padding="8dp"
+                android:singleLine="true"
+                android:text="@string/viewlikedmenu_yfirlit"
+                android:textSize="18sp"
+                android:textStyle="bold" />
+
+            <TextView
+                android:id="@+id/tvViewLikedMenuCombinedList"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="@drawable/menu_item"
+                android:gravity="center"
+                android:padding="8dp"
+                android:singleLine="true"
+                android:text="@string/viewlikedmenuCombinedLists"
+                android:textSize="18sp"
+                android:textStyle="bold" />
+
+            <TextView
+                android:id="@+id/tvViewLikedMenuRateName"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="@drawable/menu_item"
+                android:gravity="center"
+                android:padding="8dp"
+                android:singleLine="true"
+                android:text="@string/viewlikedmenu_ratename"
+                android:textSize="18sp"
+                android:textStyle="bold" />
+
+            <TextView
+                android:id="@+id/tvViewLikedMenuNameCombo"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="@drawable/menu_item"
+                android:gravity="center"
+                android:padding="8dp"
+                android:singleLine="true"
+                android:text="@string/viewlikednamecombo"
+                android:textSize="18sp"
+                android:textStyle="bold" />
+
+        </LinearLayout>
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:id="@+id/clNameStats"
+            android:layout_width="0dp"
+            android:layout_height="0dp"
+            android:layout_marginBottom="32dp"
+            android:layout_marginEnd="16dp"
+            android:layout_marginStart="16dp"
+            android:layout_marginTop="64dp"
+            android:background="@color/btn_color_lg"
+            android:foregroundGravity="center"
+            android:visibility="visible"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toEndOf="@+id/llViewLikedMenu"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintVertical_bias="0.0">
+
+            <TextView
+                android:id="@+id/tvViewLikedUserName"
+                android:layout_width="0dp"
+                android:layout_height="64dp"
+                android:layout_marginTop="4dp"
+                android:padding="16sp"
+                android:text="@string/getting_data"
+                android:textSize="28sp"
+                android:textStyle="bold"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintHorizontal_bias="0.0"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
+
+            <TextView
+                android:id="@+id/tvViewLikedStatsMeaning"
+                android:layout_width="0dp"
+                android:layout_height="37dp"
+                android:layout_marginTop="8dp"
+                android:isScrollContainer="true"
+                android:paddingEnd="16dp"
+                android:paddingStart="16dp"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintHorizontal_bias="0.0"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/tvViewLikedUserName" />
+
+            <TextView
+                android:id="@+id/tvViewLikedFemaleTitleStats"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:padding="8sp"
+                android:text="@string/tvViewLikeStatNameFemaleTitle"
+                android:textSize="16sp"
+                android:textStyle="bold"
+                app:layout_constraintBottom_toTopOf="@+id/tvViewLikedMaleStatsApproved"
+                app:layout_constraintEnd_toStartOf="@+id/tvViewLikedMaleTitleStats"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/tvViewLikedStatsMeaning" />
+
+            <TextView
+                android:id="@+id/tvViewLikedMaleTitleStats"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:padding="8sp"
+                android:text="@string/vtViewLikedNameStatsTitleMale"
+                android:textSize="16sp"
+                android:textStyle="bold"
+                app:layout_constraintBottom_toTopOf="@+id/tvFemaleStatApproved"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toEndOf="@+id/tvViewLikedFemaleTitleStats"
+                app:layout_constraintTop_toBottomOf="@+id/tvViewLikedStatsMeaning" />
+
+            <TextView
+                android:id="@+id/tvViewLikedMaleStatsApproved"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:padding="8sp"
+                android:text="@string/getting_data"
+                app:layout_constraintBottom_toTopOf="@+id/tvViewLikedMaleStatsDisapproved"
+                app:layout_constraintEnd_toStartOf="@+id/tvFemaleStatApproved"
+                app:layout_constraintHorizontal_bias="0.0"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/tvViewLikedFemaleTitleStats"
+                app:layout_constraintVertical_bias="0.0" />
+
+            <TextView
+                android:id="@+id/tvViewLikedMaleStatsLeft"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:padding="8sp"
+                android:text="@string/getting_data"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toStartOf="@+id/tvFemalestatsLeft"
+                app:layout_constraintHorizontal_chainStyle="packed"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/tvViewLikedMaleStatsDisapproved" />
+
+            <TextView
+                android:id="@+id/tvViewLikedMaleStatsDisapproved"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:padding="8sp"
+                android:text="@string/getting_data"
+                app:layout_constraintBottom_toTopOf="@+id/tvViewLikedMaleStatsLeft"
+                app:layout_constraintEnd_toStartOf="@+id/tvFemaleStatRejected"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/tvViewLikedMaleStatsApproved" />
+
+            <TextView
+                android:id="@+id/tvFemaleStatApproved"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:padding="8sp"
+                android:text="@string/getting_data"
+                app:layout_constraintBottom_toTopOf="@+id/tvFemaleStatRejected"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toEndOf="@+id/tvViewLikedMaleStatsApproved"
+                app:layout_constraintTop_toBottomOf="@+id/tvViewLikedMaleTitleStats" />
+
+            <TextView
+                android:id="@+id/tvFemaleStatRejected"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:padding="8sp"
+                android:text="@string/getting_data"
+                app:layout_constraintBottom_toTopOf="@+id/tvFemalestatsLeft"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toEndOf="@+id/tvViewLikedMaleStatsDisapproved"
+                app:layout_constraintTop_toBottomOf="@+id/tvFemaleStatApproved" />
+
+            <TextView
+                android:id="@+id/tvFemalestatsLeft"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:padding="8sp"
+                android:text="@string/getting_data"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toEndOf="@+id/tvViewLikedMaleStatsLeft"
+                app:layout_constraintTop_toBottomOf="@+id/tvFemaleStatRejected"
+                app:layout_constraintVertical_bias="0.0" />
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:id="@+id/clFragmentContainer"
+            android:layout_width="0dp"
+            android:layout_height="293dp"
+            android:layout_marginBottom="32dp"
+            android:layout_marginEnd="16dp"
+            android:layout_marginStart="16dp"
+            android:layout_marginTop="64dp"
+            android:foregroundGravity="center"
+            android:visibility="visible"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toEndOf="@+id/llViewLikedMenu"
+            app:layout_constraintTop_toTopOf="parent">
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+</layout>

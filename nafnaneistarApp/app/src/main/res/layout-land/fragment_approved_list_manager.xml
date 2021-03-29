@@ -1,0 +1,107 @@
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
+
+    <data>
+
+    </data>
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/clApprovedListManager"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="@color/background"
+        tools:context="xyz.nafnaneistar.activities.ViewLikedFragments.ApprovedNameListManagerFragment">
+
+        <Button
+            android:id="@+id/btnViewLikedGoBack"
+            style="@style/buttonStyle"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="16dp"
+            android:layout_marginTop="14dp"
+            android:text="@string/goBack"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toStartOf="@+id/rvComboList"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/swToggleGender" />
+
+        <Switch
+            android:id="@+id/swOrderBy"
+            android:layout_width="160dp"
+            android:layout_height="42dp"
+            android:layout_marginStart="16dp"
+            android:layout_marginTop="208dp"
+            android:text="@string/GroupByNameOrRating"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <Switch
+            android:id="@+id/swToggleGender"
+            android:layout_width="150dp"
+            android:layout_height="38dp"
+            android:layout_marginTop="20dp"
+            android:text="@string/ShowGenderNames"
+            app:layout_constraintBottom_toTopOf="@+id/btnViewLikedGoBack"
+            app:layout_constraintEnd_toStartOf="@+id/rvComboList"
+            app:layout_constraintHorizontal_bias="0.533"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/swOrderBy" />
+
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/rvComboList"
+            android:layout_width="341dp"
+            android:layout_height="274dp"
+            android:background="@color/btn_color_lg"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.026"
+            app:layout_constraintStart_toEndOf="@+id/swOrderBy"
+            app:layout_constraintTop_toBottomOf="@+id/linearLayout3"
+            tools:listitem="@layout/combolist" />
+
+        <LinearLayout
+            android:id="@+id/linearLayout3"
+            style="@style/tableStyle"
+            android:layout_width="339dp"
+            android:layout_height="44dp"
+            android:layout_marginTop="64dp"
+            android:background="@drawable/toptableborder"
+            android:orientation="horizontal"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.027"
+            app:layout_constraintStart_toEndOf="@+id/swOrderBy"
+            app:layout_constraintTop_toTopOf="parent">
+
+            <TextView
+                android:id="@+id/tvclListTitleNafn"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:gravity="center"
+                android:text="Nafn"
+                android:textSize="18sp"
+                android:textStyle="bold" />
+
+            <TextView
+                android:id="@+id/tvclListTitleRating"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:gravity="center"
+                android:text="Einkunn"
+                android:textSize="18sp"
+                android:textStyle="bold" />
+
+            <TextView
+                android:id="@+id/tvclListTitleOperation"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:gravity="center"
+                android:text="@string/delete"
+                android:textSize="18sp"
+                android:textStyle="bold" />
+        </LinearLayout>
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+</layout>

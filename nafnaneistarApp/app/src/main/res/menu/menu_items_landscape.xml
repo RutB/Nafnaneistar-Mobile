@@ -1,6 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
 <menu xmlns:android="http://schemas.android.com/apk/res/android">
     <item
+        android:id="@+id/navMenu"
+        android:icon="@drawable/ic_menu"
+        android:title="@string/navMenu" />
+    <item
         android:id="@+id/navSwipe"
         android:icon="@drawable/ic_swipe"
         android:title="@string/navbarSwipe" />
@@ -20,10 +24,5 @@
         android:id="@+id/navLinkPartner"
         android:icon="@drawable/ic_partner"
         android:title="@string/navbarLinkPartner"/>
-
-    <item
-        android:id="@+id/navMenu"
-        android:icon="@drawable/ic_menu"
-        android:title="@string/navMenu" />
 
 </menu>

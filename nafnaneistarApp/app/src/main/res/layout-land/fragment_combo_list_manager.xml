@@ -1,0 +1,109 @@
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
+
+    <data>
+
+    </data>
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/clApprovedListManager"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="@color/background"
+        tools:context="xyz.nafnaneistar.activities.ViewLikedFragments.ComboListManagerFragment">
+
+        <Button
+            android:id="@+id/btnViewLikedGoBack"
+            style="@style/buttonStyle"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/goBack"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toStartOf="@+id/rvComboList"
+            app:layout_constraintHorizontal_bias="0.4"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/swToggleGender"
+            app:layout_constraintVertical_bias="0.058" />
+
+        <LinearLayout
+            android:id="@+id/linearLayout4"
+            style="@style/tableStyle"
+            android:layout_width="343dp"
+            android:layout_height="45dp"
+            android:layout_marginTop="64dp"
+            android:background="@drawable/toptableborder"
+            android:orientation="horizontal"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent">
+
+            <TextView
+                android:id="@+id/tvclListTitleNafn"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:gravity="center"
+                android:text="Nafn"
+                android:textSize="18sp"
+                android:textStyle="bold" />
+
+            <TextView
+                android:id="@+id/tvclListTitleRating"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:gravity="center"
+                android:text="Meðaleinkun"
+                android:textSize="18sp"
+                android:textStyle="bold" />
+
+            <TextView
+                android:id="@+id/tvclListTitleOperation"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:gravity="center"
+                android:text="@string/delete"
+                android:textSize="18sp"
+                android:textStyle="bold" />
+        </LinearLayout>
+
+        <Switch
+            android:id="@+id/swOrderBy"
+            android:layout_width="134dp"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="188dp"
+            android:text="@string/GroupByNameOrRating"
+            app:layout_constraintBottom_toTopOf="@+id/swToggleGender"
+            app:layout_constraintEnd_toStartOf="@+id/rvComboList"
+            app:layout_constraintHorizontal_bias="0.432"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <Switch
+            android:id="@+id/swToggleGender"
+            android:layout_width="129dp"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="16dp"
+            android:text="@string/ShowGenderNames"
+            app:layout_constraintBottom_toTopOf="@+id/btnViewLikedGoBack"
+            app:layout_constraintEnd_toStartOf="@+id/rvComboList"
+            app:layout_constraintHorizontal_bias="0.38"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/swOrderBy" />
+
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/rvComboList"
+            android:layout_width="342dp"
+            android:layout_height="270dp"
+            android:layout_marginBottom="8dp"
+            android:background="@color/btn_color_lg"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/linearLayout4"
+            tools:listitem="@layout/combolist" />
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+</layout>

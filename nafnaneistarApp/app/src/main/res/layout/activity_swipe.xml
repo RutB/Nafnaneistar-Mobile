@@ -14,55 +14,86 @@
         android:layout_height="match_parent"
         android:background="@color/background">
 
+
         <Button
             android:id="@+id/btnDislike"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginEnd="50dp"
-            android:layout_marginTop="32dp"
+            android:layout_marginBottom="192dp"
+            android:layout_marginEnd="371dp"
+
+            android:layout_marginStart="32dp"
             android:background="@drawable/ic_arrow_dislike"
             android:backgroundTintMode="add"
             android:drawableTintMode="add"
             android:rotation="90"
             android:textAlignment="textStart"
-
             android:theme="@style/btn.disLike"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toStartOf="@+id/btnApprove"
-            app:layout_constraintHorizontal_bias="0.5"
-            app:layout_constraintHorizontal_chainStyle="spread_inside"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/scrollView2"
-            app:layout_constraintVertical_bias="0.0" />
-
+            app:layout_constraintTop_toBottomOf="@+id/llLoadingContainer"
+            app:layout_constraintVertical_bias="0.384" />
 
         <Button
             android:id="@+id/btnApprove"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginStart="50dp"
-            android:layout_marginTop="32dp"
+            android:layout_marginBottom="192dp"
+            android:layout_marginEnd="32dp"
             android:background="@drawable/ic_arrow_approve"
             android:rotation="-90"
             android:textColorLink="@color/ambiant"
             android:theme="@style/buttonStyle"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHorizontal_bias="0.5"
+            app:layout_constraintHorizontal_bias="1.0"
             app:layout_constraintStart_toEndOf="@+id/btnDislike"
-            app:layout_constraintTop_toBottomOf="@+id/scrollView2"
-            app:layout_constraintVertical_bias="0.0"
+            app:layout_constraintTop_toBottomOf="@+id/llLoadingContainer"
+            app:layout_constraintVertical_bias="0.384"
             app:rippleColor="@color/btn_color" />
+
+        <LinearLayout
+            android:id="@+id/llLoadingContainer"
+            android:layout_width="418dp"
+            android:layout_height="213dp"
+            android:layout_marginTop="64dp"
+            android:orientation="vertical"
+            android:visibility="invisible"
+            app:layout_constraintBottom_toBottomOf="@+id/scrollView2"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/toolbar">
+
+            <ImageView
+                android:id="@+id/imageView"
+                android:layout_width="274dp"
+                android:layout_height="149dp"
+                android:layout_gravity="center"
+                app:srcCompat="@drawable/fill" />
+
+            <TextView
+                android:id="@+id/textView4"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:gravity="center"
+                android:text="Sæki nafn..."
+                android:textSize="24sp" />
+        </LinearLayout>
 
         <ScrollView
             android:id="@+id/scrollView2"
             style="@style/h1"
-            android:layout_width="349dp"
-            android:layout_height="374dp"
+            android:layout_width="0dp"
+            android:layout_height="0dp"
+            android:layout_marginBottom="32dp"
+            android:layout_marginEnd="32dp"
+            android:layout_marginStart="32dp"
+            android:layout_marginTop="3dp"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent">
+            app:layout_constraintTop_toBottomOf="@+id/toolbar">
 
             <LinearLayout
                 android:layout_width="match_parent"
@@ -75,15 +106,18 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_gravity="fill_horizontal|center_vertical"
+                    android:layout_weight="1"
                     android:gravity="center"
                     android:textSize="30sp" />
 
                 <TextView
                     android:id="@+id/tvTexti"
                     android:layout_width="match_parent"
-                    android:layout_height="331dp"
+                    android:layout_height="wrap_content"
                     android:layout_gravity="center"
+                    android:layout_weight="1"
                     android:gravity="center_horizontal|center_vertical"
+                    android:isScrollContainer="true"
                     android:padding="8dp"
                     android:textSize="18sp" />
             </LinearLayout>
@@ -93,23 +127,22 @@
             android:id="@+id/toolbar"
             android:layout_width="0dp"
             android:layout_height="47dp"
+            android:layout_marginTop="64dp"
             android:background="@color/ambiant"
             android:minHeight="?attr/actionBarSize"
             android:theme="?attr/actionBarTheme"
-            app:layout_constraintBottom_toTopOf="@+id/scrollView2"
-            app:layout_constraintEnd_toEndOf="@+id/rgGender"
+            app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
 
         <androidx.constraintlayout.widget.ConstraintLayout
             android:id="@+id/rgGender"
-            android:layout_width="415dp"
-            android:layout_height="57dp"
+            android:layout_width="0dp"
+            android:layout_height="0dp"
             app:layout_constraintBottom_toBottomOf="@+id/toolbar"
-            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintEnd_toEndOf="@+id/toolbar"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="@+id/toolbar"
-            app:layout_constraintVertical_bias="1.0">
+            app:layout_constraintTop_toTopOf="@+id/toolbar">
 
             <CheckBox
                 android:id="@+id/cbGenderMale"
@@ -142,32 +175,5 @@
                 app:layout_constraintTop_toTopOf="parent"
                 app:layout_constraintVertical_bias="1.0" />
         </androidx.constraintlayout.widget.ConstraintLayout>
-
-        <LinearLayout
-            android:id="@+id/llLoadingContainer"
-            android:layout_width="418dp"
-            android:layout_height="213dp"
-            android:orientation="vertical"
-            android:visibility="invisible"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent">
-
-            <ImageView
-                android:id="@+id/imageView"
-                android:layout_width="274dp"
-                android:layout_height="149dp"
-                android:layout_gravity="center"
-                app:srcCompat="@drawable/fill" />
-
-            <TextView
-                android:id="@+id/textView4"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:gravity="center"
-                android:text="Sæki nafn..."
-                android:textSize="24sp" />
-        </LinearLayout>
     </androidx.constraintlayout.widget.ConstraintLayout>
 </layout>
