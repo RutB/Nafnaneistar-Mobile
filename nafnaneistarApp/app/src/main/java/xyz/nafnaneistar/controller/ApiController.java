@@ -2,6 +2,10 @@ package xyz.nafnaneistar.controller;
 
 import android.app.Activity;
 import android.app.Application;
+import android.content.Intent;
+import android.util.Log;
+import android.view.View;
+import android.widget.Toast;
 
 import com.android.volley.Request;
 import com.android.volley.RequestQueue;
@@ -17,6 +21,7 @@ import org.json.JSONObject;
 import java.net.URISyntaxException;
 import java.util.ArrayList;
 
+import xyz.nafnaneistar.activities.LoginActivity;
 import xyz.nafnaneistar.activities.items.NameCardItem;
 import xyz.nafnaneistar.helpers.Prefs;
 import xyz.nafnaneistar.loginactivity.R;
@@ -342,5 +347,48 @@ public class ApiController extends Application {
                     volleyCallBack.onError(getString(R.string.errorRetrievingData));
         });
         ApiController.getInstance().addToRequestQueue(jsonObjReq);
+    }
+
+    public void generateComboName(Activity context, boolean middle, int gender, String lastName, VolleyCallBack<String> volleyCallBack){
+        Prefs prefs = new Prefs(context);
+        String [] user = prefs.getUser();
+        String email = user[0];
+        String pass = user[1];
+        String listeningPath = "viewliked/namemaker";
+        URIBuilder b = null;
+        String url = "";
+        try {
+            b = new URIBuilder(ApiController.getDomainURL()+listeningPath);
+            b.addParameter("email",email);
+            b.addParameter("pass",pass);
+            b.addParameter("middle", String.valueOf(middle));
+            b.addParameter("gender", String.valueOf(gender));
+            url = b.build().toString();
+        } catch (URISyntaxException e) {
+            e.printStackTrace();
+        }
+
+        JsonObjectRequest jsonObjReq = new JsonObjectRequest(Request.Method.GET,url,null,
+                response -> {
+                    try {
+                        if(response.has("message")){
+                            Toast.makeText(context, response.getString("message") ,Toast.LENGTH_SHORT)
+                                    .show();
+                            return;
+                        }
+                        String name = response.getString("name");
+                        if(middle)
+                            name = name.concat(String.format("%s", response.getString("middle")));
+                        name = name.concat(" " + lastName );
+                        volleyCallBack.onResponse(name);
+                    } catch (JSONException e) {
+                        e.printStackTrace();
+                    }
+                },error -> {
+                    volleyCallBack.onError(getResources().getString(R.string.errorRetrievingData));
+
+        });
+        ApiController.getInstance().addToRequestQueue(jsonObjReq);
+
     }
 }

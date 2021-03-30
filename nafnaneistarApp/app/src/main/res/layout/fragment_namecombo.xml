@@ -60,6 +60,7 @@
                 android:autofillHints=""
                 android:background="@color/white"
                 android:ems="10"
+                android:freezesText="true"
                 android:hint="@string/combonameHintLastName"
                 android:inputType="textPersonName"
                 android:padding="8sp"
@@ -82,12 +83,14 @@
                     android:layout_width="160dp"
                     android:layout_height="wrap_content"
                     android:checked="true"
+                    android:freezesText="true"
                     android:text="@string/female" />
 
                 <RadioButton
                     android:id="@+id/rbNameComboMale"
                     android:layout_width="140dp"
                     android:layout_height="wrap_content"
+                    android:freezesText="true"
                     android:text="@string/cbMale" />
             </LinearLayout>
 

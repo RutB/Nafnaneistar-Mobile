@@ -21,7 +21,7 @@
             android:layout_marginBottom="8dp"
             android:layout_marginEnd="24dp"
             android:layout_marginStart="24dp"
-            android:layout_marginTop="64dp"
+            android:layout_marginTop="65dp"
             android:background="@color/ambiant"
             android:orientation="vertical"
             app:layout_constraintBottom_toTopOf="@+id/clNameStats"
@@ -88,6 +88,7 @@
             android:layout_marginEnd="24dp"
             android:layout_marginStart="24dp"
             android:layout_marginTop="8dp"
+            android:visibility="visible"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintHorizontal_bias="1.0"
@@ -99,8 +100,8 @@
 
         <androidx.constraintlayout.widget.ConstraintLayout
             android:id="@+id/clNameStats"
-            android:layout_width="0dp"
-            android:layout_height="0dp"
+            android:layout_width="370dp"
+            android:layout_height="354dp"
             android:layout_marginBottom="24dp"
             android:layout_marginEnd="24dp"
             android:layout_marginStart="24dp"
@@ -116,9 +117,8 @@
 
             <TextView
                 android:id="@+id/tvViewLikedUserName"
-                android:layout_width="362dp"
-                android:layout_height="64dp"
-                android:layout_marginEnd="1dp"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
                 android:padding="16sp"
                 android:text="@string/getting_data"
                 android:textSize="28sp"
@@ -131,130 +131,132 @@
             <TextView
                 android:id="@+id/tvViewLikedStatsMeaning"
                 android:layout_width="0dp"
-                android:layout_height="37dp"
+                android:layout_height="wrap_content"
                 android:isScrollContainer="true"
                 android:paddingEnd="16dp"
                 android:paddingStart="16dp"
-                app:layout_constraintBottom_toTopOf="@+id/tvViewLikedFemaleTitleStats"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/tvViewLikedUserName" />
 
             <TextView
                 android:id="@+id/tvViewLikedFemaleTitleStats"
-                android:layout_width="wrap_content"
+                android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="16dp"
+                android:layout_marginStart="16dp"
+                android:layout_marginTop="12dp"
                 android:padding="8sp"
                 android:text="@string/tvViewLikeStatNameFemaleTitle"
                 android:textSize="20sp"
                 android:textStyle="bold"
-                app:layout_constraintBottom_toTopOf="@+id/tvViewLikedMaleStatsApproved"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintHorizontal_bias="0.081"
+                app:layout_constraintEnd_toStartOf="@+id/tvViewLikedMaleTitleStats"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="parent"
-                app:layout_constraintVertical_chainStyle="packed" />
+                app:layout_constraintTop_toBottomOf="@+id/tvViewLikedStatsMeaning" />
 
             <TextView
                 android:id="@+id/tvViewLikedMaleTitleStats"
-                android:layout_width="wrap_content"
+                android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="16dp"
+                android:layout_marginTop="12dp"
                 android:padding="8sp"
                 android:text="@string/vtViewLikedNameStatsTitleMale"
                 android:textSize="20sp"
                 android:textStyle="bold"
-                app:layout_constraintBottom_toTopOf="@+id/tvFemaleStatApproved"
                 app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintHorizontal_bias="0.5"
                 app:layout_constraintStart_toEndOf="@+id/tvViewLikedFemaleTitleStats"
-                app:layout_constraintTop_toTopOf="parent"
-                app:layout_constraintVertical_chainStyle="packed" />
+                app:layout_constraintTop_toBottomOf="@+id/tvViewLikedStatsMeaning" />
 
             <TextView
                 android:id="@+id/tvViewLikedMaleStatsLeft"
-                android:layout_width="wrap_content"
+                android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="12sp"
+                android:layout_marginBottom="36dp"
+                android:layout_marginEnd="16dp"
+                android:layout_marginStart="16dp"
+                android:layout_marginTop="16dp"
                 android:padding="8sp"
                 android:text="@string/getting_data"
                 app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintEnd_toStartOf="@+id/tvFemalestatsLeft"
-                app:layout_constraintHorizontal_bias="0.5"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/tvViewLikedMaleStatsDisapproved" />
 
             <TextView
                 android:id="@+id/tvFemalestatsLeft"
-                android:layout_width="wrap_content"
+                android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                android:layout_marginEnd="8sp"
-                android:layout_marginTop="12sp"
+                android:layout_marginBottom="36dp"
+                android:layout_marginEnd="16dp"
+                android:layout_marginStart="16dp"
+                android:layout_marginTop="16dp"
                 android:padding="8sp"
                 android:text="@string/getting_data"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintHorizontal_bias="0.5"
                 app:layout_constraintStart_toEndOf="@+id/tvViewLikedMaleStatsLeft"
-                app:layout_constraintTop_toBottomOf="@+id/tvFemaleStatRejected" />
+                app:layout_constraintTop_toBottomOf="@+id/tvFemaleStatRejected"
+                app:layout_constraintVertical_bias="0.0" />
 
             <TextView
                 android:id="@+id/tvViewLikedMaleStatsApproved"
-                android:layout_width="wrap_content"
-                android:layout_height="34dp"
-                android:layout_marginTop="12sp"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginEnd="16dp"
+                android:layout_marginStart="16dp"
+                android:layout_marginTop="16dp"
                 android:padding="8sp"
                 android:text="@string/getting_data"
                 app:layout_constraintBottom_toTopOf="@+id/tvViewLikedMaleStatsDisapproved"
-                app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintEnd_toStartOf="@+id/tvFemaleStatApproved"
-                app:layout_constraintHorizontal_bias="0.5"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/tvViewLikedFemaleTitleStats" />
 
             <TextView
                 android:id="@+id/tvFemaleStatRejected"
-                android:layout_width="wrap_content"
+                android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                android:layout_marginEnd="8sp"
-                android:layout_marginTop="12sp"
+                android:layout_marginEnd="16dp"
+                android:layout_marginStart="16dp"
+                android:layout_marginTop="64dp"
                 android:padding="8sp"
                 android:text="@string/getting_data"
                 app:layout_constraintBottom_toTopOf="@+id/tvFemalestatsLeft"
                 app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintHorizontal_bias="0.5"
                 app:layout_constraintStart_toEndOf="@+id/tvViewLikedMaleStatsDisapproved"
-                app:layout_constraintTop_toBottomOf="@+id/tvFemaleStatApproved" />
+                app:layout_constraintTop_toBottomOf="@+id/tvViewLikedMaleTitleStats" />
 
             <TextView
                 android:id="@+id/tvViewLikedMaleStatsDisapproved"
-                android:layout_width="wrap_content"
+                android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="12sp"
+                android:layout_marginEnd="16dp"
+                android:layout_marginStart="16dp"
+                android:layout_marginTop="16dp"
                 android:padding="8sp"
                 android:text="@string/getting_data"
                 app:layout_constraintBottom_toTopOf="@+id/tvViewLikedMaleStatsLeft"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintEnd_toStartOf="@+id/tvFemaleStatRejected"
-                app:layout_constraintHorizontal_bias="0.5"
+                app:layout_constraintHorizontal_bias="0.512"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/tvViewLikedMaleStatsApproved" />
+                app:layout_constraintTop_toBottomOf="@+id/tvViewLikedMaleStatsApproved"
+                app:layout_constraintVertical_bias="0.0" />
 
             <TextView
                 android:id="@+id/tvFemaleStatApproved"
-                android:layout_width="wrap_content"
+                android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                android:layout_marginEnd="8sp"
-                android:layout_marginTop="12sp"
+                android:layout_marginEnd="16dp"
+                android:layout_marginStart="16dp"
+                android:layout_marginTop="16dp"
                 android:padding="8sp"
                 android:text="@string/getting_data"
                 app:layout_constraintBottom_toTopOf="@+id/tvFemaleStatRejected"
                 app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintHorizontal_bias="0.5"
+                app:layout_constraintHorizontal_bias="0.388"
                 app:layout_constraintStart_toEndOf="@+id/tvViewLikedMaleStatsApproved"
-                app:layout_constraintTop_toBottomOf="@+id/tvViewLikedMaleTitleStats" />
+                app:layout_constraintTop_toBottomOf="@+id/tvViewLikedMaleTitleStats"
+                app:layout_constraintVertical_bias="0.357" />
 
         </androidx.constraintlayout.widget.ConstraintLayout>
 

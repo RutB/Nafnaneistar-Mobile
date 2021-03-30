@@ -2,10 +2,12 @@ package xyz.nafnaneistar.activities;
 
 import android.annotation.SuppressLint;
 import android.os.Bundle;
+import android.os.Parcelable;
 import android.text.Spannable;
 import android.text.SpannableStringBuilder;
 import android.text.style.DynamicDrawableSpan;
 import android.text.style.ImageSpan;
+import android.util.Log;
 import android.view.View;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -13,6 +15,8 @@ import android.widget.Toast;
 import java.net.URISyntaxException;
 import java.util.ArrayList;
 
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.databinding.DataBindingUtil;
 import androidx.fragment.app.Fragment;
@@ -91,11 +95,53 @@ public class SwipeActivity extends AppCompatActivity {
                     .add(R.id.SwipeContainer, navbar)
                     .commit();
         }
-        try {
-            getNewName();
-        } catch (URISyntaxException e) {
-            e.printStackTrace();
+        Log.d("restore", "onCreate: " + currentCard);
+        if(savedInstanceState != null){
+            currentCard = new NameCard(
+                    savedInstanceState.getInt("currentId"),
+                    savedInstanceState.getString("currentName"),
+                    savedInstanceState.getString("currentDesc"),
+                    savedInstanceState.getInt("currentGender")
+            );
+            showNameCard(currentCard);
+        }else{
+            try {
+                getNewName();
+            } catch (URISyntaxException e) {
+                e.printStackTrace();
+            }
         }
+
+
+
+    }
+
+    @Override
+    public void onRestoreInstanceState(@Nullable Bundle savedInstanceState) {
+        super.onRestoreInstanceState(savedInstanceState);
+        Log.d("restore", "onRestoreInstanceState: " + savedInstanceState.getInt("selectedMenu"));
+
+        Log.d("restore", "onRestoreInstanceState: " + currentCard);
+    }
+    @Override
+    public void onSaveInstanceState(@NonNull Bundle outState) {
+        outState.putInt("currentId", currentCard.getId());
+        outState.putInt("currentGender", currentCard.getGender());
+        outState.putString("currentDesc",currentCard.getDescription());
+        outState.putString("currentName",currentCard.getName());
+
+        super.onSaveInstanceState(outState);
+
+    }
+    public void showNameCard(NameCard nc){
+        binding.llLoadingContainer.setVisibility(View.INVISIBLE);
+        binding.tvTexti.setText(nc.getDescription());
+        SpannableStringBuilder ssb = new SpannableStringBuilder(nc.getName() + "  ");
+        if (nc.getGender() == 0)
+            ssb.setSpan(new ImageSpan(getApplicationContext(), R.drawable.ic_gender_male, DynamicDrawableSpan.ALIGN_CENTER), nc.getName().length() + 1, nc.getName().length() + 2, Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
+        if (nc.getGender() == 1)
+            ssb.setSpan(new ImageSpan(getApplicationContext(), R.drawable.ic_gender_female, DynamicDrawableSpan.ALIGN_CENTER), nc.getName().length() + 1, nc.getName().length() + 2, Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
+        binding.tvName.setText(ssb, TextView.BufferType.SPANNABLE);
     }
 
     public void chooseName(View view) throws URISyntaxException {
@@ -114,15 +160,8 @@ public class SwipeActivity extends AppCompatActivity {
 
                     @Override
                     public void onResponse(NameCard nc) {
-                        binding.llLoadingContainer.setVisibility(View.INVISIBLE);
-                        binding.tvTexti.setText(nc.getDescription());
-                        SpannableStringBuilder ssb = new SpannableStringBuilder(nc.getName() + "  ");
-                        if (nc.getGender() == 0)
-                            ssb.setSpan(new ImageSpan(getApplicationContext(), R.drawable.ic_gender_male, DynamicDrawableSpan.ALIGN_CENTER), nc.getName().length() + 1, nc.getName().length() + 2, Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
-                        if (nc.getGender() == 1)
-                            ssb.setSpan(new ImageSpan(getApplicationContext(), R.drawable.ic_gender_female, DynamicDrawableSpan.ALIGN_CENTER), nc.getName().length() + 1, nc.getName().length() + 2, Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
-                        binding.tvName.setText(ssb, TextView.BufferType.SPANNABLE);
                         currentCard = nc;
+                        showNameCard(currentCard);
 
                     }
 

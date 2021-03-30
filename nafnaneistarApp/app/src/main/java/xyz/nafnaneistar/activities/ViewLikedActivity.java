@@ -1,5 +1,7 @@
 package xyz.nafnaneistar.activities;
 
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.databinding.DataBindingUtil;
 import androidx.fragment.app.Fragment;
@@ -18,6 +20,7 @@ import xyz.nafnaneistar.model.User;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.os.PersistableBundle;
 import android.text.Spannable;
 import android.text.SpannableStringBuilder;
 import android.text.style.DynamicDrawableSpan;
@@ -44,7 +47,8 @@ public class ViewLikedActivity extends AppCompatActivity {
     private Prefs prefs;
     private User currentUser;
     FragmentManager fragmentManager;
-    private String[] FragmentTags = new String[]{"nameCombo","comboList"};
+    private int selectedMenuIndex = 0;
+    private String[] FragmentTags = new String[]{"comboList","nameCombo"};
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -73,7 +77,45 @@ public class ViewLikedActivity extends AppCompatActivity {
         binding.tvViewLikedMenuRateName.setOnClickListener(view -> loadApprovedNames());
     }
 
+    @Override
+    public void onRestoreInstanceState(@Nullable Bundle savedInstanceState) {
+        super.onRestoreInstanceState(savedInstanceState);
+        Log.d("restore", "onRestoreInstanceState: " + savedInstanceState.getInt("selectedMenu"));
+        loadCurrentMenu(savedInstanceState.getInt("selectedMenu"));
+    }
+    @Override
+    public void onSaveInstanceState(@NonNull Bundle outState) {
+        outState.putInt("selectedMenu",selectedMenuIndex);
+        super.onSaveInstanceState(outState);
+
+    }
+
+    public void loadCurrentMenu(int index){
+        switch (index){
+            case 1:
+                selectedMenuIndex = 1;
+                loadComboListMenu();
+                break;
+            case 2:
+                selectedMenuIndex = 2;
+                loadApprovedNames();
+                ;break;
+            case 3:
+                selectedMenuIndex = 3;
+                loadComboNameMenu();
+                break;
+            default:
+                selectedMenuIndex = 0;
+                loadStatMenu();
+                fixStatsTitle();
+            break;
+
+        }
+    }
+
     private void loadStatMenu(){
+        if(selectedMenuIndex == 0) return;
+        selectedMenuIndex = 0;
         changedSelectedMenu(binding.tvViewLikedMenuYfirlit);
         getStatData();
         hideAllMenuPages();
@@ -81,6 +123,8 @@ public class ViewLikedActivity extends AppCompatActivity {
     }
 
     private void loadComboListMenu(){
+        if(selectedMenuIndex == 1) return;
+        selectedMenuIndex = 1;
         changedSelectedMenu(binding.tvViewLikedMenuCombinedList);
         hideAllMenuPages();
         Fragment f = fragmentManager.findFragmentById(R.layout.fragment_combo_list);
@@ -92,50 +136,52 @@ public class ViewLikedActivity extends AppCompatActivity {
         }
     }
     private void loadApprovedNames(){
+        Fragment f = fragmentManager.findFragmentById(R.layout.fragment_approved_list_manager);
+        if(f != null) return;
+        if(selectedMenuIndex == 2) return;
+        selectedMenuIndex = 2;
         changedSelectedMenu(binding.tvViewLikedMenuRateName);
         hideAllMenuPages();
         binding.clNameStats.setVisibility(View.VISIBLE);
-        Fragment f = fragmentManager.findFragmentById(R.layout.fragment_approved_list_manager);
-        if (f == null) {
+
+        if (f == null ) {
             f = new ApprovedNameListManagerFragment();
             fragmentManager.beginTransaction()
                     .add(R.id.viewLikedContainer, f, "ApprovedList")
                     .commit();
         }
+
     }
 
 
     private void loadComboNameMenu(){
+        if(selectedMenuIndex == 3) return;
+        selectedMenuIndex = 3;
         changedSelectedMenu(binding.tvViewLikedMenuNameCombo);
         hideAllMenuPages();
-        addFragment(R.layout.fragment_namecombo,"nameCombo");
+        Fragment f = fragmentManager.findFragmentByTag("nameCombo");
+
+        if (f == null) {
+            f = new NameComboFragment();
+            fragmentManager.beginTransaction()
+                    .add(R.id.clFragmentContainer, f, "nameCombo")
+                    .commit();
+        }
+
     }
 
     @Override
     public void onBackPressed() {
         Fragment f = fragmentManager.findFragmentByTag("listViewCombo");
         Fragment f2 = fragmentManager.findFragmentByTag("ApprovedList");
-
         if (f != null) {
             removeFragment("listViewCombo");
-            Log.d("clickety click", "onBackPressed: " + f.toString());
         } else if (f2 != null) {
             removeFragment("ApprovedList");
         }else {
             super.onBackPressed();
         }
 
-    }
-
-    private void addFragment(int id,String tag){
-        Fragment f = fragmentManager.findFragmentById(id);
-
-        if (f == null) {
-            f = new NameComboFragment();
-            fragmentManager.beginTransaction()
-                    .add(R.id.clFragmentContainer, f, tag)
-                    .commit();
-        }
     }
 
     private void removeFragment(String tag) {
@@ -148,9 +194,11 @@ public class ViewLikedActivity extends AppCompatActivity {
         }
     }
     private void hideAllMenuPages(){
-
         binding.clNameStats.setVisibility(View.INVISIBLE);
         for (String tag: FragmentTags) {
+            if(tag == "nameCombo" && selectedMenuIndex == 3)
+                continue;
+
             removeFragment(tag);
         }
 
@@ -223,8 +271,6 @@ public class ViewLikedActivity extends AppCompatActivity {
         });
     }
 
-
-
     public void loadCurrentUser() throws URISyntaxException {
         String[] user = prefs.getUser();
         String email = user[0];
@@ -242,4 +288,6 @@ public class ViewLikedActivity extends AppCompatActivity {
         });
         ApiController.getInstance().addToRequestQueue(jsonObjReq);
     }
+
+
 }

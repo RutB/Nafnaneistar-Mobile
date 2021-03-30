@@ -20,6 +20,7 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
 
+import androidx.annotation.NonNull;
 import androidx.databinding.DataBindingUtil;
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.DefaultItemAnimator;
@@ -68,6 +69,12 @@ public class ApprovedNameListManagerFragment extends Fragment implements  Approv
         approvedList = new ArrayList<>();
     }
 
+    @Override
+    public void onSaveInstanceState(@NonNull Bundle outState) {
+        outState.putInt("genderSwitchState",genderSwitchState);
+        outState.putInt("sortingSwitchState", sortingSwitchState);
+        super.onSaveInstanceState(outState);
+    }
 
 
 
@@ -93,10 +100,10 @@ public class ApprovedNameListManagerFragment extends Fragment implements  Approv
     public void onGenderCheckedChange(CompoundButton buttonView, boolean isChecked) {
         if(isChecked) {
             filterByGender(approvedList,0);
-            genderSwitchState = 0;
+            genderSwitchState = 1;
         } else {
             filterByGender(approvedList,1);
-            genderSwitchState = 1;
+            genderSwitchState = 0;
         }
         adapter.notifyDataSetChanged();
     }
@@ -116,6 +123,10 @@ public class ApprovedNameListManagerFragment extends Fragment implements  Approv
                     .commit();
         }
         View view = binding.getRoot();
+        if(savedInstanceState != null){
+            genderSwitchState = savedInstanceState.getInt("genderSwitchState");
+            sortingSwitchState = savedInstanceState.getInt("sortingSwitchState");
+        }
         ApiController.getInstance().getApprovedNames((Activity) getContext(), new VolleyCallBack<ArrayList<NameCardItem>>() {
             @Override
             public ArrayList<NameCardItem> onSuccess() {
@@ -138,7 +149,10 @@ public class ApprovedNameListManagerFragment extends Fragment implements  Approv
                 else {
                     if(genderSwitchState == 0) filterByGender(approvedList,1);
                     else filterByGender(approvedList,0);
-                    sortByName(approvedList);
+                    if(sortingSwitchState == 0)sortByName(approvedList);
+                    else sortByRating(approvedList);
+
+
                 }
             }
 

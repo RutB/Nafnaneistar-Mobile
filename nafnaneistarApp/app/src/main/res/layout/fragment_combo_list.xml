@@ -12,8 +12,8 @@
 
         <androidx.constraintlayout.widget.ConstraintLayout
             android:id="@+id/clComboList"
-            android:layout_width="354dp"
-            android:layout_height="257dp"
+            android:layout_width="0dp"
+            android:layout_height="0dp"
             android:background="@color/btn_color_lg"
             android:visibility="visible"
             app:layout_constraintBottom_toBottomOf="parent"

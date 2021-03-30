@@ -83,4 +83,5 @@
     <string name="ShowGenderNames">Sýna KVK/KK Nöfn</string>
     <string name="FetchingList">Sæki lista</string>
     <string name="NoNameYet">Enginn Nöfn kominn</string>
+    <string name="please_choose_list">Vinsamlega veldu lista</string>
 </resources>
