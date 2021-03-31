@@ -27,6 +27,7 @@ import java.util.jar.Attributes;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 import xyz.nafnaneistar.controller.ApiController;
+import xyz.nafnaneistar.controller.VolleyCallBack;
 import xyz.nafnaneistar.helpers.Prefs;
 import xyz.nafnaneistar.loginactivity.R;
 
@@ -115,6 +116,7 @@ public class SearchActivity extends AppCompatActivity {
                     } catch (JSONException e) {
                         e.printStackTrace();
 
+                    
                     }
                 },error -> {
                     Log.d("searchActivity", "searchActivity " + error.toString());
