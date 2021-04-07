@@ -11,5 +11,5 @@
     android:layout_marginRight="16dp"
     android:background="@color/background"
     app:layoutManager="LinearLayoutManager"
-    tools:context="xyz.nafnaneistar.activities.ViewLikedFragments.NameCardFragment"
+    tools:context="xyz.nafnaneistar.activities.LinkedPartnerFragments."
     tools:listitem="@layout/linkcombolist" />
