@@ -4,6 +4,8 @@ import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
 
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import androidx.databinding.DataBindingUtil;
 import androidx.fragment.app.Fragment;
 
@@ -20,9 +22,12 @@ import org.apache.http.client.utils.URIBuilder;
 import org.json.JSONException;
 
 import java.net.URISyntaxException;
+import java.util.ArrayList;
 
 import xyz.nafnaneistar.activities.LoginActivity;
+import xyz.nafnaneistar.activities.items.NameCardItem;
 import xyz.nafnaneistar.controller.ApiController;
+import xyz.nafnaneistar.controller.VolleyCallBack;
 import xyz.nafnaneistar.helpers.Prefs;
 import xyz.nafnaneistar.loginactivity.R;
 import xyz.nafnaneistar.loginactivity.databinding.FragmentNamecomboBinding;
@@ -36,7 +41,8 @@ public class NameComboFragment extends Fragment {
     FragmentNamecomboBinding binding;
     Activity context;
     Prefs prefs;
-
+    int selectedGender = 1;
+    String lastName = "";
     public NameComboFragment() {
         // Required empty public constructor
     }
@@ -52,6 +58,24 @@ public class NameComboFragment extends Fragment {
         this.context = getActivity();
         prefs = new Prefs(context);
 
+
+    }
+
+    @Override
+    public void onActivityCreated(@Nullable Bundle savedInstanceState) {
+        super.onActivityCreated(savedInstanceState);
+        if(savedInstanceState != null){
+            selectedGender = savedInstanceState.getInt("selectedGender");
+            lastName = savedInstanceState.getString("lastName");
+            restoreView(selectedGender,lastName);
+        }
+    }
+
+    @Override
+    public void onSaveInstanceState(@NonNull Bundle outState) {
+        outState.putInt("selectedGender",selectedGender);
+        outState.putString("lastName", String.valueOf(binding.etComboNameLastName.getText()));
+        super.onSaveInstanceState(outState);
     }
 
     @Override
@@ -64,70 +88,64 @@ public class NameComboFragment extends Fragment {
         binding.rbNameComboMale.setOnClickListener(this::radioCheck);
         binding.btComboName.setOnClickListener(this::generateComboName);
         binding.btComboNameMiddle.setOnClickListener(this::generateComboName);
-        View view = binding.getRoot();
+        View view = getView() != null ? getView() :
+                binding.getRoot();
         return view;
     }
+
+    private void restoreView(int gender, String lastName){
+            if(gender == 1) {
+                binding.rbNameComboMale.setChecked(false);
+                binding.rbNameComboFemale.setChecked(true);
+                selectedGender = 1;
+            }
+            else {
+                binding.rbNameComboMale.setChecked(true);
+                binding.rbNameComboFemale.setChecked(false);
+                selectedGender = 0;
+
+            }
+            binding.etComboNameLastName.setText(lastName);
+    }
+
     private void radioCheck(View view){
         if(view == binding.rbNameComboFemale){
             binding.rbNameComboMale.setChecked(false);
             binding.rbNameComboFemale.setChecked(true);
+            selectedGender = 1;
         }
         else {
             binding.rbNameComboMale.setChecked(true);
             binding.rbNameComboFemale.setChecked(false);
+            selectedGender = 0;
         }
 
     }
 
     private void generateComboName(View view){
-
-        String [] user = prefs.getUser();
-        String email = user[0];
-        String pass = user[1];
         boolean middle = view == binding.btComboNameMiddle;
-        Log.d("viewliked", "generateComboName: " + String.valueOf(middle));
         int gender = (binding.rbNameComboFemale.isChecked()) ? 1 : 0;
-        String listeningPath = "viewliked/namemaker";
-        URIBuilder b = null;
-        String url = "";
-        try {
-            b = new URIBuilder(ApiController.getDomainURL()+listeningPath);
-            b.addParameter("email",email);
-            b.addParameter("pass",pass);
-            b.addParameter("middle", String.valueOf(middle));
-            b.addParameter("gender", String.valueOf(gender));
-            url = b.build().toString();
-        } catch (URISyntaxException e) {
-            e.printStackTrace();
-        }
+        ApiController.getInstance().generateComboName((Activity) view.getContext(), middle, gender,
+                String.valueOf(binding.etComboNameLastName.getText()), new VolleyCallBack<String>() {
+            @Override
+            public ArrayList<NameCardItem> onSuccess() {
+                return null;
+            }
 
-        JsonObjectRequest jsonObjReq = new JsonObjectRequest(Request.Method.GET,url,null,
-                response -> {
-                    try {
+            @Override
+            public void onResponse(String name) {
+                binding.tvCombonameReslt.setText(name);
+            }
 
-                        if(response.has("message")){
-                            Toast.makeText(getContext(), response.getString("message") ,Toast.LENGTH_SHORT)
-                                    .show();
-                            return;
-                        }
-                        String name = response.getString("name");
-                        if(middle)
-                            name = name.concat(String.format("%s", response.getString("middle")));
-                        name = name.concat(" " + binding.etComboNameLastName.getText());
-                        binding.tvCombonameReslt.setText(name);
-                    } catch (JSONException e) {
-                        e.printStackTrace();
-                    }
-                },error -> {
-            Toast.makeText(getContext(), getResources().getString(R.string.errorRetrievingData) ,Toast.LENGTH_SHORT)
-                    .show();
-            Intent i = new Intent(getContext(), LoginActivity.class);
-            context.finish();
-            prefs.Logout();
-            startActivity(i);
-            Log.d("viewliked", "getData: " + error.getMessage());
+            @Override
+            public void onError(String error) {
+                Toast.makeText(context,error ,Toast.LENGTH_SHORT)
+                        .show();
+                Intent i = new Intent(getContext(), LoginActivity.class);
+                context.finish();
+                prefs.Logout();
+                startActivity(i);
+            }
         });
-        ApiController.getInstance().addToRequestQueue(jsonObjReq);
-
     }
 }

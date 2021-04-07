@@ -3,10 +3,13 @@ package xyz.nafnaneistar.activities.ViewLikedFragments;
 import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.CompoundButton;
+import android.widget.LinearLayout;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.google.android.material.snackbar.Snackbar;
@@ -17,6 +20,7 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
 
+import androidx.annotation.NonNull;
 import androidx.databinding.DataBindingUtil;
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.DefaultItemAnimator;
@@ -37,10 +41,10 @@ import xyz.nafnaneistar.loginactivity.databinding.FragmentComboListManagerBindin
  * Use the {@link ApprovedNameListManagerFragment#newInstance} factory method to
  * create an instance of this fragment.
  */
-public class ApprovedNameListManagerFragment extends Fragment implements  ComboListNameCardRecyclerViewAdapter.OnItemListener {
+public class ApprovedNameListManagerFragment extends Fragment implements  ApprovedListCardRecyclerViewAdapter.OnItemListener {
     private FragmentApprovedListManagerBinding binding;
     private Prefs prefs;
-    ComboListNameCardRecyclerViewAdapter adapter;
+    static ApprovedListCardRecyclerViewAdapter adapter;
     private ArrayList<NameCardItem> approvedList;
     private ArrayList<NameCardItem> approvedListAll = new ArrayList<>();
     private RecyclerView recyclerView;
@@ -65,11 +69,17 @@ public class ApprovedNameListManagerFragment extends Fragment implements  ComboL
         approvedList = new ArrayList<>();
     }
 
+    @Override
+    public void onSaveInstanceState(@NonNull Bundle outState) {
+        outState.putInt("genderSwitchState",genderSwitchState);
+        outState.putInt("sortingSwitchState", sortingSwitchState);
+        super.onSaveInstanceState(outState);
+    }
 
 
 
     private void setAdapater() {
-        adapter = new ComboListNameCardRecyclerViewAdapter(approvedList, this);
+        adapter = new ApprovedListCardRecyclerViewAdapter(approvedList, this);
         RecyclerView.LayoutManager layoutManager = new LinearLayoutManager(getActivity().getApplicationContext());
         binding.rvComboList.setItemAnimator(new DefaultItemAnimator());
         binding.rvComboList.setLayoutManager(layoutManager);
@@ -90,10 +100,10 @@ public class ApprovedNameListManagerFragment extends Fragment implements  ComboL
     public void onGenderCheckedChange(CompoundButton buttonView, boolean isChecked) {
         if(isChecked) {
             filterByGender(approvedList,0);
-            genderSwitchState = 0;
+            genderSwitchState = 1;
         } else {
             filterByGender(approvedList,1);
-            genderSwitchState = 1;
+            genderSwitchState = 0;
         }
         adapter.notifyDataSetChanged();
     }
@@ -113,6 +123,10 @@ public class ApprovedNameListManagerFragment extends Fragment implements  ComboL
                     .commit();
         }
         View view = binding.getRoot();
+        if(savedInstanceState != null){
+            genderSwitchState = savedInstanceState.getInt("genderSwitchState");
+            sortingSwitchState = savedInstanceState.getInt("sortingSwitchState");
+        }
         ApiController.getInstance().getApprovedNames((Activity) getContext(), new VolleyCallBack<ArrayList<NameCardItem>>() {
             @Override
             public ArrayList<NameCardItem> onSuccess() {
@@ -121,6 +135,7 @@ public class ApprovedNameListManagerFragment extends Fragment implements  ComboL
 
             @Override
             public void onResponse(ArrayList<NameCardItem> list) {
+                setAdapater();
                 approvedList.addAll(list);
                 approvedListAll.addAll(list);
                 if(approvedList.size()==0){
@@ -134,7 +149,10 @@ public class ApprovedNameListManagerFragment extends Fragment implements  ComboL
                 else {
                     if(genderSwitchState == 0) filterByGender(approvedList,1);
                     else filterByGender(approvedList,0);
-                    sortByName(approvedList);
+                    if(sortingSwitchState == 0)sortByName(approvedList);
+                    else sortByRating(approvedList);
+
+
                 }
             }
 
@@ -182,7 +200,7 @@ public class ApprovedNameListManagerFragment extends Fragment implements  ComboL
 
 
     public void removeListView(View view){
-        Fragment f = getParentFragmentManager().findFragmentByTag("listViewCombo");
+        Fragment f = getParentFragmentManager().findFragmentByTag("ApprovedList");
         if (f != null) {
             getParentFragmentManager().beginTransaction()
                     .remove(f)
@@ -193,8 +211,15 @@ public class ApprovedNameListManagerFragment extends Fragment implements  ComboL
 
     @Override
     public void onItemClick(int position) {
-       removeFromApprovedList(approvedList.get(position).getId(),position);
+        removeFromApprovedList(approvedList.get(position).getId(),position);
+        adapter.notifyDataSetChanged();
+
+        if(sortingSwitchState == 0) sortByName(approvedList);
+        else sortByRating(approvedList);
+
     }
+
+
 
     public void removeFromApprovedList(int namecardId, int position){
         ApiController.getInstance().removeFromApprovedList(namecardId,position, (Activity) getContext(), new VolleyCallBack<JSONObject>() {
@@ -202,12 +227,15 @@ public class ApprovedNameListManagerFragment extends Fragment implements  ComboL
             public ArrayList<NameCardItem> onSuccess() {
                 Toast.makeText(getContext(), getResources().getString(R.string.operationSuccess) ,Toast.LENGTH_SHORT)
                         .show();
-                approvedList.remove(position);
                 adapter.notifyDataSetChanged();
                 return null;
             }
             @Override
             public void onResponse(JSONObject response) {
+                NameCardItem nc = approvedList.get(position);
+                approvedListAll.remove(nc);
+                approvedList.remove(position);
+                adapter.notifyDataSetChanged();
             }
             @Override
             public void onError(String error) {

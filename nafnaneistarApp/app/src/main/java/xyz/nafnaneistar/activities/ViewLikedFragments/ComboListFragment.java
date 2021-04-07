@@ -125,6 +125,13 @@ public class ComboListFragment extends Fragment implements  AdapterView.OnItemSe
 
     public void openListView(View view) {
         Fragment f = fragmentManager.findFragmentById(R.layout.fragment_combo_list_manager);
+        if(f != null) return;;
+        if(currentSelectedPartnerId < 0){
+            Toast.makeText(getContext(), R.string.please_choose_list, Toast.LENGTH_SHORT)
+                    .show();
+            return;
+        }
+
         if (f == null) {
             f = new ComboListManagerFragment();
             Bundle bundle = new Bundle();
@@ -156,14 +163,11 @@ public class ComboListFragment extends Fragment implements  AdapterView.OnItemSe
     public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
         if(partnerIds.size() > 0){
             try {
-                Log.d("spinner", "onItemSelected: "+adapterView.getItemAtPosition(i));
-                Log.d("spinner", "onItemSelected: "+partnerIds.get(i-1));
                 currentSelectedPartnerId = partnerIds.get(i-1);
 
             }
             catch (Exception e){
-                Log.d("spinner", "onItemSelected: "+adapterView.getItemAtPosition(i));
-                Log.d("spinner", "onItemSelected: "+ e.getMessage());
+
             }
 
 

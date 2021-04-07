@@ -17,6 +17,7 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
 
+import androidx.annotation.NonNull;
 import androidx.databinding.DataBindingUtil;
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.DefaultItemAnimator;
@@ -62,10 +63,15 @@ public class ComboListManagerFragment extends Fragment implements  ComboListName
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         prefs = new Prefs(getActivity());
+        partnerId = getArguments().getLong("partnerId");
         comboList = new ArrayList<>();
     }
-
-
+    @Override
+    public void onSaveInstanceState(@NonNull Bundle outState) {
+        outState.putInt("genderSwitchState",genderSwitchState);
+        outState.putInt("sortingSwitchState", sortingSwitchState);
+        super.onSaveInstanceState(outState);
+    }
 
 
     private void setAdapater() {
@@ -90,14 +96,13 @@ public class ComboListManagerFragment extends Fragment implements  ComboListName
     public void onGenderCheckedChange(CompoundButton buttonView, boolean isChecked) {
         if(isChecked) {
             filterByGender(comboList,0);
-            genderSwitchState = 0;
+            genderSwitchState = 1;
         } else {
             filterByGender(comboList,1);
-            genderSwitchState = 1;
+            genderSwitchState = 0;
         }
         adapter.notifyDataSetChanged();
     }
-
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -116,10 +121,11 @@ public class ComboListManagerFragment extends Fragment implements  ComboListName
         String[] user = prefs.getUser();
         String user_email = user[0];
         String pass = user[1];
-
-
+        if(savedInstanceState != null){
+            genderSwitchState = savedInstanceState.getInt("genderSwitchState");
+            sortingSwitchState = savedInstanceState.getInt("sortingSwitchState");
+        }
         ApiController.getInstance().getNameCardsAndRating(partnerId, user_email, pass, new VolleyCallBack<ArrayList<NameCardItem>>() {
-
             @Override
             public ArrayList<NameCardItem> onSuccess() {
                 return null;
@@ -141,21 +147,20 @@ public class ComboListManagerFragment extends Fragment implements  ComboListName
                 else {
                     if(genderSwitchState == 0) filterByGender(comboList,1);
                     else filterByGender(comboList,0);
-                    sortByName(comboList);
+                    if(sortingSwitchState == 0)sortByName(comboList);
+                    else sortByRating(comboList);
+
                 }
             }
-
             @Override
             public void onError(String error) {
                 Toast.makeText(getContext(), error, Toast.LENGTH_SHORT)
                         .show();
             }
         });
-
         binding.btnViewLikedGoBack.setOnClickListener(this::removeListView);
         return view;
     }
-
     public void sortByName(ArrayList<NameCardItem> comboList){
         Collections.sort(comboList, (item1, item2) -> item1.getName().compareToIgnoreCase(item2.getName()));
         adapter.notifyDataSetChanged();
@@ -165,20 +170,17 @@ public class ComboListManagerFragment extends Fragment implements  ComboListName
         Collections.sort(comboList, comboListItemComparator.reversed());
         adapter.notifyDataSetChanged();
     }
-
     public void filterByGender(ArrayList<NameCardItem> comboList, int gender){
         ArrayList<NameCardItem> filteredList = new ArrayList<>();
         if(gender != 0 || gender != 1){
             comboList.clear();
             comboList.addAll(comboListAll);
         }
-
         comboList.forEach((key)-> {
            if(key.getGender() == gender){
                filteredList.add(key);
            }
         });
-
         comboList.clear();
         comboList.addAll(filteredList);
         if(sortingSwitchState == 0) sortByName(comboList);
@@ -186,8 +188,6 @@ public class ComboListManagerFragment extends Fragment implements  ComboListName
         adapter.notifyDataSetChanged();
 
     }
-
-
     public void removeListView(View view){
         Fragment f = getParentFragmentManager().findFragmentByTag("listViewCombo");
         if (f != null) {
@@ -196,11 +196,10 @@ public class ComboListManagerFragment extends Fragment implements  ComboListName
                     .commit();
         }
     }
-
-
     @Override
     public void onItemClick(int position) {
        removeFromApprovedList(comboList.get(position).getId(),position);
+        adapter.notifyDataSetChanged();
     }
 
     public void removeFromApprovedList(int namecardId, int position){
@@ -209,12 +208,15 @@ public class ComboListManagerFragment extends Fragment implements  ComboListName
             public ArrayList<NameCardItem> onSuccess() {
                 Toast.makeText(getContext(), getResources().getString(R.string.operationSuccess) ,Toast.LENGTH_SHORT)
                         .show();
+                NameCardItem nc = comboList.get(position);
+                comboListAll.remove(nc);
                 comboList.remove(position);
                 adapter.notifyDataSetChanged();
                 return null;
             }
             @Override
             public void onResponse(JSONObject response) {
+
             }
             @Override
             public void onError(String error) {

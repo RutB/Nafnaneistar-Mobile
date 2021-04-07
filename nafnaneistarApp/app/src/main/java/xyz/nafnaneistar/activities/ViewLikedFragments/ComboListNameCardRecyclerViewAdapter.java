@@ -1,14 +1,16 @@
 package xyz.nafnaneistar.activities.ViewLikedFragments;
 
 import androidx.annotation.NonNull;
+import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.recyclerview.widget.RecyclerView;
 
-import android.app.Activity;
+
 import android.content.Context;
 import android.text.Spannable;
 import android.text.SpannableStringBuilder;
 import android.text.style.DynamicDrawableSpan;
 import android.text.style.ImageSpan;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -48,11 +50,7 @@ public class ComboListNameCardRecyclerViewAdapter extends RecyclerView.Adapter<C
             delete = view.findViewById(R.id.comboListOperations);
             this.onItemListener = onItemListener;
             delete.setOnClickListener(this);
-            for( int i = 0; i < 5   ; i++){
-                View v = rating.getChildAt(i);
-                v.setOnClickListener(vv -> ratingClick(vv,rating));
-            }
-            
+
         }
 
         @Override
@@ -60,45 +58,7 @@ public class ComboListNameCardRecyclerViewAdapter extends RecyclerView.Adapter<C
                 onItemListener.onItemClick(getAdapterPosition());
         }
     }
-    public void ratingClick(View view, LinearLayout ratingContainer){
-        TextView tv = (TextView) ratingContainer.getChildAt(5);
-        int nameCardId = Integer.parseInt(String.valueOf(tv.getText()));
 
-        int nameCardRating = 0;
-        switch (view.getId()){
-            case R.id.r1:
-                nameCardRating = 1;
-                updateNameCardRating(nameCardId,nameCardRating, (Activity) view.getContext());
-                break;
-        case R.id.r2:
-            nameCardRating = 2;
-            updateNameCardRating(nameCardId,nameCardRating, (Activity) view.getContext());
-                break;
-        case R.id.r3:
-            nameCardRating = 3;
-            updateNameCardRating(nameCardId,nameCardRating, (Activity) view.getContext());
-                break;
-        case R.id.r4:
-            nameCardRating = 4;
-            updateNameCardRating(nameCardId,nameCardRating, (Activity) view.getContext());
-            break;
-        case R.id.r5:
-            nameCardRating = 5;
-            updateNameCardRating(nameCardId,nameCardRating, (Activity) view.getContext());
-            break;
-        default:
-            break;
-        }
-        TextView tv1;
-        for (int i = 0; i < 5; i++){
-             tv1 = (TextView) ratingContainer.getChildAt(i);
-            tv1.setText("🤍");
-        }
-        for (int i = 0; i < nameCardRating; i++){
-            tv1 = (TextView) ratingContainer.getChildAt(i);
-            tv1.setText("❤");
-        }
-    }
 
     @NonNull
     @Override
@@ -123,26 +83,6 @@ public class ComboListNameCardRecyclerViewAdapter extends RecyclerView.Adapter<C
         tv.setText(String.valueOf(comboList.get(position).getId()));
     }
 
-    public void updateNameCardRating(int id, int rating, Activity context){
-        ApiController.getInstance().updateRating(id, rating, context, new VolleyCallBack<JSONObject>() {
-            @Override
-            public ArrayList<NameCardItem> onSuccess() {
-                return null;
-            }
-
-            @Override
-            public void onResponse(JSONObject response) {
-                Toast.makeText(context, context.getResources().getString(R.string.operationSuccess) ,Toast.LENGTH_SHORT)
-                        .show();
-            }
-
-            @Override
-            public void onError(String error) {
-                Toast.makeText(context, error ,Toast.LENGTH_SHORT)
-                        .show();
-            }
-        });
-    }
 
 
     public SpannableStringBuilder getGenderSign(String name, int gender, Context context){

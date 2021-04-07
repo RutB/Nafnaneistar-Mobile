@@ -7,7 +7,7 @@
     android:layout_weight="1"
     android:dividerPadding="4dp"
     android:isScrollContainer="true"
-    android:showDividers="middle|beginning|end"><![CDATA[
+    android:showDividers="middle"><![CDATA[
 
     />
 
@@ -40,6 +40,7 @@
         android:paddingBottom="8dp"
         android:paddingTop="8dp"
         android:text="@string/viewLikedPlaceholderName"
+        android:textAlignment="center"
         android:textAppearance="?attr/textAppearanceListItem"
         app:autoSizeMaxTextSize="16sp"
         app:autoSizeMinTextSize="10sp"
@@ -105,16 +106,15 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_weight="0"
-            android:visibility="invisible" />
+            android:visibility="gone" />
     </LinearLayout>
 
     <Button
         android:id="@+id/comboListOperations"
         style="@style/Widget.AppCompat.Button.Colored"
-        android:layout_width="0dp"
+        android:layout_width="wrap_content"
         android:layout_height="match_parent"
         android:layout_gravity="center"
-        android:layout_weight="1"
         android:background="@color/ambiant"
         android:backgroundTint="@color/ambiant"
         android:insetBottom="0dp"
