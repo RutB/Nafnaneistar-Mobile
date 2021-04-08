@@ -12,6 +12,7 @@
         android:layout_height="match_parent"
         android:background="@color/background"
         tools:context="xyz.nafnaneistar.activities.ViewLikedFragments.ComboListManagerFragment">
+
         <Button
             android:id="@+id/btnViewLikedGoBack"
             style="@style/buttonStyle"
@@ -19,26 +20,23 @@
             android:layout_height="wrap_content"
             android:text="@string/goBack"
             app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHorizontal_bias="0.118"
+            app:layout_constraintEnd_toStartOf="@+id/rvComboList"
+            app:layout_constraintHorizontal_bias="0.4"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/rvComboList"
-            app:layout_constraintVertical_bias="0.36" />
+            app:layout_constraintTop_toBottomOf="@+id/swToggleGender"
+            app:layout_constraintVertical_bias="0.058" />
 
         <LinearLayout
+            android:id="@+id/linearLayout4"
             style="@style/tableStyle"
             android:layout_width="343dp"
             android:layout_height="45dp"
-            android:layout_marginBottom="17dp"
-            android:layout_marginTop="62dp"
+            android:layout_marginTop="64dp"
             android:background="@drawable/toptableborder"
             android:orientation="horizontal"
-            app:layout_constraintBottom_toTopOf="@+id/rvComboList"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHorizontal_bias="0.558"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent"
-            app:layout_constraintVertical_bias="0.0">
+            app:layout_constraintTop_toTopOf="parent">
 
             <TextView
                 android:id="@+id/tvclListTitleNafn"
@@ -73,43 +71,40 @@
 
         <Switch
             android:id="@+id/swOrderBy"
-            android:layout_width="wrap_content"
+            android:layout_width="134dp"
             android:layout_height="wrap_content"
-            android:layout_marginTop="8dp"
+            android:layout_marginTop="188dp"
             android:freezesText="true"
             android:text="@string/GroupByNameOrRating"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHorizontal_bias="0.314"
-            app:layout_constraintStart_toEndOf="@+id/btnViewLikedGoBack"
-            app:layout_constraintTop_toBottomOf="@+id/rvComboList"
-            app:layout_constraintVertical_bias="0.0" />
+            app:layout_constraintBottom_toTopOf="@+id/swToggleGender"
+            app:layout_constraintEnd_toStartOf="@+id/rvComboList"
+            app:layout_constraintHorizontal_bias="0.432"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
 
         <Switch
             android:id="@+id/swToggleGender"
-            android:layout_width="wrap_content"
+            android:layout_width="129dp"
             android:layout_height="wrap_content"
+            android:layout_marginTop="16dp"
             android:freezesText="true"
             android:text="@string/ShowGenderNames"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHorizontal_bias="0.183"
-            app:layout_constraintStart_toEndOf="@+id/btnViewLikedGoBack"
-            app:layout_constraintTop_toBottomOf="@+id/swOrderBy"
-            app:layout_constraintVertical_bias="0.387" />
+            app:layout_constraintBottom_toTopOf="@+id/btnViewLikedGoBack"
+            app:layout_constraintEnd_toStartOf="@+id/rvComboList"
+            app:layout_constraintHorizontal_bias="0.38"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/swOrderBy" />
 
         <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/rvComboList"
-            android:layout_width="344dp"
-            android:layout_height="447dp"
-            android:layout_marginTop="56dp"
+            android:layout_width="342dp"
+            android:layout_height="270dp"
+            android:layout_marginBottom="8dp"
             android:background="@color/btn_color_lg"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHorizontal_bias="0.567"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent"
-            app:layout_constraintVertical_bias="0.326"
+            app:layout_constraintTop_toBottomOf="@+id/linearLayout4"
             tools:listitem="@layout/combolist" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>

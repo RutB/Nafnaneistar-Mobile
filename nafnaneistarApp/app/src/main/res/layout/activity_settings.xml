@@ -1,0 +1,99 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/settingsContainer"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="@color/background"
+        tools:context="xyz.nafnaneistar.activities.SettingsActivity">
+
+        <TextView
+            android:id="@+id/tvAccount"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="16dp"
+            android:layout_marginTop="60dp"
+            android:text="Aðgangur"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <TextView
+            android:id="@+id/tvNotifications"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="18dp"
+            android:layout_marginTop="313dp"
+            android:layout_marginEnd="317dp"
+            android:layout_marginBottom="399dp"
+            android:text="Tilkynningar"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="1.0"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintVertical_bias="1.0" />
+
+        <Button
+            android:id="@+id/btnChangePw"
+            android:layout_width="374dp"
+            android:layout_height="68dp"
+            android:layout_marginStart="18dp"
+            android:layout_marginTop="93dp"
+            android:layout_marginEnd="19dp"
+            android:layout_marginBottom="570dp"
+            android:text="Breyta lykilorði"
+            android:textColor="#FFFFFF"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <Button
+            android:id="@+id/btnChangeName"
+            android:layout_width="375dp"
+            android:layout_height="67dp"
+            android:layout_marginStart="17dp"
+            android:layout_marginTop="161dp"
+            android:layout_marginEnd="19dp"
+            android:layout_marginBottom="503dp"
+            android:text="Breyta nafni"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="1.0"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <Button
+            android:id="@+id/btnRestartNameList"
+            android:layout_width="375dp"
+            android:layout_height="67dp"
+            android:layout_marginStart="19dp"
+            android:layout_marginTop="229dp"
+            android:layout_marginEnd="18dp"
+            android:layout_marginBottom="433dp"
+            android:text="Núllstilla nafnalista"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="1.0"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintVertical_bias="1.0" />
+
+        <Switch
+            android:id="@+id/switchGetNotifications"
+            android:layout_width="374dp"
+            android:layout_height="57dp"
+            android:layout_marginStart="18dp"
+            android:layout_marginEnd="19dp"
+            android:layout_marginBottom="324dp"
+            android:text="Fá tilkynningar í síma"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.0"
+            app:layout_constraintStart_toStartOf="parent" />
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+</layout>

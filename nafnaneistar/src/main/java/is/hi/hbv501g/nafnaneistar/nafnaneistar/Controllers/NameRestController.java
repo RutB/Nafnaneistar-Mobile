@@ -23,8 +23,6 @@ import is.hi.hbv501g.nafnaneistar.nafnaneistar.Entities.User;
 import is.hi.hbv501g.nafnaneistar.nafnaneistar.Services.NameService;
 import is.hi.hbv501g.nafnaneistar.nafnaneistar.Services.UserService;
 import is.hi.hbv501g.nafnaneistar.utils.*;
-import net.minidev.json.JSONObject;
-
 /**
  * NameRestController contains methonds and function to process fetch calls from
  * the viewing template
@@ -393,7 +391,7 @@ public class NameRestController {
                     ncs.put(nc.getName() + "-" + nc.getId() + "-" + nc.getGender(), avg);
                     namecard.addProperty("name", nc.getName());
                     namecard.addProperty("id", nc.getId());
-                    namecard.addProperty("rating", avg);
+                    namecard.addProperty("rating", avg) ;
                     namecard.addProperty("gender", nc.getGender());
                     jsonarr.add(namecard);
                 }

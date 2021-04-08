@@ -1,25 +1,23 @@
 package xyz.nafnaneistar.activities;
 
 import android.content.Intent;
-import android.content.SharedPreferences;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.View;
 import android.widget.Toast;
 
-import com.android.volley.Request;
-import com.android.volley.toolbox.JsonObjectRequest;
-import com.google.android.material.snackbar.Snackbar;
 import com.google.gson.Gson;
 
-import org.apache.http.client.utils.URIBuilder;
 import org.json.JSONException;
+import org.json.JSONObject;
 
+import xyz.nafnaneistar.activities.items.NameCardItem;
 import xyz.nafnaneistar.controller.ApiController;
+import xyz.nafnaneistar.controller.VolleyCallBack;
 import xyz.nafnaneistar.helpers.Prefs;
 import xyz.nafnaneistar.model.User;
 
 import java.net.URISyntaxException;
+import java.util.ArrayList;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -96,44 +94,47 @@ public class SignupActivity extends AppCompatActivity {
                     .show();
             return;
         }
-        String listeningPath = "signup";
-        URIBuilder b = new URIBuilder(ApiController.getDomainURL()+listeningPath);
-        b.addParameter("name",name);
-        b.addParameter("email",email);
-        b.addParameter("password",pass);
-        JsonObjectRequest jsonObjReq = new JsonObjectRequest(Request.Method.POST,b.build().toString(),null,
-                response -> {
-                    Gson g = new Gson();
-                    User p = g.fromJson(String.valueOf(response), User.class);
-                    Log.d("signup", "SignupUser: "+response.toString());
-                    if(p.getName() != null){
-                        Toast.makeText(SignupActivity.this, R.string.signupSuccess ,Toast.LENGTH_SHORT)
-                                .show();
-                        prefs.saveUser(email, pass);
-                        Intent intent = getIntent();
-                        setResult(RESULT_OK, intent);
-                        finish();
-                        startActivity(new Intent( SignupActivity.this, SwipeActivity.class));
-                    }
-                    else {
-                        String message = null;
+        ApiController.getInstance().signup(new VolleyCallBack<JSONObject>() {
+            @Override
+            public ArrayList<NameCardItem> onSuccess() {
+                return null;
+            }
+
+            @Override
+            public void onResponse(JSONObject response) {
+                Gson g = new Gson();
+                User p = g.fromJson(String.valueOf(response), User.class);
+                if(p.getName() != null){
+                    Toast.makeText(SignupActivity.this, R.string.signupSuccess ,Toast.LENGTH_SHORT)
+                            .show();
+                    prefs.saveUser(email, pass);
+                    finish();
+                    startActivity(new Intent( SignupActivity.this, SwipeActivity.class));
+                }
+                else {
+                    if(response.has("message")){
                         try {
-                            message = response.getString("message");
-                            Toast.makeText(SignupActivity.this, message ,Toast.LENGTH_SHORT)
+                            Toast.makeText(SignupActivity.this, response.getString("message") ,Toast.LENGTH_SHORT)
                                     .show();
                         } catch (JSONException e) {
+                            e.printStackTrace();
                             Toast.makeText(SignupActivity.this, R.string.signupFailed ,Toast.LENGTH_SHORT)
                                     .show();
-                            e.printStackTrace();
                         }
                     }
+                    else {
+                        Toast.makeText(SignupActivity.this, R.string.signupFailed ,Toast.LENGTH_SHORT)
+                                .show();
+                    }
+                }
+            }
 
-                },error -> {
-            Toast.makeText(SignupActivity.this, getResources().getString(R.string.systemError) ,Toast.LENGTH_SHORT)
-                    .show();
-            Log.d("Test", "CheckLogin: " + error.toString());
-        });
-        ApiController.getInstance().addToRequestQueue(jsonObjReq);
+            @Override
+            public void onError(String error) {
+                Toast.makeText(SignupActivity.this, R.string.systemError ,Toast.LENGTH_SHORT)
+                        .show();
 
+            }
+        },name,email,pass);
     }
 }

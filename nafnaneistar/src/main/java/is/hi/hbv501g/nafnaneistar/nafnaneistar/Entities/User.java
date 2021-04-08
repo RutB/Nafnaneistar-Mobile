@@ -1,7 +1,6 @@
 package is.hi.hbv501g.nafnaneistar.nafnaneistar.Entities;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
-import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.google.gson.Gson;
 import com.google.gson.JsonObject;
@@ -10,10 +9,6 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Random;
 import org.apache.commons.lang3.StringUtils;
-
-import net.minidev.json.JSONObject;
-import net.minidev.json.parser.JSONParser;
-import net.minidev.json.parser.ParseException;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;

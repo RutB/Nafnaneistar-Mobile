@@ -1,12 +1,12 @@
 package xyz.nafnaneistar.activities.items;
 
-public class ComboListItem {
+public class NameCardItem {
     public final int id;
     public final String name;
-    public final int rating;
+    public int rating;
     public final int gender;
 
-    public ComboListItem(int id,String name, int rating, int gender) {
+    public NameCardItem(int id, String name, int rating, int gender) {
         this.id = id;
         this.name = name;
         this.rating = rating;
@@ -23,6 +23,9 @@ public class ComboListItem {
         return rating;
     }
 
+    public void setRating(int rating) {
+        this.rating = rating;
+    }
 
     public int getGender() {
         return gender;

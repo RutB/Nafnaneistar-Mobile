@@ -11,7 +11,8 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:background="@color/background"
-        tools:context="xyz.nafnaneistar.activities.ViewLikedFragments.ComboListManagerFragment">
+        tools:context="xyz.nafnaneistar.activities.ViewLikedFragments.ApprovedNameListManagerFragment">
+
         <Button
             android:id="@+id/btnViewLikedGoBack"
             style="@style/buttonStyle"
@@ -56,7 +57,7 @@
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
                 android:gravity="center"
-                android:text="Meðaleinkun"
+                android:text="Einkunn"
                 android:textSize="18sp"
                 android:textStyle="bold" />
 

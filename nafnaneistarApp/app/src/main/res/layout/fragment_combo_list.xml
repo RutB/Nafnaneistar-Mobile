@@ -12,8 +12,8 @@
 
         <androidx.constraintlayout.widget.ConstraintLayout
             android:id="@+id/clComboList"
-            android:layout_width="364dp"
-            android:layout_height="353dp"
+            android:layout_width="0dp"
+            android:layout_height="0dp"
             android:background="@color/btn_color_lg"
             android:visibility="visible"
             app:layout_constraintBottom_toBottomOf="parent"
@@ -21,30 +21,30 @@
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent">
 
+            <Button
+                android:id="@+id/btnConfirmPartner"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Skoða lista"
+                android:textColor="@color/font"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintHorizontal_bias="0.502"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/spPartners"
+                app:layout_constraintVertical_bias="0.289" />
+
             <Spinner
                 android:id="@+id/spPartners"
                 android:layout_width="277dp"
                 android:layout_height="52dp"
-                android:layout_marginTop="32dp"
+                android:layout_marginTop="16dp"
                 android:background="@color/white"
                 android:backgroundTint="#FFFFFF"
                 app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintHorizontal_bias="0.367"
+                app:layout_constraintHorizontal_bias="0.389"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/textView10" />
-
-            <TextView
-                android:id="@+id/textView10"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginBottom="12dp"
-                android:layout_marginTop="16dp"
-                android:text="TextView"
-                app:layout_constraintBottom_toTopOf="@+id/spPartners"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintHorizontal_bias="0.143"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/tvComboNameTitle" />
 
             <TextView
                 android:id="@+id/tvComboNameTitle"
@@ -64,16 +64,18 @@
                 app:layout_constraintTop_toTopOf="parent"
                 tools:text="@string/viewlikedComboList" />
 
-            <Button
-                android:id="@+id/btnConfirmPartner"
+            <TextView
+                android:id="@+id/textView10"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="Skoða lista"
-                android:textColor="@color/font"
-                app:layout_constraintBottom_toBottomOf="parent"
+                android:layout_marginBottom="12dp"
+                android:layout_marginTop="16dp"
+                android:text="Veldu lista til að bera saman við"
+                app:layout_constraintBottom_toTopOf="@+id/spPartners"
                 app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintHorizontal_bias="0.192"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/spPartners" />
+                app:layout_constraintTop_toBottomOf="@+id/tvComboNameTitle" />
 
         </androidx.constraintlayout.widget.ConstraintLayout>
     </androidx.constraintlayout.widget.ConstraintLayout>
