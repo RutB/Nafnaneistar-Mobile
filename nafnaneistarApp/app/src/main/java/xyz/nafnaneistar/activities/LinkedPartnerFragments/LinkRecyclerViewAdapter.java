@@ -40,7 +40,8 @@ public class LinkRecyclerViewAdapter extends RecyclerView.Adapter<LinkRecyclerVi
     @NonNull
     @Override
     public ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-        View itemView = LayoutInflater.from(parent.getContext()).inflate(R.layout.combolist, parent,false);
+        View itemView = LayoutInflater.from(parent.getContext()).inflate(R.layout.linkcombolist, parent,false);
+        Log.d("test", "ViewHolder: " + "breaking point!");
         return new ViewHolder(itemView, onItemListener);
     }
 
