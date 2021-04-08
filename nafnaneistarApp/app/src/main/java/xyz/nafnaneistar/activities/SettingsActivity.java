@@ -1,4 +1,5 @@
 package xyz.nafnaneistar.activities;
+import android.content.Intent;
 import android.os.Bundle;
 import android.provider.Settings;
 import android.view.View;
@@ -37,11 +38,34 @@ public class SettingsActivity extends AppCompatActivity {
         prefs = new Prefs(SettingsActivity.this);
         binding = DataBindingUtil.setContentView(this, R.layout.activity_settings);
         binding.btnChangePw.setOnClickListener(this::PasswordSettings);
+        binding.btnChangeName.setOnClickListener(this::NameSettings);
+        binding.btnRestartNameList.setOnClickListener(this::RestartNameList);
+        binding.switchGetNotifications.setOnClickListener(this::PushNotifications);
 
 
     }
     public void PasswordSettings (View view) {
-        
+        Intent i = new Intent(SettingsActivity.this, PasswordActivity.class);
+        finish();
+        startActivity(i);
+    }
+
+    public void NameSettings (View view) {
+        Intent i = new Intent(SettingsActivity.this, NameChangeActivity.class);
+        finish();
+        startActivity(i);
+
+    }
+
+    public void RestartNameList (View view) {
+        Intent i = new Intent(SettingsActivity.this, RestartListActivity.class);
+        finish();
+        startActivity(i);
+
+    }
+
+    public void PushNotifications (View view) {
+
     }
 
 }
