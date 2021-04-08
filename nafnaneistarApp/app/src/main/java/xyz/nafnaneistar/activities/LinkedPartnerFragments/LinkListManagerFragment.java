@@ -1,7 +1,6 @@
 package xyz.nafnaneistar.activities.LinkedPartnerFragments;
 
 import android.app.Activity;
-import android.content.Intent;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -15,25 +14,21 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import java.util.ArrayList;
-import java.util.List;
 
 
 import xyz.nafnaneistar.activities.NavbarFragment;
-import xyz.nafnaneistar.activities.SwipeActivity;
 import xyz.nafnaneistar.activities.items.NameCardItem;
 import xyz.nafnaneistar.activities.items.UserItem;
 import xyz.nafnaneistar.controller.ApiController;
 import xyz.nafnaneistar.helpers.Prefs;
+
 import androidx.fragment.app.Fragment;
 
 import com.google.android.material.snackbar.Snackbar;
 
-import org.json.JSONObject;
-
 import xyz.nafnaneistar.controller.VolleyCallBack;
 import xyz.nafnaneistar.loginactivity.R;
 import xyz.nafnaneistar.loginactivity.databinding.FragmentApprovedListManagerBinding;
-import xyz.nafnaneistar.model.User;
 
 public class LinkListManagerFragment extends Fragment implements LinkRecyclerViewAdapter.OnItemListener {
     private FragmentApprovedListManagerBinding binding;
@@ -101,26 +96,15 @@ public class LinkListManagerFragment extends Fragment implements LinkRecyclerVie
             }
 
             @Override
-            public void onResponse(ArrayList<NameCardItem> list) {
-
-            }
-            @Override
-            public void onUserResponse(ArrayList<UserItem> list) {
+            public void onResponse(ArrayList<UserItem> list) {
                 setAdapater();
                 userList.addAll(list);
-
             }
-
 
             @Override
             public ArrayList<NameCardItem> onSuccess() {
                 return null;
             }
-            @Override
-            public ArrayList<UserItem> onUserSuccess() {
-                return null;
-            }
-
 
         });
         return view;

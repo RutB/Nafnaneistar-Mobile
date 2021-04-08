@@ -159,7 +159,14 @@ public class LinkPartnerActivity extends AppCompatActivity {
 
     }
 
-    public void getCheckLink() throws URISyntaxException {
+    public void getCheckLink throws URISyntaxException {
+        String[] user = prefs.getUser();
+        String user_email = user[0];
+        String pass = user[1];
+        String email = binding.etEmail2.getText().toString().trim();
+    }
+
+    public void old_getCheckLink() throws URISyntaxException {
         String[] user = prefs.getUser();
         String user_email = user[0];
         String pass = user[1];

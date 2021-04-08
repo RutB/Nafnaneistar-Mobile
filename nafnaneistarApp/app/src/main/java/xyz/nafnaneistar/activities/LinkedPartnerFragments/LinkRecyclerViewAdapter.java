@@ -55,7 +55,6 @@ public class LinkRecyclerViewAdapter extends RecyclerView.Adapter<LinkRecyclerVi
         private TextView name;
         private TextView email;
         private Button delete;
-        //TODO: á að hafa link.onItemListener eða bara onItemlistener??
         OnItemListener onItemListener;
 
         public ViewHolder(final View view, OnItemListener onItemListener) {

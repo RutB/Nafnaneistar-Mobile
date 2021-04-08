@@ -21,6 +21,7 @@ import java.util.Collections;
 import java.util.Comparator;
 
 import androidx.annotation.NonNull;
+
 import androidx.databinding.DataBindingUtil;
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.DefaultItemAnimator;

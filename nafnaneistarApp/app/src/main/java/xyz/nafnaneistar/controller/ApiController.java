@@ -388,7 +388,7 @@ public class ApiController extends Application {
                     } catch (JSONException e) {
                         e.printStackTrace();
                     }
-                    volleyCallBack.onUserResponse((ArrayList<UserItem>) partnersList);
+                    volleyCallBack.onResponse((ArrayList<UserItem>) partnersList);
                 }, error -> {
             volleyCallBack.onError( getString(R.string.errorGettingPartners));
         });
