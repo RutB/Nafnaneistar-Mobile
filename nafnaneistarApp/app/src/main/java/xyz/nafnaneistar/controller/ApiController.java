@@ -381,8 +381,7 @@ public class ApiController extends Application {
                             String partnerEmail = us.getString("email");
 
                             partnersList.add(new UserItem(
-                                    us.getString("email"),
-                                    us.getString("email")
+                                    partner, partnerEmail
                             ));
                         }
                     } catch (JSONException e) {

@@ -29,7 +29,6 @@ import java.net.URISyntaxException;
 import java.util.ArrayList;
 
 import androidx.fragment.app.FragmentManager;
-import xyz.nafnaneistar.activities.LinkPartnerActivity;
 import xyz.nafnaneistar.controller.ApiController;
 import xyz.nafnaneistar.helpers.Prefs;
 import xyz.nafnaneistar.loginactivity.R;

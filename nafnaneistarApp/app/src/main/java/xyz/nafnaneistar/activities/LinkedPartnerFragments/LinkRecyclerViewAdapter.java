@@ -1,5 +1,6 @@
 package xyz.nafnaneistar.activities.LinkedPartnerFragments;
 
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -64,6 +65,7 @@ public class LinkRecyclerViewAdapter extends RecyclerView.Adapter<LinkRecyclerVi
             delete = view.findViewById(R.id.linkComboListDel);
             this.onItemListener = onItemListener;
             delete.setOnClickListener(this);
+            Log.d("test", "ViewHolder: " + "breaking point!");
         }
 
 
