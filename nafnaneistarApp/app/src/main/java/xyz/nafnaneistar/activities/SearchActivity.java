@@ -6,6 +6,7 @@ import androidx.recyclerview.widget.DefaultItemAnimator;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
@@ -26,6 +27,8 @@ import java.util.jar.Attributes;
 
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
+
+import xyz.nafnaneistar.activities.items.NameCardItem;
 import xyz.nafnaneistar.controller.ApiController;
 import xyz.nafnaneistar.controller.VolleyCallBack;
 import xyz.nafnaneistar.helpers.Prefs;
@@ -46,7 +49,7 @@ public class SearchActivity extends AppCompatActivity {
     private String tvNameResult;
     private ArrayList<NameCard> nameCardList;
     private RecyclerView recyclerView;
-    SearchNameAdapter adapter;
+    private SearchNameAdapter adapter;
 
 
 
@@ -68,7 +71,8 @@ public class SearchActivity extends AppCompatActivity {
     }
 
     private void setAdapter() {
-        SearchNameAdapter adapter = new SearchNameAdapter(nameCardList);
+        // SearchNameAdapter adapter = new SearchNameAdapter(nameCardList);
+        adapter = new SearchNameAdapter(nameCardList);
         RecyclerView.LayoutManager layoutManager = new LinearLayoutManager(getApplicationContext());
         recyclerView.setLayoutManager(layoutManager);
         // TODO: Custom animator
@@ -101,28 +105,29 @@ public class SearchActivity extends AppCompatActivity {
      */
     public void SearchName(View view) throws URISyntaxException {
         String nameQuery = binding.etNameSearch.getText().toString().trim();
-        String listeningPath = "searchname";
-        URIBuilder b = new URIBuilder(ApiController.getDomainURL()+listeningPath);
-        b.addParameter("query",nameQuery);
-        String requestURL = b.build().toString();
-        Log.d("TEST",requestURL);
-        JsonObjectRequest jsonObjReq = new JsonObjectRequest(Request.Method.GET,requestURL,null,
-                response -> {
-                    Gson g = new Gson();
-                    NameCard queryResults = g.fromJson(String.valueOf(response), NameCard.class);
-                    try {
-                        Log.d("nameSearch", "Searchname: "+response.getJSONArray("results").toString());
+        ApiController.getInstance().getNamesByName((Activity) binding.btnSearchName.getContext(), nameQuery, new VolleyCallBack<ArrayList<NameCard>>() {
+            @Override
+            public ArrayList<NameCardItem> onSuccess() {
+                return null;
+            }
 
-                    } catch (JSONException e) {
-                        e.printStackTrace();
+            @Override
+            public void onResponse(ArrayList<NameCard> response) {
+                Log.d("nameSearch response", response.toString());
+                nameCardList = response;
+                adapter.notifyDataSetChanged();
 
-                    
-                    }
-                },error -> {
-                    Log.d("searchActivity", "searchActivity " + error.toString());
-                    Toast.makeText(SearchActivity.this, R.string.name_search_failed, Toast.LENGTH_SHORT);
+            }
+
+            @Override
+            public void onError(String error) {
+
+            }
         });
-        ApiController.getInstance().addToRequestQueue(jsonObjReq);
+
+
+
+
     }
 
 

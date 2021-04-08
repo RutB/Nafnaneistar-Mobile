@@ -22,6 +22,7 @@ import java.net.URISyntaxException;
 import java.util.ArrayList;
 
 import xyz.nafnaneistar.activities.LoginActivity;
+import xyz.nafnaneistar.activities.SearchActivity;
 import xyz.nafnaneistar.activities.items.NameCardItem;
 import xyz.nafnaneistar.activities.items.UserItem;
 import xyz.nafnaneistar.helpers.Prefs;
@@ -35,11 +36,11 @@ import xyz.nafnaneistar.model.User;
  */
 public class ApiController extends Application {
     private static ApiController instance;
-    private static String domainURL = "http://46.22.102.179:7979/";
+    // private static String domainURL = "http://46.22.102.179:7979/";
     //private static String domainURL = "http://192.168.1.207:7979/";
-    //private static String domainURL = "localhost:7979/";
+    // private static String domainURL = "localhost:7979/";
     // private static String domainURL = "http://127.0.0.1:7979/";
-    //private static String domainURL = "http://192.168.0.164:7979/";
+    private static String domainURL = "http://192.168.0.164:7979/";
 
 
     private RequestQueue requestQueue;
@@ -479,6 +480,59 @@ public class ApiController extends Application {
                 },error -> {
                     volleyCallBack.onError(getResources().getString(R.string.errorRetrievingData));
 
+        });
+        ApiController.getInstance().addToRequestQueue(jsonObjReq);
+
+    }
+
+    /**
+     * WIP - HAT
+     *
+     */
+    public void getNamesByName(Activity context, String nameQuery, VolleyCallBack<ArrayList<NameCard>> volleyCallBack) {
+        Prefs prefs = new Prefs(context);
+        String [] user = prefs.getUser();
+        String email = user[0];
+        String pass = user[1];
+        String listeningPath = "searchname";
+        URIBuilder b = null;
+        String url = "";
+
+        try {
+            b = new URIBuilder(ApiController.getDomainURL()+listeningPath);
+            b.addParameter("email",email);
+            b.addParameter("pass",pass);
+            b.addParameter("query", nameQuery);
+            url = b.build().toString();
+        } catch (URISyntaxException e) {
+            e.printStackTrace();
+        }
+
+        JsonObjectRequest jsonObjReq = new JsonObjectRequest(Request.Method.GET, url,null,
+                response -> {
+                    Gson g = new Gson();
+                    // NameCard queryResults = g.fromJson(String.valueOf(response), NameCard.class);
+
+                    ArrayList<NameCard> nameCards = new ArrayList<>();
+                    try {
+                        Log.d("nameSearch", "Searchname: "+response.getJSONArray("results").toString());
+                        JSONArray result = response.getJSONArray("results");
+                        for (int i = 0; i < result.length(); i++ ) {
+                            JSONObject nc = (JSONObject) result.get(i);
+                            nameCards.add( new NameCard(
+                                    nc.getInt("id"),
+                                    nc.getString("name"),
+                                    nc.getString("description"),
+                                    nc.getInt("gender")
+                            ));
+
+                        }
+                        volleyCallBack.onResponse((ArrayList<NameCard>) nameCards);
+                    } catch (JSONException e) {
+                        e.printStackTrace();
+                    }
+                },error -> {
+                    volleyCallBack.onError("Leit tókst ekki");
         });
         ApiController.getInstance().addToRequestQueue(jsonObjReq);
 

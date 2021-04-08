@@ -491,6 +491,8 @@ public class NameRestController {
             JsonObject nameData = new JsonObject();
             nameData.addProperty("id", searchResultNamecard.get(i).getId());
             nameData.addProperty("name", searchResultNamecard.get(i).getName());
+            nameData.addProperty("description", searchResultNamecard.get(i).getDescription());
+            nameData.addProperty("gender", searchResultNamecard.get(i).getGender());
             searchResultJson.add(nameData);
         }
 
