@@ -47,7 +47,7 @@ public class ViewLikedActivity extends AppCompatActivity {
     private Prefs prefs;
     private User currentUser;
     FragmentManager fragmentManager;
-    private int selectedMenuIndex = 0;
+    private int selectedMenuIndex = -1;
     private String[] FragmentTags = new String[]{"comboList","nameCombo"};
     @Override
     protected void onCreate(Bundle savedInstanceState) {

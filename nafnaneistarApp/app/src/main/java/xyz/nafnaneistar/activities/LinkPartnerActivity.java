@@ -29,20 +29,32 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.net.URISyntaxException;
+import java.util.ArrayList;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
+import androidx.recyclerview.widget.DefaultItemAnimator;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
+import xyz.nafnaneistar.activities.LinkedPartnerFragments.LinkRecyclerViewAdapter;
+import xyz.nafnaneistar.activities.items.NameCardItem;
+import xyz.nafnaneistar.activities.items.UserItem;
 import xyz.nafnaneistar.controller.ApiController;
+import xyz.nafnaneistar.controller.VolleyCallBack;
 import xyz.nafnaneistar.helpers.Prefs;
 import xyz.nafnaneistar.loginactivity.R;
 import xyz.nafnaneistar.loginactivity.databinding.ActivityLinkPartnerBinding;
 import xyz.nafnaneistar.loginactivity.databinding.ActivityLoginBinding;
 import xyz.nafnaneistar.model.User;
 
-public class LinkPartnerActivity extends AppCompatActivity {
+public class LinkPartnerActivity extends AppCompatActivity implements LinkRecyclerViewAdapter.OnItemListener {
     private ActivityLinkPartnerBinding binding;
     private User currentUser = new User();
     private Prefs prefs;
+    static LinkRecyclerViewAdapter adapter;
+    private Long partnerId;
+    private ArrayList<UserItem> userList = new ArrayList<>();
+    private RecyclerView recyclerView;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -67,14 +79,55 @@ public class LinkPartnerActivity extends AppCompatActivity {
                     .add(R.id.LinkContainer, navbar)
                     .commit();
         }
-        try {
+        populateTable();
+       /* try {
             getCheckLink();
         }catch (URISyntaxException e) {
             e.printStackTrace();
-        }
+        }*/
+
+
+    }
+    private void setAdapater() {
+        adapter = new LinkRecyclerViewAdapter(userList, this);
+        RecyclerView.LayoutManager layoutManager = new LinearLayoutManager(getApplicationContext());
+        binding.rvComboList.setItemAnimator(new DefaultItemAnimator());
+        binding.rvComboList.setLayoutManager(layoutManager);
+        binding.rvComboList.setAdapter(adapter);
     }
 
-    private void fillTable(JSONArray resp) throws JSONException {
+    @Override
+    public void onItemClick(int position) {
+        //removeFromUserList(userList.get(position).getId(),position);
+        //adapter.notifyDataSetChanged();
+    }
+
+    public void populateTable() {
+        ApiController.getInstance().getLinkedPartners((Activity) binding.btnLink.getContext(), new VolleyCallBack<ArrayList<UserItem>>() {
+
+            @Override
+            public void onError(String error) {
+                Toast.makeText(getApplicationContext(), error, Toast.LENGTH_SHORT)
+                        .show();
+            }
+
+            @Override
+            public void onResponse(ArrayList<UserItem> list) {
+                setAdapater();
+                Log.d("test", "onResponse: "+ list.get(0));
+                userList.addAll(list);
+            }
+
+            @Override
+            public ArrayList<NameCardItem> onSuccess() {
+                return null;
+            }
+
+        });
+    }
+
+
+    /*private void fillTable(JSONArray resp) throws JSONException {
         for (int i = resp.length()-1; i >= 0 ; i--) {
             Log.d("fill", "fill" + i+ "    " + binding.llsvPartner.getChildAt(i));
             binding.llsvPartner.removeView(binding.llsvPartner.getChildAt(i));
@@ -105,7 +158,7 @@ public class LinkPartnerActivity extends AppCompatActivity {
             //Log.d("partners", "CheckLink: ");
         }
 
-    }
+    }*/
 
     public void putCheckLink(View view) throws URISyntaxException {
         String[] user = prefs.getUser();
@@ -137,10 +190,10 @@ public class LinkPartnerActivity extends AppCompatActivity {
                     try {
                         resp = response.getJSONArray("partners");
                         Log.d("partners", "pruuuuufa"+  resp);
-                        fillTable(resp);
                         Log.d("partners", "buin með fill");
                         binding.etEmail2.setText("");
                         binding.etEmail2.clearFocus();
+                        populateTable();
 
                     } catch (JSONException e) {
                         e.printStackTrace();
@@ -159,7 +212,14 @@ public class LinkPartnerActivity extends AppCompatActivity {
 
     }
 
-    public void getCheckLink() throws URISyntaxException {
+    /* public void getCheckLink throws URISyntaxException {
+        String[] user = prefs.getUser();
+        String user_email = user[0];
+        String pass = user[1];
+        String email = binding.etEmail2.getText().toString().trim();
+    }*/
+
+    public void old_getCheckLink() throws URISyntaxException {
         String[] user = prefs.getUser();
         String user_email = user[0];
         String pass = user[1];
@@ -176,8 +236,7 @@ public class LinkPartnerActivity extends AppCompatActivity {
                     JSONArray resp = new JSONArray();
                     try {
                         resp = response.getJSONArray("partners");
-                        fillTable(resp);
-
+                        populateTable();
                     } catch (JSONException e) {
                         e.printStackTrace();
                     }
