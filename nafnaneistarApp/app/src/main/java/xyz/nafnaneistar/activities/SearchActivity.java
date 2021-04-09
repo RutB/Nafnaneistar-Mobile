@@ -42,16 +42,15 @@ import xyz.nafnaneistar.model.User;
 import static xyz.nafnaneistar.loginactivity.R.*;
 
 
-public class SearchActivity extends AppCompatActivity {
+public class SearchActivity extends AppCompatActivity implements SearchNameAdapter.OnItemListener {
     private ActivitySearchBinding binding;
     // private user currentUser = new User();
     private Prefs prefs;
     private String tvNameResult;
-    private ArrayList<NameCard> nameCardList;
+    // private ArrayList<NameCard> nameCardList;
+    private ArrayList<NameCard> nameCardList = new ArrayList<>();
     private RecyclerView recyclerView;
     private SearchNameAdapter adapter;
-
-
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -59,7 +58,7 @@ public class SearchActivity extends AppCompatActivity {
         // setContentView(R.layout.activity_search);
         prefs = new Prefs(SearchActivity.this);
         binding = DataBindingUtil.setContentView(this, layout.activity_search);
-        recyclerView = binding.rvSearchResults;
+        recyclerView = (RecyclerView) binding.rvSearchResults;
         binding.btnSearchName.setOnClickListener(view -> {
             try {
                 SearchName(view);
@@ -67,18 +66,17 @@ public class SearchActivity extends AppCompatActivity {
                 e.printStackTrace();
             }
         });
-        setAdapter();
+
     }
 
     private void setAdapter() {
         // SearchNameAdapter adapter = new SearchNameAdapter(nameCardList);
-        adapter = new SearchNameAdapter(nameCardList);
+        adapter = new SearchNameAdapter(nameCardList, this);
         RecyclerView.LayoutManager layoutManager = new LinearLayoutManager(getApplicationContext());
         recyclerView.setLayoutManager(layoutManager);
         // TODO: Custom animator
         recyclerView.setItemAnimator(new DefaultItemAnimator());
         recyclerView.setAdapter(adapter);
-
 
         //Initialize the navbar fragment
         FragmentManager fragmentManager = getSupportFragmentManager();
@@ -90,6 +88,11 @@ public class SearchActivity extends AppCompatActivity {
                     .add(id.SearchNameContainer, navbar)
                     .commit();
         }
+    }
+
+    @Override
+    public void onItemClick(int position) {
+        Log.d("onItemClick","Keyrir");
     }
 
     /**
@@ -105,6 +108,11 @@ public class SearchActivity extends AppCompatActivity {
      */
     public void SearchName(View view) throws URISyntaxException {
         String nameQuery = binding.etNameSearch.getText().toString().trim();
+        if (nameQuery.length() <= 1){
+            // Gera toast, setja inn stærri streng en 2 sem leitarquery
+            // Toast.makeText(context, response.getString("message") ,Toast.LENGTH_SHORT).show();
+        }
+
         ApiController.getInstance().getNamesByName((Activity) binding.btnSearchName.getContext(), nameQuery, new VolleyCallBack<ArrayList<NameCard>>() {
             @Override
             public ArrayList<NameCardItem> onSuccess() {
@@ -113,9 +121,11 @@ public class SearchActivity extends AppCompatActivity {
 
             @Override
             public void onResponse(ArrayList<NameCard> response) {
-                Log.d("nameSearch response", response.toString());
-                nameCardList = response;
+                nameCardList.clear();
+                setAdapter();
+                nameCardList.addAll(response);
                 adapter.notifyDataSetChanged();
+
 
             }
 

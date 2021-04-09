@@ -527,10 +527,10 @@ public class ApiController extends Application {
                             ));
 
                         }
-                        volleyCallBack.onResponse((ArrayList<NameCard>) nameCards);
                     } catch (JSONException e) {
                         e.printStackTrace();
                     }
+                    volleyCallBack.onResponse((ArrayList<NameCard>) nameCards);
                 },error -> {
                     volleyCallBack.onError("Leit tókst ekki");
         });

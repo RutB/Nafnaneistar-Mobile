@@ -488,6 +488,10 @@ public class NameRestController {
         ArrayList<NameCard> searchResultNamecard = new ArrayList<NameCard>();
         searchResultNamecard = (ArrayList<NameCard>) nameService.findAllByNameLike(StringUtils.capitalize(searchedName.concat("%")));
         for (int i = 0; i < searchResultNamecard.size(); i++) {
+            if(searchResultNamecard.get(i).getId() < 0) {
+                continue;
+            }
+
             JsonObject nameData = new JsonObject();
             nameData.addProperty("id", searchResultNamecard.get(i).getId());
             nameData.addProperty("name", searchResultNamecard.get(i).getName());
