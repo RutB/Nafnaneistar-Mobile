@@ -415,6 +415,11 @@ public class ApiController extends Application {
                 response -> {
                     JSONArray resp = new JSONArray();
                     try {
+                        if(response.has("message")){
+                            Toast.makeText(context, response.getString("message") ,Toast.LENGTH_SHORT)
+                                    .show();
+                            return;
+                        }
                         resp = response.getJSONArray("partners");
                     } catch (JSONException e) {
                         e.printStackTrace();
@@ -427,14 +432,14 @@ public class ApiController extends Application {
                             String partnerEmail = us.getString("email");
 
                             partnersList.add(new UserItem(
-                                    us.getString("email"),
-                                    us.getString("email")
+                                    partner, partnerEmail
                             ));
                           }
                     } catch (JSONException e) {
                         e.printStackTrace();
                     }
                     volleyCallBack.onResponse((ArrayList<UserItem>) partnersList);
+                    volleyCallBack.onSuccess();
                 }, error -> {
             volleyCallBack.onError( getString(R.string.errorGettingPartners));
         });

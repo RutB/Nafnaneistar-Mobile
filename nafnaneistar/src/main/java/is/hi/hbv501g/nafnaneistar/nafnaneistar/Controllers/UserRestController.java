@@ -141,7 +141,7 @@ public class UserRestController {
     @RequestParam(required=true) String email,
     @RequestParam(required=true)  String password,
     @RequestParam(required=true)  String id,
-    @RequestParam(required=true)  String rating){  
+    @RequestParam(required=true)  String rating){
         if (UserUtils.isAuthenticated(userService, email, password)) {
             User user = userService.findByEmail(email);
         try {
@@ -203,8 +203,8 @@ public class UserRestController {
     @GetMapping(path="/viewliked/remove", produces = "application/json")
     public String removeFromApproved(
         @RequestParam(required=true) String email,
-        @RequestParam(required=true)  String password, @RequestParam(required=true)  String id){  
-        
+        @RequestParam(required=true)  String password, @RequestParam(required=true)  String id){
+
             if (UserUtils.isAuthenticated(userService, email, password)) {
                 User user = userService.findByEmail(email);
             try {
@@ -246,19 +246,19 @@ public class UserRestController {
             User currentUser = userService.findByEmail(email);
             Set<Integer> ids = currentUser.getApprovedNames().keySet();
             JsonArray jsonarr = new JsonArray();
-            
+
             for (Integer id : ids) {
                 NameCard nc = nameService.findById(id).orElse(null);
                 JsonObject namecard = new JsonObject();
                 namecard.addProperty("name", nc.getName());
                 namecard.addProperty("id", nc.getId());
 
-                
+
                 namecard.addProperty("rating", (currentUser.getApprovedNames().get(id))) ;
                 namecard.addProperty("gender", nc.getGender());
                 jsonarr.add(namecard);
             }
-            
+
             JsonObject userInfo = new JsonObject();
             userInfo.add("namecards",jsonarr);
             return userInfo.toString();
@@ -322,8 +322,7 @@ public class UserRestController {
 
         return partnersObj.toString();
         }
-        return "'message': Þú ert nú þegar tengdur";
-
+        return "{'message':'Þú ert nú þegar tengdur'}";
     }
 
     public boolean helperValidatingPartner(

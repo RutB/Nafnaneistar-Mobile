@@ -87,8 +87,6 @@ public class LinkListManagerFragment extends Fragment implements LinkRecyclerVie
         View view = binding.getRoot();
         ApiController.getInstance().getLinkedPartners((Activity) getContext(), new VolleyCallBack<ArrayList<UserItem>>() {
 
-
-
             @Override
             public void onError(String error) {
                 Toast.makeText(getContext(), error, Toast.LENGTH_SHORT)
