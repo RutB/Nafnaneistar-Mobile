@@ -98,8 +98,9 @@ public class LinkPartnerActivity extends AppCompatActivity implements LinkRecycl
 
     @Override
     public void onItemClick(int position) {
-        //removeFromUserList(userList.get(position).getId(),position);
-        //adapter.notifyDataSetChanged();
+        userList.get(position);
+        removeFromUserList( userList.get(position).getEmail(), position);
+        adapter.notifyDataSetChanged();
     }
 
     public void populateTable() {
@@ -126,39 +127,27 @@ public class LinkPartnerActivity extends AppCompatActivity implements LinkRecycl
         });
     }
 
+    public void removeFromUserList(String email, int position){
+        ApiController.getInstance().removeFromLinkPartners(email, (Activity) binding.btnLink.getContext(), new VolleyCallBack<JSONObject>() {
+            @Override
+            public ArrayList<NameCardItem> onSuccess() {
+                return null;
+            }
 
-    /*private void fillTable(JSONArray resp) throws JSONException {
-        for (int i = resp.length()-1; i >= 0 ; i--) {
-            Log.d("fill", "fill" + i+ "    " + binding.llsvPartner.getChildAt(i));
-            binding.llsvPartner.removeView(binding.llsvPartner.getChildAt(i));
-        }
+            @Override
+            public void onResponse(JSONObject response) {
+                UserItem user = userList.get(position);
+                userList.remove(user);
+                adapter.notifyDataSetChanged();
+            }
 
-        for(int i = 0; i < resp.length(); i++){
-            Log.d("for", "for" + i);
-            JSONObject bla = (JSONObject) resp.get(i);
-            String partner = bla.getString("name");
-            String partnerEmail = bla.getString("email");
-            TextView column1 = new TextView(this,  null, 0, R.style.linkpartnerItem);
-            TextView column2 = new TextView(this, null, 0, R.style.linkpartnerItem);
-            LinearLayout row = new LinearLayout(this, null, 0, R.style.linkpartnerrow);
-            row.setOrientation(LinearLayout.HORIZONTAL);
-            final float scale = row.getResources().getDisplayMetrics().density;
-            //column1.setWidth(380);
-            column1.setWidth((int) (95 * scale + 0.5f));
-            column1.setHeight((int) (26 * scale + 0.5f));
-            column2.setWidth((int) (135 * scale + 0.5f));
-            Log.d("nafn", "nafn" + partner);
-            column1.setText(partner);
-            column2.setText(partnerEmail);
-            row.addView(column1);
-            row.addView(column2);
-            binding.llsvPartner.addView(row);
-            //String sName = "tvLinkName" + String.valueOf(i);
-
-            //Log.d("partners", "CheckLink: ");
-        }
-
-    }*/
+            @Override
+            public void onError(String error) {
+                Toast.makeText((Activity) binding.btnLink.getContext(), error ,Toast.LENGTH_SHORT)
+                        .show();
+            }
+        });
+    }
 
     public void populateNewTable(View view) throws URISyntaxException {
         String email = binding.etEmail2.getText().toString().trim();

@@ -35,12 +35,13 @@ import xyz.nafnaneistar.model.User;
  */
 public class ApiController extends Application {
     private static ApiController instance;
-    private static String domainURL = "http://46.22.102.179:7979/";
+    //private static String domainURL = "http://46.22.102.179:7979/";
     //private static String domainURL = "http://192.168.1.207:7979/";
     //private static String domainURL = "localhost:7979/";
     // private static String domainURL = "http://127.0.0.1:7979/";
     //private static String domainURL = "http://192.168.0.164:7979/";
 
+    private static String domainURL = "http://192.168.1.38:7979/";
 
     private RequestQueue requestQueue;
 
@@ -446,7 +447,36 @@ public class ApiController extends Application {
         ApiController.getInstance().addToRequestQueue(jsonObjReq);
     }
 
-    public void generateComboName(Activity context, boolean middle, int gender, String lastName, VolleyCallBack<String> volleyCallBack){
+    public void removeFromLinkPartners(String partnerEmail, Activity context, VolleyCallBack<JSONObject> volleyCallBack) {
+        Prefs prefs = new Prefs(context);
+        String [] user = prefs.getUser();
+        String email = user[0];
+        String pass = user[1];
+        String listeningPath = "linkpartner/remove";
+        URIBuilder b = null;
+        String url = "";
+        try {
+            b = new URIBuilder(ApiController.getDomainURL()+listeningPath);
+            b.addParameter("email",email);
+            b.addParameter("password",pass);
+            b.addParameter("partnerEmail", partnerEmail);
+
+            url = b.build().toString();
+        } catch (URISyntaxException e) {
+            e.printStackTrace();
+        }
+        JsonObjectRequest jsonObjReq = new JsonObjectRequest(Request.Method.GET,url,null,
+                response -> {
+                    volleyCallBack.onSuccess();
+                    volleyCallBack.onResponse(response);
+
+                },error -> {
+            volleyCallBack.onError(getString(R.string.errorRetrievingData));
+        });
+        ApiController.getInstance().addToRequestQueue(jsonObjReq);
+    }
+
+        public void generateComboName(Activity context, boolean middle, int gender, String lastName, VolleyCallBack<String> volleyCallBack){
         Prefs prefs = new Prefs(context);
         String [] user = prefs.getUser();
         String email = user[0];

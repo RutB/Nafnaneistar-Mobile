@@ -117,8 +117,8 @@ public class UserRestController {
      * @param session
      * @return
      */
-    @GetMapping(path="/linkpartner/remove", produces = "application/json")
-    public boolean removeFromLink(@RequestParam String id, HttpSession session)
+    @GetMapping(path="/linkpartner/remove_old", produces = "application/json")
+    public boolean removeFromLink_OLD(@RequestParam String id, HttpSession session)
     {  User user = (User) session.getAttribute("currentUser");
         try {
             user.removeLinkedPartner(Long.parseLong(id));
@@ -127,6 +127,33 @@ public class UserRestController {
         } catch(Error e){
             return false;
         }
+    }
+    /**
+     * Processes if the User wants to remove a partner from linked partners, and removes the partner from the
+     * linked partners
+     * @param email
+     * @param pass
+     * @param id
+     * @return
+     */
+    @GetMapping(path="/linkpartner/remove", produces = "application/json")
+    public String removeFromLink(
+        @RequestParam String email,
+        @RequestParam String password,
+        @RequestParam String partnerEmail)
+    {
+        if (UserUtils.isAuthenticated(userService, email, password)) {
+        User currentUser = userService.findByEmail(email);
+        try {
+            Long id = userService.findByEmail(partnerEmail).getId();
+            currentUser.removeLinkedPartner(id);
+            userService.save(currentUser);
+            return "{'result': 'true'}";
+        } catch(Error e){
+            return "{'result':'false'}";
+        }
+    }
+    return "{'result':'Villa í auðkenningu'}";
     }
 
     /**
