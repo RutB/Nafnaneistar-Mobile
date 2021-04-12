@@ -30,6 +30,10 @@ import xyz.nafnaneistar.loginactivity.R;
 import xyz.nafnaneistar.loginactivity.databinding.ActivitySwipeBinding;
 import xyz.nafnaneistar.model.NameCard;
 
+/**
+ * TODO:
+ * BUGFIX: NavBar hverfur þegar lyklaborð er opið. Tengist Manifest fixi?
+ */
 public class SwipeActivity extends AppCompatActivity {
     private ActivitySwipeBinding binding;
     private Prefs prefs;

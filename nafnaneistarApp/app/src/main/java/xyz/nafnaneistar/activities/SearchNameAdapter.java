@@ -1,5 +1,6 @@
 package xyz.nafnaneistar.activities;
 
+import android.app.Activity;
 import android.content.Context;
 import android.text.Spannable;
 import android.text.SpannableStringBuilder;
@@ -11,15 +12,23 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
+import org.json.JSONObject;
+
+import java.net.URISyntaxException;
 import java.text.BreakIterator;
 import java.util.ArrayList;
 
+import xyz.nafnaneistar.activities.items.NameCardItem;
+import xyz.nafnaneistar.controller.ApiController;
+import xyz.nafnaneistar.controller.VolleyCallBack;
 import xyz.nafnaneistar.loginactivity.R;
 import xyz.nafnaneistar.model.NameCard;
+import xyz.nafnaneistar.helpers.Utils;
 
 
 public class SearchNameAdapter extends RecyclerView.Adapter<SearchNameAdapter.ViewHolder> {
@@ -53,14 +62,6 @@ public class SearchNameAdapter extends RecyclerView.Adapter<SearchNameAdapter.Vi
         public void onClick(View view) {
 
         }
-        // TODO:
-        // Hnappur fyrir add to liked
-        // Hnappur fyrir info um nafn
-
-/*        public ViewHolder ViewHolder(final View view){
-            super(view);
-            tvNameResult = view.findViewById(R.id.tvNameResult);
-        }*/
     }
 
 
@@ -73,12 +74,87 @@ public class SearchNameAdapter extends RecyclerView.Adapter<SearchNameAdapter.Vi
 
     @Override
     public void onBindViewHolder(@NonNull SearchNameAdapter.ViewHolder holder, int position) {
-        // "Here we can change the text of our textview"
-        // Checka hér hvort nafn sé á liked lista logged in users og birta réttan takka?
         String name = nameCardList.get(position).getName();
+        int id = nameCardList.get(position).getId();
         holder.tvNameResult.setText(getGenderSign(name, nameCardList.get(position).getGender(),holder.tvNameResult.getContext()),TextView.BufferType.SPANNABLE);
-
+        if (Utils.nameCardListContains(approvedList, nameCardList.get(position))) {
+            holder.btnAddToLiked.setVisibility(View.GONE);
+            holder.btnRemoveFromLiked.setVisibility(View.VISIBLE);
+        } else {
+            holder.btnAddToLiked.setVisibility(View.VISIBLE);
+            holder.btnRemoveFromLiked.setVisibility(View.GONE);
+        };
+        holder.btnRemoveFromLiked.setOnClickListener( view -> {
+            toggleView(view);
+            toggleView(holder.btnAddToLiked);
+            removeFromApprovedList(id, holder.btnRemoveFromLiked.getContext());
+            Log.d("ÞETTA ER ID A NAMECARD?", ""+id);
+        });
+        holder.btnAddToLiked.setOnClickListener( view -> {
+            toggleView(view);
+            toggleView(holder.btnRemoveFromLiked);
+            try {
+                addOrRemoveFromApprovedList("approve", id, (Activity) holder.btnRemoveFromLiked.getContext());
+            } catch (URISyntaxException e) {
+                e.printStackTrace();
+            }
+            Log.d("ÞETTA ER ID A NAMECARD?", ""+id);
+        });
     }
+
+    public void toggleView(View view){
+        if(view.getVisibility()==View.GONE)
+            view.setVisibility(View.VISIBLE);
+        else if(view.getVisibility()==View.VISIBLE)
+            view.setVisibility(View.GONE);
+    }
+
+    public void removeFromApprovedList(int nameCardId, Context context) {
+        ApiController.getInstance().removeFromApprovedList(nameCardId, 0, (Activity) context,  new VolleyCallBack<JSONObject>() {
+
+            @Override
+            public ArrayList<NameCardItem> onSuccess() {
+                Toast.makeText(context, "Nafn fjarlægt af lista", Toast.LENGTH_SHORT).show();
+                return null;
+            }
+
+            @Override
+            public void onResponse(JSONObject response) {
+
+            }
+
+            @Override
+            public void onError(String error) {
+
+            }
+        });
+    }
+
+    public void addOrRemoveFromApprovedList(String action, int nameCardId, Activity context) throws URISyntaxException {
+
+        ApiController.getInstance().chooseName(action, nameCardId, false, false, context, new VolleyCallBack<NameCard>() {
+            @Override
+            public ArrayList<NameCardItem> onSuccess() {
+                if (action.equals("approve")) {
+                    Toast.makeText(context, "Nafni bætt við á lista", Toast.LENGTH_SHORT).show();
+                } else {
+                    Toast.makeText(context, "Nafn fjarlægt af lista", Toast.LENGTH_SHORT).show();
+                }
+                return null;
+            }
+
+            @Override
+            public void onResponse(NameCard response) {
+
+            }
+
+            @Override
+            public void onError(String error) {
+
+            }
+        });
+    }
+
 
     public SpannableStringBuilder getGenderSign(String name, int gender, Context context){
         SpannableStringBuilder stringBuild = new SpannableStringBuilder(name + "  ");

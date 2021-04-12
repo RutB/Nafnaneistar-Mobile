@@ -33,8 +33,9 @@ import static xyz.nafnaneistar.loginactivity.R.*;
 
 /**
  * TODO:
- * Breyta nameCardList í nameCard
- * Breyta approvedList í nameCard
+ * Er aðeins hægt að adda einu nafni í listann með searchname?
+ * Er það að eyða úr listanum relieable?
+ * Útlit
  */
 
 
@@ -89,18 +90,7 @@ public class SearchActivity extends AppCompatActivity implements SearchNameAdapt
     public void onItemClick(int position) {
         Log.d("onItemClick","Keyrir");
     }
-
-    /**
-     * TODO:
-     *  User authentication.
-     *  Mata gögn inn viðmótið í lista.
-     *  Add og Remove hnappar á lista við hvert nafn.
-     *  Deala við þegar leitarreitur er tómur og ýtt er á "leita"
-     *
-     * WIP: Eins og er þá skilar þetta fall leitarniðustöðu í Logcat.
-     * @param view
-     * @return null
-     */
+    
     public void SearchName(View view) throws URISyntaxException {
         String nameQuery = binding.etNameSearch.getText().toString().trim();
         if (nameQuery.length() <= 1){
@@ -113,7 +103,7 @@ public class SearchActivity extends AppCompatActivity implements SearchNameAdapt
     }
 
     public void getNamesByName(String query) {
-        ApiController.getInstance().getNamesByName((Activity) binding.btnSearchName.getContext(), query, new VolleyCallBack<ArrayList<NameCard>>() {
+        ApiController.getInstance().getNameCardsByName((Activity) binding.btnSearchName.getContext(), query, new VolleyCallBack<ArrayList<NameCard>>() {
             @Override
             public ArrayList<NameCardItem> onSuccess() {
                 return null;
@@ -124,7 +114,6 @@ public class SearchActivity extends AppCompatActivity implements SearchNameAdapt
                 setAdapter();
                 nameCardList.addAll(response);
                 adapter.notifyDataSetChanged();
-                Log.d("OnResponse: ", response.toString());
             }
 
             @Override

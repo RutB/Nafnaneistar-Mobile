@@ -242,7 +242,7 @@ public class ApiController extends Application {
                             approvedList.add(new NameCard(
                                     nc.getInt("id"),
                                     nc.getString("name"),
-                                    nc.getString("description"),
+                                    nc.getString("rating"),
                                     nc.getInt("gender")
                             ));
                         } catch (JSONException e) {
@@ -532,7 +532,7 @@ public class ApiController extends Application {
      * WIP - HAT
      *
      */
-    public void getNamesByName(Activity context, String nameQuery, VolleyCallBack<ArrayList<NameCard>> volleyCallBack) {
+    public void getNameCardsByName(Activity context, String nameQuery, VolleyCallBack<ArrayList<NameCard>> volleyCallBack) {
         Prefs prefs = new Prefs(context);
         String [] user = prefs.getUser();
         String email = user[0];
@@ -540,7 +540,6 @@ public class ApiController extends Application {
         String listeningPath = "searchname";
         URIBuilder b = null;
         String url = "";
-        Log.d("PRefs:", prefs.getUser()[0]);
 
         try {
             b = new URIBuilder(ApiController.getDomainURL()+listeningPath);
