@@ -7,24 +7,14 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import android.app.Activity;
-import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.Toast;
 
-import com.android.volley.Request;
-import com.android.volley.toolbox.JsonObjectRequest;
-import com.google.android.material.snackbar.Snackbar;
-import com.google.gson.Gson;
-
-import org.apache.http.client.utils.URIBuilder;
-import org.json.JSONException;
-
 import java.net.URISyntaxException;
 import java.util.ArrayList;
-import java.util.jar.Attributes;
 
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
@@ -38,9 +28,14 @@ import xyz.nafnaneistar.loginactivity.R;
 
 import xyz.nafnaneistar.loginactivity.databinding.ActivitySearchBinding;
 import xyz.nafnaneistar.model.NameCard;
-import xyz.nafnaneistar.model.User;
 
 import static xyz.nafnaneistar.loginactivity.R.*;
+
+/**
+ * TODO:
+ * Breyta nameCardList í nameCard
+ * Breyta approvedList í nameCard
+ */
 
 
 public class SearchActivity extends AppCompatActivity implements SearchNameAdapter.OnItemListener {
@@ -48,9 +43,8 @@ public class SearchActivity extends AppCompatActivity implements SearchNameAdapt
     // private user currentUser = new User();
     private Prefs prefs;
     private String tvNameResult;
-    // private ArrayList<NameCard> nameCardList;
     private ArrayList<NameCard> nameCardList = new ArrayList<>();
-    private ArrayList<NameCardItem> approvedList = new ArrayList<>();
+    private ArrayList<NameCard> approvedList = new ArrayList<NameCard>();
     private RecyclerView recyclerView;
     private SearchNameAdapter adapter;
 
@@ -72,7 +66,6 @@ public class SearchActivity extends AppCompatActivity implements SearchNameAdapt
     }
 
     private void setAdapter() {
-        // SearchNameAdapter adapter = new SearchNameAdapter(nameCardList);
         adapter = new SearchNameAdapter(nameCardList, approvedList, this);
         RecyclerView.LayoutManager layoutManager = new LinearLayoutManager(getApplicationContext());
         recyclerView.setLayoutManager(layoutManager);
@@ -114,36 +107,9 @@ public class SearchActivity extends AppCompatActivity implements SearchNameAdapt
             Toast.makeText(getApplicationContext(), "Sláðu inn meira en einn staf" ,Toast.LENGTH_SHORT).show();
             return;
         }
-
-
         InputMethodManager inputMethodManager = (InputMethodManager)getSystemService(INPUT_METHOD_SERVICE);
         inputMethodManager.hideSoftInputFromWindow(view.getApplicationWindowToken(),0);
         getIdsOfApproved(nameQuery);
-
-/*        ApiController.getInstance().getNamesByName((Activity) binding.btnSearchName.getContext(), nameQuery, new VolleyCallBack<ArrayList<NameCard>>() {
-            @Override
-            public ArrayList<NameCardItem> onSuccess() {
-                return null;
-            }
-
-            @Override
-            public void onResponse(ArrayList<NameCard> response) {
-                nameCardList.clear();
-                setAdapter();
-                nameCardList.addAll(response);
-                adapter.notifyDataSetChanged();
-                Log.d("OnResponse: ", response.toString());
-            }
-
-            @Override
-            public void onError(String error) {
-
-            }
-        });*/
-
-
-
-
     }
 
     public void getNamesByName(String query) {
@@ -170,14 +136,14 @@ public class SearchActivity extends AppCompatActivity implements SearchNameAdapt
     }
 
     private void getIdsOfApproved(String query) {
-        ApiController.getInstance().getApprovedNames((Activity) binding.btnSearchName.getContext(), new VolleyCallBack<ArrayList<NameCardItem>>() {
+        ApiController.getInstance().getApprovedNameCards((Activity) binding.btnSearchName.getContext(), new VolleyCallBack<ArrayList<NameCard>>() {
             @Override
             public ArrayList<NameCardItem> onSuccess() {
                 return null;
             }
 
             @Override
-            public void onResponse(ArrayList<NameCardItem> response) {
+            public void onResponse(ArrayList<NameCard> response) {
                 approvedList.clear();
                 nameCardList.clear();
                 approvedList.addAll(response);

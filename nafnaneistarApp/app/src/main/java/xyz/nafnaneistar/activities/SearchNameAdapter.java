@@ -18,7 +18,6 @@ import androidx.recyclerview.widget.RecyclerView;
 import java.text.BreakIterator;
 import java.util.ArrayList;
 
-import xyz.nafnaneistar.activities.items.NameCardItem;
 import xyz.nafnaneistar.loginactivity.R;
 import xyz.nafnaneistar.model.NameCard;
 
@@ -26,9 +25,9 @@ import xyz.nafnaneistar.model.NameCard;
 public class SearchNameAdapter extends RecyclerView.Adapter<SearchNameAdapter.ViewHolder> {
     private OnItemListener onItemListener;
     private ArrayList<NameCard> nameCardList;
-    private ArrayList<NameCardItem> approvedList;
+    private ArrayList<NameCard> approvedList;
 
-    public SearchNameAdapter(ArrayList<NameCard> nameCardList, ArrayList<NameCardItem> approvedList, SearchNameAdapter.OnItemListener onItemListener) {
+    public SearchNameAdapter(ArrayList<NameCard> nameCardList, ArrayList<NameCard> approvedList, SearchNameAdapter.OnItemListener onItemListener) {
         this.onItemListener = onItemListener;
         this.nameCardList = nameCardList;
         this.approvedList = approvedList;
