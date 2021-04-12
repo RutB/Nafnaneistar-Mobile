@@ -1,5 +1,10 @@
 package xyz.nafnaneistar.activities;
 
+import android.content.Context;
+import android.text.Spannable;
+import android.text.SpannableStringBuilder;
+import android.text.style.DynamicDrawableSpan;
+import android.text.style.ImageSpan;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -9,6 +14,7 @@ import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
+import java.text.BreakIterator;
 import java.util.ArrayList;
 
 import xyz.nafnaneistar.loginactivity.R;
@@ -63,14 +69,26 @@ public class SearchNameAdapter extends RecyclerView.Adapter<SearchNameAdapter.Vi
         // "Here we can change the text of our textview"
         // Checka hér hvort nafn sé á liked lista logged in users og birta réttan takka?
         String name = nameCardList.get(position).getName();
-        holder.tvNameResult.setText(name);
-        Log.d("SearchNameAdapter.onBindViewHolder", "Runs");
+        // holder.tvNameResult.setText(name);
+        holder.tvNameResult.setText(getGenderSign(name, nameCardList.get(position).getGender(),holder.tvNameResult.getContext()),TextView.BufferType.SPANNABLE);
+    }
+
+    public SpannableStringBuilder getGenderSign(String name, int gender, Context context){
+        SpannableStringBuilder stringBuild = new SpannableStringBuilder(name + "  ");
+        if(gender == 0){
+            stringBuild.setSpan(
+                    new ImageSpan(context, R.drawable.ic_gender_male, DynamicDrawableSpan.ALIGN_BASELINE), name.length() + 1, name.length() + 2, Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
+        }
+        else {
+            stringBuild.setSpan(
+                    new ImageSpan(context, R.drawable.ic_gender_female, DynamicDrawableSpan.ALIGN_BASELINE), name.length() + 1, name.length() + 2, Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
+        }
+        return stringBuild;
     }
 
     public interface OnItemListener {
         void onItemClick(int position);
     }
-
 
     @Override
     public int getItemCount() {

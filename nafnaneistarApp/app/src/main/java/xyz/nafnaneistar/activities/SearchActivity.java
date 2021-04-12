@@ -110,7 +110,7 @@ public class SearchActivity extends AppCompatActivity implements SearchNameAdapt
     public void SearchName(View view) throws URISyntaxException {
         String nameQuery = binding.etNameSearch.getText().toString().trim();
         if (nameQuery.length() <= 1){
-            Toast.makeText(getApplicationContext(), "Nafn þarf að vera lengra en 1 stafur" ,Toast.LENGTH_SHORT).show();
+            Toast.makeText(getApplicationContext(), "Sláðu inn meira en einn staf" ,Toast.LENGTH_SHORT).show();
             return;
         }
         InputMethodManager inputMethodManager = (InputMethodManager)getSystemService(INPUT_METHOD_SERVICE);
