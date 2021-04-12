@@ -220,7 +220,7 @@ public class UserRestController {
         }
     }
 
-        /**
+    /**
      * Processes if the User wants to remove name from approved Names, and removes the name from the
      * approved names
      * @param id
