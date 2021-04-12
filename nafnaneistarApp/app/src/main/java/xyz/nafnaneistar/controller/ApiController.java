@@ -497,6 +497,7 @@ public class ApiController extends Application {
         String listeningPath = "searchname";
         URIBuilder b = null;
         String url = "";
+        Log.d("PRefs:", prefs.getUser()[0]);
 
         try {
             b = new URIBuilder(ApiController.getDomainURL()+listeningPath);

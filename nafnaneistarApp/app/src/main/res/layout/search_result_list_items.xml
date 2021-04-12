@@ -6,11 +6,11 @@
     android:layout_height="wrap_content">
 
     <Button
-        android:id="@+id/button"
+        android:id="@+id/btRemoveFromLiked"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginEnd="24dp"
-        android:text="Button"
+        android:text="Remove"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="1.0"
@@ -18,10 +18,23 @@
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintVertical_bias="0.0" />
 
+    <Button
+        android:id="@+id/btAddToLiked"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginEnd="24dp"
+        android:text="Add"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.12"
+        app:layout_constraintStart_toEndOf="@+id/tvNameResult"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.0" />
+
     <TextView
         android:id="@+id/tvNameResult"
-        android:layout_width="223dp"
-        android:layout_height="29dp"
+        android:layout_width="163dp"
+        android:layout_height="31dp"
         android:layout_marginStart="1dp"
         android:layout_marginTop="8dp"
         android:layout_marginEnd="8dp"

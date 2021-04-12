@@ -9,6 +9,7 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
@@ -17,6 +18,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import java.text.BreakIterator;
 import java.util.ArrayList;
 
+import xyz.nafnaneistar.activities.items.NameCardItem;
 import xyz.nafnaneistar.loginactivity.R;
 import xyz.nafnaneistar.model.NameCard;
 
@@ -24,15 +26,19 @@ import xyz.nafnaneistar.model.NameCard;
 public class SearchNameAdapter extends RecyclerView.Adapter<SearchNameAdapter.ViewHolder> {
     private OnItemListener onItemListener;
     private ArrayList<NameCard> nameCardList;
+    private ArrayList<NameCardItem> approvedList;
 
-    public SearchNameAdapter(ArrayList<NameCard> nameCardList, SearchNameAdapter.OnItemListener onItemListener) {
+    public SearchNameAdapter(ArrayList<NameCard> nameCardList, ArrayList<NameCardItem> approvedList, SearchNameAdapter.OnItemListener onItemListener) {
         this.onItemListener = onItemListener;
         this.nameCardList = nameCardList;
+        this.approvedList = approvedList;
     }
 
 
     public class ViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
         private TextView tvNameResult;
+        private Button btnAddToLiked;
+        private Button btnRemoveFromLiked;
         OnItemListener onItemListener;
 
         public ViewHolder(@NonNull View itemView, OnItemListener onItemListener) {
@@ -40,6 +46,8 @@ public class SearchNameAdapter extends RecyclerView.Adapter<SearchNameAdapter.Vi
             this.onItemListener = onItemListener;
 
             tvNameResult = itemView.findViewById(R.id.tvNameResult);
+            btnAddToLiked = itemView.findViewById(R.id.btAddToLiked);
+            btnRemoveFromLiked = itemView.findViewById(R.id.btRemoveFromLiked);
         }
 
         @Override
@@ -69,8 +77,8 @@ public class SearchNameAdapter extends RecyclerView.Adapter<SearchNameAdapter.Vi
         // "Here we can change the text of our textview"
         // Checka hér hvort nafn sé á liked lista logged in users og birta réttan takka?
         String name = nameCardList.get(position).getName();
-        // holder.tvNameResult.setText(name);
         holder.tvNameResult.setText(getGenderSign(name, nameCardList.get(position).getGender(),holder.tvNameResult.getContext()),TextView.BufferType.SPANNABLE);
+
     }
 
     public SpannableStringBuilder getGenderSign(String name, int gender, Context context){

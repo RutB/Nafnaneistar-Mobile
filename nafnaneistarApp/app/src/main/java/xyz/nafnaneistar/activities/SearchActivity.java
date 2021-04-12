@@ -50,6 +50,7 @@ public class SearchActivity extends AppCompatActivity implements SearchNameAdapt
     private String tvNameResult;
     // private ArrayList<NameCard> nameCardList;
     private ArrayList<NameCard> nameCardList = new ArrayList<>();
+    private ArrayList<NameCardItem> approvedList = new ArrayList<>();
     private RecyclerView recyclerView;
     private SearchNameAdapter adapter;
 
@@ -72,7 +73,7 @@ public class SearchActivity extends AppCompatActivity implements SearchNameAdapt
 
     private void setAdapter() {
         // SearchNameAdapter adapter = new SearchNameAdapter(nameCardList);
-        adapter = new SearchNameAdapter(nameCardList, this);
+        adapter = new SearchNameAdapter(nameCardList, approvedList, this);
         RecyclerView.LayoutManager layoutManager = new LinearLayoutManager(getApplicationContext());
         recyclerView.setLayoutManager(layoutManager);
         // TODO: Custom animator
@@ -113,10 +114,13 @@ public class SearchActivity extends AppCompatActivity implements SearchNameAdapt
             Toast.makeText(getApplicationContext(), "Sláðu inn meira en einn staf" ,Toast.LENGTH_SHORT).show();
             return;
         }
+
+
         InputMethodManager inputMethodManager = (InputMethodManager)getSystemService(INPUT_METHOD_SERVICE);
         inputMethodManager.hideSoftInputFromWindow(view.getApplicationWindowToken(),0);
+        getIdsOfApproved(nameQuery);
 
-        ApiController.getInstance().getNamesByName((Activity) binding.btnSearchName.getContext(), nameQuery, new VolleyCallBack<ArrayList<NameCard>>() {
+/*        ApiController.getInstance().getNamesByName((Activity) binding.btnSearchName.getContext(), nameQuery, new VolleyCallBack<ArrayList<NameCard>>() {
             @Override
             public ArrayList<NameCardItem> onSuccess() {
                 return null;
@@ -128,8 +132,33 @@ public class SearchActivity extends AppCompatActivity implements SearchNameAdapt
                 setAdapter();
                 nameCardList.addAll(response);
                 adapter.notifyDataSetChanged();
+                Log.d("OnResponse: ", response.toString());
+            }
+
+            @Override
+            public void onError(String error) {
+
+            }
+        });*/
 
 
+
+
+    }
+
+    public void getNamesByName(String query) {
+        ApiController.getInstance().getNamesByName((Activity) binding.btnSearchName.getContext(), query, new VolleyCallBack<ArrayList<NameCard>>() {
+            @Override
+            public ArrayList<NameCardItem> onSuccess() {
+                return null;
+            }
+
+            @Override
+            public void onResponse(ArrayList<NameCard> response) {
+                setAdapter();
+                nameCardList.addAll(response);
+                adapter.notifyDataSetChanged();
+                Log.d("OnResponse: ", response.toString());
             }
 
             @Override
@@ -138,9 +167,28 @@ public class SearchActivity extends AppCompatActivity implements SearchNameAdapt
             }
         });
 
+    }
 
+    private void getIdsOfApproved(String query) {
+        ApiController.getInstance().getApprovedNames((Activity) binding.btnSearchName.getContext(), new VolleyCallBack<ArrayList<NameCardItem>>() {
+            @Override
+            public ArrayList<NameCardItem> onSuccess() {
+                return null;
+            }
 
+            @Override
+            public void onResponse(ArrayList<NameCardItem> response) {
+                approvedList.clear();
+                nameCardList.clear();
+                approvedList.addAll(response);
+                getNamesByName(query);
+            }
 
+            @Override
+            public void onError(String error) {
+
+            }
+        });
     }
 
 
