@@ -17,9 +17,10 @@
 
         <LinearLayout
             android:id="@+id/llViewLikedMenu"
-            android:layout_width="318dp"
-            android:layout_height="270dp"
+            android:layout_width="0dp"
+            android:layout_height="0dp"
             android:layout_marginBottom="32dp"
+            android:layout_marginEnd="16dp"
             android:layout_marginStart="16dp"
             android:layout_marginTop="64dp"
             android:background="@color/ambiant"
@@ -86,7 +87,6 @@
             android:layout_height="0dp"
             android:layout_marginBottom="32dp"
             android:layout_marginEnd="16dp"
-            android:layout_marginStart="16dp"
             android:layout_marginTop="64dp"
             android:background="@color/btn_color_lg"
             android:foregroundGravity="center"
@@ -225,10 +225,9 @@
         <androidx.constraintlayout.widget.ConstraintLayout
             android:id="@+id/clFragmentContainer"
             android:layout_width="0dp"
-            android:layout_height="293dp"
+            android:layout_height="0dp"
             android:layout_marginBottom="32dp"
             android:layout_marginEnd="16dp"
-            android:layout_marginStart="16dp"
             android:layout_marginTop="64dp"
             android:foregroundGravity="center"
             android:visibility="visible"
