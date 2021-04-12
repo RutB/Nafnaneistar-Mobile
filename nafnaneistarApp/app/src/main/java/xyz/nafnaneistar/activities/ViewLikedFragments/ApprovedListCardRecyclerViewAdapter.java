@@ -56,7 +56,6 @@ public class ApprovedListCardRecyclerViewAdapter extends RecyclerView.Adapter<Ap
 
         @Override
         public void onClick(View view) {
-
              switch (view.getId()){
                 case R.id.comboListOperations:
                     int pos = this.getAdapterPosition();
@@ -143,6 +142,7 @@ public class ApprovedListCardRecyclerViewAdapter extends RecyclerView.Adapter<Ap
                         .show();
             }
         });
+
     }
 
 

@@ -48,7 +48,8 @@
             android:layout_height="446dp"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/btnSearchName" />
+            app:layout_constraintTop_toBottomOf="@+id/btnSearchName"
+            tools:listitem="@layout/linkcombolist" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 </layout>
