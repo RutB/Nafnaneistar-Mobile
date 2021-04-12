@@ -40,7 +40,7 @@ public class UserRestController {
     }
 
     /**
-     * function that validates the information from the User to login, if the User
+     * Function that validates the information from the User to login, if the User
      * with the given email matches the given password the user is logged in
      *
      * @param email    - Email of User
@@ -59,6 +59,13 @@ public class UserRestController {
         return "{}";
     }
 
+    /**
+     * Function
+     * @param name
+     * @param email
+     * @param password
+     * @return
+     */
     @PostMapping(path = "/signup",produces = "application/json")
     public String SignUp(@RequestParam String name, @RequestParam String email, @RequestParam String password){
         User user = userService.findByEmail(email);
@@ -109,32 +116,13 @@ public class UserRestController {
         return false;
     }
 
-
-    /**
-     * Processes if the User wants to remove a partner from linked partners, and removes the partner from the
-     * linked partners
-     * @param id
-     * @param session
-     * @return
-     */
-    @GetMapping(path="/linkpartner/remove_old", produces = "application/json")
-    public boolean removeFromLink_OLD(@RequestParam String id, HttpSession session)
-    {  User user = (User) session.getAttribute("currentUser");
-        try {
-            user.removeLinkedPartner(Long.parseLong(id));
-            userService.save(user);
-            return true;
-        } catch(Error e){
-            return false;
-        }
-    }
     /**
      * Processes if the User wants to remove a partner from linked partners, and removes the partner from the
      * linked partners
      * @param email
      * @param pass
      * @param id
-     * @return
+     * @return - Returns true or false depending if the removal was a success
      */
     @GetMapping(path="/linkpartner/remove", produces = "application/json")
     public String removeFromLink(
@@ -161,7 +149,7 @@ public class UserRestController {
      * @param id id of the name to update
      * @param rating a rating of 1-5
      * @param session manages the session of the user
-     * @return true or false depending if the operation was a success
+     * @return - Returns true or false depending if the operation was a success
      */
     @GetMapping(path="/viewliked/updaterating", produces = "application/json")
     public String updateNameRating(
@@ -182,23 +170,6 @@ public class UserRestController {
         }
     }
     return "{'message':'Villa í auðkenningu'}";
-
-}
-
-
-    @GetMapping(path="/viewliked/updaterating__OLD", produces = "application/json")
-    public boolean updateNameRating__OLD(@RequestParam String id,@RequestParam String rating, HttpSession session)
-    {   User currentUser = (User) session.getAttribute("currentUser");
-        if(!UserUtils.isLoggedIn(currentUser)) return false;
-        Integer nameId = Integer.parseInt(id);
-        Integer nameRating = Integer.parseInt(rating);
-        try {
-            currentUser.updateRatingById(nameId, nameRating);
-            userService.save(currentUser);
-            return true;
-        }catch(Error e){
-            return false;
-        }
     }
 
     /**
@@ -206,26 +177,7 @@ public class UserRestController {
      * approved names
      * @param id
      * @param session
-     * @return
-     */
-    @GetMapping(path="/viewliked/remove__OLD", produces = "application/json")
-    public boolean removeFromApproved__OLD(@RequestParam String id, HttpSession session)
-    {  User user = (User) session.getAttribute("currentUser");
-        try {
-            user.removeApprovedName(Integer.parseInt(id));
-            userService.save(user);
-            return true;
-        } catch(Error e){
-            return false;
-        }
-    }
-
-    /**
-     * Processes if the User wants to remove name from approved Names, and removes the name from the
-     * approved names
-     * @param id
-     * @param session
-     * @return
+     * @return - Returns true or false depending if the removal was a success
      */
     @GetMapping(path="/viewliked/remove", produces = "application/json")
     public String removeFromApproved(
@@ -267,8 +219,17 @@ public class UserRestController {
         return ncs;
 
     }
+
+    /**
+     * A fetch call to get list of names that are approved by current user
+     * @param email
+     * @param pass
+     * @return - Returns list of approved names or a JSON object with 'message'
+     */
     @GetMapping(path = "/viewliked/approvedlist", produces = "application/json")
-    public String getComboList(@RequestParam(required = true) String email, @RequestParam(required = true) String pass) {
+    public String getComboList(
+        @RequestParam(required = true) String email,
+        @RequestParam(required = true) String pass) {
         if (UserUtils.isAuthenticated(userService, email, pass)) {
             User currentUser = userService.findByEmail(email);
             Set<Integer> ids = currentUser.getApprovedNames().keySet();
@@ -293,6 +254,12 @@ public class UserRestController {
         return "{'message':'Villa í auðkenningu'}";
     }
 
+    /**
+     * A fetch call to get the list of partners for user specified in email and password
+     * @param email
+     * @param pass
+     * @return - Returns a list of linked partners for current user
+     */
     @GetMapping(value = "/linkpartner",  produces = "application/json")
     public String linkpartner(
         @RequestParam String email,
@@ -300,6 +267,7 @@ public class UserRestController {
         if (!UserUtils.isAuthenticated(userService, email, pass)) return "{}";
         User currentUser = userService.findByEmail(email);
         ArrayList<JsonObject> partners = new ArrayList<JsonObject>();
+
         for(Long id : currentUser.getLinkedPartners()){
             JsonObject p = new JsonObject();
             User partner = userService.findById(id).get();
@@ -313,10 +281,18 @@ public class UserRestController {
         JsonArray partnerJSON = gson.toJsonTree(partners).getAsJsonArray();
         JsonObject partnersObj = new JsonObject();
         partnersObj.add("partners", partnerJSON);
-        return partnersObj.toString();
 
+        return partnersObj.toString();
     }
 
+    /**
+     * A call to update the list of partners for user specified in email and password
+     * The partner is added to the list if it is not already connected.
+     * @param email
+     * @param pass
+     * @param partner
+     * @return - Returns an updated list of linked partners for current user or JSON object with 'message'
+     */
     @PostMapping(value = "/linkpartner",  produces = "application/json")
     public String linkpartner(
         @RequestParam String email,
@@ -329,7 +305,7 @@ public class UserRestController {
         System.out.print(currentUser.getLinkedPartners());
         ArrayList<JsonObject> partners = new ArrayList<JsonObject>();
 
-        if(helperValidatingPartner(currentUser, linkPartner)){
+        if(UserUtils.helperValidatingPartner(currentUser, linkPartner)){
             currentUser.addLinkedPartner(linkPartner.getId());
             linkPartner.addLinkedPartner(currentUser.getId());
             userService.save(currentUser);
@@ -351,22 +327,5 @@ public class UserRestController {
         }
         return "{'message':'Þú ert nú þegar tengdur'}";
     }
-
-    public boolean helperValidatingPartner(
-        User currentUser,
-        User linkPartner){
-        if(currentUser.getId() != linkPartner.getId()){
-            for (Long id : currentUser.getLinkedPartners()){
-                if(linkPartner.getId() == id){
-                    return false;
-                }
-            }
-            return true;
-        }
-        return false;
-    }
-
-
-
 
 }

@@ -35,13 +35,13 @@ import xyz.nafnaneistar.model.User;
  */
 public class ApiController extends Application {
     private static ApiController instance;
-    private static String domainURL = "http://46.22.102.179:7979/";
+    //private static String domainURL = "http://46.22.102.179:7979/";
     //private static String domainURL = "http://192.168.1.207:7979/";
     //private static String domainURL = "localhost:7979/";
     // private static String domainURL = "http://127.0.0.1:7979/";
     //private static String domainURL = "http://192.168.0.164:7979/";
 
-
+    private static String domainURL = "http://192.168.1.38:7979/";
 
     private RequestQueue requestQueue;
 
@@ -112,6 +112,7 @@ public class ApiController extends Application {
         }, error -> volleyCallBack.onError(getString(R.string.loginError)));
         ApiController.getInstance().addToRequestQueue(jsonObjReq);
     }
+
     public void signup(VolleyCallBack<JSONObject> volleyCallBack, String name, String email, String pass) throws URISyntaxException {
         String listeningPath = "signup";
         URIBuilder b = new URIBuilder(ApiController.getDomainURL()+listeningPath);
@@ -123,8 +124,6 @@ public class ApiController extends Application {
                 null, volleyCallBack::onResponse, error -> volleyCallBack.onError(getString(R.string.signupFailed)));
         ApiController.getInstance().addToRequestQueue(jsonObjReq);
     }
-
-
 
     public void getNameCardsAndRating(Long partnerId,String user_email,String pass, VolleyCallBack<ArrayList<NameCardItem>> volleyCallBack) {
         ArrayList<NameCardItem> comboList = new ArrayList<>();
@@ -351,6 +350,12 @@ public class ApiController extends Application {
         ApiController.getInstance().addToRequestQueue(jsonObjReq);
     }
 
+    /**
+     *
+     * @param context
+     * @param volleyCallBack
+     */
+
     public void getLinkedPartners(Activity context, VolleyCallBack<ArrayList<UserItem>> volleyCallBack) {
         Prefs prefs = new Prefs(context);
         String [] user = prefs.getUser();
@@ -476,7 +481,7 @@ public class ApiController extends Application {
         ApiController.getInstance().addToRequestQueue(jsonObjReq);
     }
 
-        public void generateComboName(Activity context, boolean middle, int gender, String lastName, VolleyCallBack<String> volleyCallBack){
+    public void generateComboName(Activity context, boolean middle, int gender, String lastName, VolleyCallBack<String> volleyCallBack){
         Prefs prefs = new Prefs(context);
         String [] user = prefs.getUser();
         String email = user[0];

@@ -81,4 +81,25 @@ public class UserUtils {
         return false;
     }
 
+    /**
+     * Helper that checks if linkPartner is already linked to current user
+     * and returns true if they are not linked
+     * @param currentUser
+     * @param linkPartner
+     * @return
+     */
+    public static boolean helperValidatingPartner(
+        User currentUser,
+        User linkPartner){
+        if(currentUser.getId() != linkPartner.getId()){
+            for (Long id : currentUser.getLinkedPartners()){
+                if(linkPartner.getId() == id){
+                    return false;
+                }
+            }
+            return true;
+        }
+        return false;
+    }
+
 }
