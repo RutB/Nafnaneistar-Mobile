@@ -23,9 +23,10 @@
             android:text="@string/btnLink"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.173"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/etEmail2"
-            app:layout_constraintVertical_bias="0.048" />
+            app:layout_constraintVertical_bias="0.227" />
 
         <EditText
             android:id="@+id/etEmail2"
@@ -43,22 +44,24 @@
             android:textAlignment="center"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.085"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/textView5"
-            app:layout_constraintVertical_bias="0.076" />
+            app:layout_constraintVertical_bias="0.094" />
 
         <TextView
             android:id="@+id/textView5"
             android:layout_width="327dp"
             android:layout_height="81dp"
             android:text="@string/tvLinkPartner"
+            android:textAlignment="center"
             android:textSize="18sp"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHorizontal_bias="0.428"
+            app:layout_constraintHorizontal_bias="0.039"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
-            app:layout_constraintVertical_bias="0.186" />
+            app:layout_constraintVertical_bias="0.303" />
 
         <TextView
             android:id="@+id/textView6"
@@ -74,14 +77,15 @@
 
         <LinearLayout
             android:id="@+id/linearLayout"
-            android:layout_width="332dp"
-            android:layout_height="270dp"
-            android:layout_marginTop="96dp"
+            android:layout_width="323dp"
+            android:layout_height="288dp"
             android:orientation="vertical"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/btnLink">
+            app:layout_constraintHorizontal_bias="0.746"
+            app:layout_constraintStart_toEndOf="@+id/textView5"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintVertical_bias="1.0">
 
             <LinearLayout
                 android:layout_width="match_parent"
@@ -124,8 +128,8 @@
 
             <androidx.recyclerview.widget.RecyclerView
                 android:id="@+id/rvComboList"
-                android:layout_width="343dp"
-                android:layout_height="250dp"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
                 android:background="@color/btn_color_lg"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"

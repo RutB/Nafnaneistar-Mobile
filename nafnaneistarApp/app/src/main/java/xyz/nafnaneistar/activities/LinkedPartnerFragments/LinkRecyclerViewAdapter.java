@@ -41,7 +41,6 @@ public class LinkRecyclerViewAdapter extends RecyclerView.Adapter<LinkRecyclerVi
     @Override
     public ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
         View itemView = LayoutInflater.from(parent.getContext()).inflate(R.layout.linkcombolist, parent,false);
-        Log.d("test", "ViewHolder: " + "breaking point!");
         return new ViewHolder(itemView, onItemListener);
     }
 
@@ -66,9 +65,7 @@ public class LinkRecyclerViewAdapter extends RecyclerView.Adapter<LinkRecyclerVi
             delete = view.findViewById(R.id.linkComboListDel);
             this.onItemListener = onItemListener;
             delete.setOnClickListener(this);
-            Log.d("test", "ViewHolder: " + "breaking point!");
         }
-
 
         @Override
         public void onClick(View view) {
