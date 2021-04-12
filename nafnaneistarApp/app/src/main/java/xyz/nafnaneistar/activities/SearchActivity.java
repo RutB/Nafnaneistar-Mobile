@@ -11,6 +11,7 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
+import android.view.inputmethod.InputMethodManager;
 import android.widget.Toast;
 
 import com.android.volley.Request;
@@ -109,9 +110,11 @@ public class SearchActivity extends AppCompatActivity implements SearchNameAdapt
     public void SearchName(View view) throws URISyntaxException {
         String nameQuery = binding.etNameSearch.getText().toString().trim();
         if (nameQuery.length() <= 1){
-            // Gera toast, setja inn stærri streng en 2 sem leitarquery
-            // Toast.makeText(context, response.getString("message") ,Toast.LENGTH_SHORT).show();
+            Toast.makeText(getApplicationContext(), "Nafn þarf að vera lengra en 1 stafur" ,Toast.LENGTH_SHORT).show();
+            return;
         }
+        InputMethodManager inputMethodManager = (InputMethodManager)getSystemService(INPUT_METHOD_SERVICE);
+        inputMethodManager.hideSoftInputFromWindow(view.getApplicationWindowToken(),0);
 
         ApiController.getInstance().getNamesByName((Activity) binding.btnSearchName.getContext(), nameQuery, new VolleyCallBack<ArrayList<NameCard>>() {
             @Override
