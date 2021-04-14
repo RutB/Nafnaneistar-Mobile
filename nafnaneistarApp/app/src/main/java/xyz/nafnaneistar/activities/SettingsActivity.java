@@ -39,17 +39,30 @@ public class SettingsActivity extends AppCompatActivity {
         binding = DataBindingUtil.setContentView(this, R.layout.activity_settings);
         binding.btnChangePw.setOnClickListener(this::PasswordSettings);
         binding.btnChangeName.setOnClickListener(this::NameSettings);
+        /**
+         * Button/toggle activities eingöngu
+         * ekki sér síður fyrir þetta
+         * **/
         binding.btnRestartNameList.setOnClickListener(this::RestartNameList);
         binding.switchGetNotifications.setOnClickListener(this::PushNotifications);
 
 
     }
+
+    /**
+     * onClick event sem leiðir á aðra síðu þar sem að passwordinu verður breytt
+     * @param view
+     */
     public void PasswordSettings (View view) {
         Intent i = new Intent(SettingsActivity.this, PasswordActivity.class);
         finish();
         startActivity(i);
     }
 
+    /**
+     * onClick event sem leiðir á síðu þar sem breytingar verða gerðar
+     * @param view
+     */
     public void NameSettings (View view) {
         Intent i = new Intent(SettingsActivity.this, NameChangeActivity.class);
         finish();
@@ -57,13 +70,21 @@ public class SettingsActivity extends AppCompatActivity {
 
     }
 
+    /**
+     * onClick event
+     * @param view
+     * staðfestingar skilaboð eiga að poppa upp
+     */
     public void RestartNameList (View view) {
-        Intent i = new Intent(SettingsActivity.this, RestartListActivity.class);
-        finish();
-        startActivity(i);
+
 
     }
 
+    /**
+     * onClick event
+     * @param view
+     * ef játað, þá koma tilkynningar, engin skilaboð
+     */
     public void PushNotifications (View view) {
 
     }
