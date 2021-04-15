@@ -11,6 +11,7 @@ import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
 import android.view.inputmethod.InputMethodManager;
+import android.widget.CheckBox;
 import android.widget.EditText;
 import android.widget.Toast;
 
@@ -45,8 +46,11 @@ public class SearchActivity extends AppCompatActivity implements SearchNameAdapt
     private String tvNameResult;
     private ArrayList<NameCard> nameCardList = new ArrayList<>();
     private ArrayList<NameCard> approvedList = new ArrayList<NameCard>();
+    private ArrayList<NameCard> nameCardListAll = new ArrayList<>();
     private RecyclerView recyclerView;
     private SearchNameAdapter adapter;
+    private CheckBox isMale;
+    private CheckBox isFemale;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -64,11 +68,12 @@ public class SearchActivity extends AppCompatActivity implements SearchNameAdapt
         prefs = new Prefs(SearchActivity.this);
         binding = DataBindingUtil.setContentView(this, layout.activity_search);
         recyclerView = (RecyclerView) binding.rvSearchResults;
-        EditText etNameSearch = findViewById(id.etNameSearch);
+        EditText etNameSearch = binding.etNameSearch;
         etNameSearch.requestFocus();
         InputMethodManager imm = (InputMethodManager)getSystemService(etNameSearch.getContext().INPUT_METHOD_SERVICE);
         imm.toggleSoftInput(InputMethodManager.SHOW_FORCED, InputMethodManager.HIDE_IMPLICIT_ONLY);
-
+        isMale = binding.cbGenderMaleSearch;
+        isFemale = binding.cbGenderFemaleSearch;
         binding.btnSearchName.setOnClickListener(view -> {
             try {
                 SearchName(view);
@@ -103,28 +108,6 @@ public class SearchActivity extends AppCompatActivity implements SearchNameAdapt
         getIdsOfApproved(nameQuery);
     }
 
-    public void getNamesByName(String query) {
-        ApiController.getInstance().getNameCardsByName((Activity) binding.btnSearchName.getContext(), query, new VolleyCallBack<ArrayList<NameCard>>() {
-            @Override
-            public ArrayList<NameCardItem> onSuccess() {
-                return null;
-            }
-
-            @Override
-            public void onResponse(ArrayList<NameCard> response) {
-                setAdapter();
-                nameCardList.addAll(response);
-                adapter.notifyDataSetChanged();
-            }
-
-            @Override
-            public void onError(String error) {
-
-            }
-        });
-
-    }
-
     private void getIdsOfApproved(String query) {
         ApiController.getInstance().getApprovedNameCards((Activity) binding.btnSearchName.getContext(), new VolleyCallBack<ArrayList<NameCard>>() {
             @Override
@@ -147,5 +130,53 @@ public class SearchActivity extends AppCompatActivity implements SearchNameAdapt
         });
     }
 
+    public void getNamesByName(String query) {
+        ApiController.getInstance().getNameCardsByName((Activity) binding.btnSearchName.getContext(), query, new VolleyCallBack<ArrayList<NameCard>>() {
+            @Override
+            public ArrayList<NameCardItem> onSuccess() {
+                return null;
+            }
 
+            @Override
+            public void onResponse(ArrayList<NameCard> response) {
+                setAdapter();
+                nameCardListAll.clear();
+                nameCardListAll.addAll(response);
+                filterListByGender(response);
+
+                if ((isMale.isChecked() && isFemale.isChecked()) || (!isMale.isChecked() && !isFemale.isChecked())) {
+                    nameCardList.addAll(response);
+                } else {
+                    filterListByGender(response);
+
+                }
+
+                adapter.notifyDataSetChanged();
+            }
+
+            @Override
+            public void onError(String error) { }
+        });
+    }
+
+    private void filterListByGender(ArrayList<NameCard> list) {
+        Boolean male = isMale.isChecked();
+        Boolean female = isFemale.isChecked();
+        int gender;
+        if ((male && female) || (!male && !female)) {
+            nameCardList.addAll(nameCardListAll);
+            return;
+        } else if (!male && female) {
+            gender = 1;
+        } else {
+            gender = 0;
+        }
+        list.forEach((item) -> {
+            if(item.getGender() == gender) {
+                nameCardList.add(item);
+            }
+        });
+
+
+    }
 }
