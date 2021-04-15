@@ -54,6 +54,11 @@ public class NavbarFragment extends Fragment {
         prefs = new Prefs(context);
     }
 
+    /**
+     *
+     * @param view
+     * @return true if the activity
+     */
     public Boolean onNavigationItemSelected(MenuItem view){
         Log.d("partners", "SwitchIntent: " + "click?");
         switch (view.getItemId()){
@@ -105,6 +110,10 @@ public class NavbarFragment extends Fragment {
         return false;
     }
 
+    /**
+     * Removes fragment in relation to tag
+     * @param tag
+     */
     private void removeFragment(String tag) {
         Fragment f = getParentFragmentManager().findFragmentByTag(tag);
         if (f != null) {
@@ -128,6 +137,9 @@ public class NavbarFragment extends Fragment {
         return view;
     }
 
+    /**
+     * Logs out current user and initializes new intent
+     */
     public void logout() {
         prefs.Logout();
         context.finish();
@@ -137,7 +149,6 @@ public class NavbarFragment extends Fragment {
 
     /**
      * When the menu button is pressed then we toggle the navmenu to the left
-     *
      */
     public void ToggleNavDrawer() {
         if (binding.navViewDrawer.getVisibility() == View.VISIBLE) {

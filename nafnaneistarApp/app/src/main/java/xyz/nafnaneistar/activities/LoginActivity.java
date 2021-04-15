@@ -21,10 +21,11 @@ import xyz.nafnaneistar.loginactivity.R;
 import xyz.nafnaneistar.loginactivity.databinding.ActivityLoginBinding;
 import xyz.nafnaneistar.model.User;
 
+
 public class LoginActivity extends AppCompatActivity {
     private ActivityLoginBinding binding;
     private User currentUser = new User();
-    private final int REQUEST_CODE = 2;
+    //private final int REQUEST_CODE = 2;
     private Prefs prefs;
 
     @Override
@@ -56,7 +57,7 @@ public class LoginActivity extends AppCompatActivity {
     }
 
     /**
-     * if the user taps signup then we close the login activity and switch to signupactivity
+     * If the user taps signup then we close the login activity and switch to signupactivity
      *
      * @param view
      */
@@ -67,7 +68,7 @@ public class LoginActivity extends AppCompatActivity {
     }
 
     /**
-     * checks if the user is already loggedn in
+     * Checks if the user is already logged in
      *
      * @param user
      */
@@ -111,7 +112,7 @@ public class LoginActivity extends AppCompatActivity {
     }
 
     /**
-     * checks if the user is submitting the correct credentials and validates the user
+     * Checks if the user is submitting the correct credentials and validates the user
      *
      * @param view
      */

@@ -71,7 +71,7 @@ public class LinkPartnerActivity extends AppCompatActivity implements LinkRecycl
     }
 
     /**
-     * Sets a new adapter for LinkReclyclerView and binds with rvCombolist
+     * Sets a new adapter for Link Reclycler View and binds with rvCombolist
      */
     private void setAdapater() {
         adapter = new LinkRecyclerViewAdapter(userList, this);
