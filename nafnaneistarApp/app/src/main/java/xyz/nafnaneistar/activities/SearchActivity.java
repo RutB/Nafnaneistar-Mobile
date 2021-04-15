@@ -53,6 +53,15 @@ public class SearchActivity extends AppCompatActivity implements SearchNameAdapt
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         // setContentView(R.layout.activity_search);
+        FragmentManager fragmentManager = getSupportFragmentManager();
+        Fragment navbar = fragmentManager.findFragmentById(R.id.navbar);
+
+        if (navbar == null) {
+            navbar = new NavbarFragment();
+            fragmentManager.beginTransaction()
+                    .add(id.SearchNameContainer, navbar)
+                    .commit();
+        }
         prefs = new Prefs(SearchActivity.this);
         binding = DataBindingUtil.setContentView(this, layout.activity_search);
         recyclerView = (RecyclerView) binding.rvSearchResults;
@@ -75,15 +84,7 @@ public class SearchActivity extends AppCompatActivity implements SearchNameAdapt
         recyclerView.setAdapter(adapter);
 
         //Initialize the navbar fragment
-        FragmentManager fragmentManager = getSupportFragmentManager();
-        Fragment navbar = fragmentManager.findFragmentById(R.id.navbar);
 
-        if (navbar == null) {
-            navbar = new NavbarFragment();
-            fragmentManager.beginTransaction()
-                    .add(id.SearchNameContainer, navbar)
-                    .commit();
-        }
     }
 
     @Override

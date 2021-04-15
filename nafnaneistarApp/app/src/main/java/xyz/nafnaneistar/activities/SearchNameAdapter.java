@@ -6,7 +6,6 @@ import android.text.Spannable;
 import android.text.SpannableStringBuilder;
 import android.text.style.DynamicDrawableSpan;
 import android.text.style.ImageSpan;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -20,8 +19,8 @@ import androidx.recyclerview.widget.RecyclerView;
 import org.json.JSONObject;
 
 import java.net.URISyntaxException;
-import java.text.BreakIterator;
 import java.util.ArrayList;
+import java.util.concurrent.atomic.AtomicBoolean;
 
 import xyz.nafnaneistar.activities.items.NameCardItem;
 import xyz.nafnaneistar.controller.ApiController;
@@ -76,6 +75,10 @@ public class SearchNameAdapter extends RecyclerView.Adapter<SearchNameAdapter.Vi
     public void onBindViewHolder(@NonNull SearchNameAdapter.ViewHolder holder, int position) {
         String name = nameCardList.get(position).getName();
         int id = nameCardList.get(position).getId();
+        int gender = nameCardList.get(position).getGender();
+        AtomicBoolean male = new AtomicBoolean(false);
+        AtomicBoolean female = new AtomicBoolean(false);
+
         holder.tvNameResult.setText(getGenderSign(name, nameCardList.get(position).getGender(),holder.tvNameResult.getContext()),TextView.BufferType.SPANNABLE);
         if (Utils.nameCardListContains(approvedList, nameCardList.get(position))) {
             holder.btnAddToLiked.setVisibility(View.GONE);
@@ -88,17 +91,24 @@ public class SearchNameAdapter extends RecyclerView.Adapter<SearchNameAdapter.Vi
             toggleView(view);
             toggleView(holder.btnAddToLiked);
             removeFromApprovedList(id, holder.btnRemoveFromLiked.getContext());
-            Log.d("ÞETTA ER ID A NAMECARD?", ""+id);
+            approvedList.remove(nameCardList.get(position));
         });
         holder.btnAddToLiked.setOnClickListener( view -> {
             toggleView(view);
+            approvedList.add(nameCardList.get(position));
             toggleView(holder.btnRemoveFromLiked);
+            if (gender == 0) {
+                 male.set(true);
+                 female.set(false);
+            } else {
+                 male.set(false);
+                 female.set(true);
+            }
             try {
-                addOrRemoveFromApprovedList("approve", id, (Activity) holder.btnRemoveFromLiked.getContext());
+                addOrRemoveFromApprovedList("approve", id, (boolean) male.get(), (boolean) female.get(), (Activity) holder.btnRemoveFromLiked.getContext());
             } catch (URISyntaxException e) {
                 e.printStackTrace();
             }
-            Log.d("ÞETTA ER ID A NAMECARD?", ""+id);
         });
     }
 
@@ -130,7 +140,7 @@ public class SearchNameAdapter extends RecyclerView.Adapter<SearchNameAdapter.Vi
         });
     }
 
-    public void addOrRemoveFromApprovedList(String action, int nameCardId, Activity context) throws URISyntaxException {
+    public void addOrRemoveFromApprovedList(String action, int nameCardId, boolean male, boolean female, Activity context) throws URISyntaxException {
 
         ApiController.getInstance().chooseName(action, nameCardId, false, false, context, new VolleyCallBack<NameCard>() {
             @Override

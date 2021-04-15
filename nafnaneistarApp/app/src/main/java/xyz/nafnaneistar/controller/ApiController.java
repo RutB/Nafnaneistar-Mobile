@@ -112,6 +112,7 @@ public class ApiController extends Application {
         }, error -> volleyCallBack.onError(getString(R.string.loginError)));
         ApiController.getInstance().addToRequestQueue(jsonObjReq);
     }
+
     public void signup(VolleyCallBack<JSONObject> volleyCallBack, String name, String email, String pass) throws URISyntaxException {
         String listeningPath = "signup";
         URIBuilder b = new URIBuilder(ApiController.getDomainURL()+listeningPath);
@@ -123,8 +124,6 @@ public class ApiController extends Application {
                 null, volleyCallBack::onResponse, error -> volleyCallBack.onError(getString(R.string.signupFailed)));
         ApiController.getInstance().addToRequestQueue(jsonObjReq);
     }
-
-
 
     public void getNameCardsAndRating(Long partnerId,String user_email,String pass, VolleyCallBack<ArrayList<NameCardItem>> volleyCallBack) {
         ArrayList<NameCardItem> comboList = new ArrayList<>();
