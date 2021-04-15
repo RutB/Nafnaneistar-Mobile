@@ -12,6 +12,7 @@ import android.util.Log;
 import android.view.View;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.CheckBox;
+import android.widget.CompoundButton;
 import android.widget.EditText;
 import android.widget.Toast;
 
@@ -74,6 +75,8 @@ public class SearchActivity extends AppCompatActivity implements SearchNameAdapt
         imm.toggleSoftInput(InputMethodManager.SHOW_FORCED, InputMethodManager.HIDE_IMPLICIT_ONLY);
         isMale = binding.cbGenderMaleSearch;
         isFemale = binding.cbGenderFemaleSearch;
+        isMale.setOnCheckedChangeListener(this::OnCheckedChangeListener);
+        isFemale.setOnCheckedChangeListener(this::OnCheckedChangeListener);
         binding.btnSearchName.setOnClickListener(view -> {
             try {
                 SearchName(view);
@@ -82,6 +85,12 @@ public class SearchActivity extends AppCompatActivity implements SearchNameAdapt
             }
         });
 
+    }
+
+    private void OnCheckedChangeListener(CompoundButton compoundButton, boolean b) {
+        if (nameCardListAll != null) {
+            filterListByGender(nameCardListAll);
+        }
     }
 
     private void setAdapter() {
@@ -143,14 +152,6 @@ public class SearchActivity extends AppCompatActivity implements SearchNameAdapt
                 nameCardListAll.clear();
                 nameCardListAll.addAll(response);
                 filterListByGender(response);
-
-                if ((isMale.isChecked() && isFemale.isChecked()) || (!isMale.isChecked() && !isFemale.isChecked())) {
-                    nameCardList.addAll(response);
-                } else {
-                    filterListByGender(response);
-
-                }
-
                 adapter.notifyDataSetChanged();
             }
 
@@ -160,11 +161,15 @@ public class SearchActivity extends AppCompatActivity implements SearchNameAdapt
     }
 
     private void filterListByGender(ArrayList<NameCard> list) {
+        nameCardList.clear();
         Boolean male = isMale.isChecked();
         Boolean female = isFemale.isChecked();
+        Log.d("filterListByGender", "male: "+ male + " female: " + female);
         int gender;
         if ((male && female) || (!male && !female)) {
+            nameCardList.clear();
             nameCardList.addAll(nameCardListAll);
+            adapter.notifyDataSetChanged();
             return;
         } else if (!male && female) {
             gender = 1;
@@ -176,7 +181,6 @@ public class SearchActivity extends AppCompatActivity implements SearchNameAdapt
                 nameCardList.add(item);
             }
         });
-
-
+        adapter.notifyDataSetChanged();
     }
 }
