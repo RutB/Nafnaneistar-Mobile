@@ -32,15 +32,15 @@ import xyz.nafnaneistar.model.NameCard;
 
 public class SwipeActivity extends AppCompatActivity {
     private ActivitySwipeBinding binding;
-    private Prefs prefs;
-    private NameCard currentCard;
+    private Prefs mPrefs;
+    private NameCard mCurrentCard;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         binding = DataBindingUtil.setContentView(this, R.layout.activity_swipe);
         binding.btnDislike.setForeground(getDrawable(R.drawable.ic_arrow_dislike));
-        prefs = new Prefs(SwipeActivity.this);
+        mPrefs = new Prefs(SwipeActivity.this);
         binding.btnApprove.setOnClickListener(this::onClick);
         binding.btnDislike.setOnClickListener(this::onClick);
         binding.cbGenderMale.setOnClickListener(view -> {
@@ -95,15 +95,15 @@ public class SwipeActivity extends AppCompatActivity {
                     .add(R.id.SwipeContainer, navbar)
                     .commit();
         }
-        Log.d("restore", "onCreate: " + currentCard);
+        Log.d("restore", "onCreate: " + mCurrentCard);
         if(savedInstanceState != null){
-            currentCard = new NameCard(
+            mCurrentCard = new NameCard(
                     savedInstanceState.getInt("currentId"),
                     savedInstanceState.getString("currentName"),
                     savedInstanceState.getString("currentDesc"),
                     savedInstanceState.getInt("currentGender")
             );
-            showNameCard(currentCard);
+            showNameCard(mCurrentCard);
         }else{
             try {
                 getNewName();
@@ -121,14 +121,14 @@ public class SwipeActivity extends AppCompatActivity {
         super.onRestoreInstanceState(savedInstanceState);
         Log.d("restore", "onRestoreInstanceState: " + savedInstanceState.getInt("selectedMenu"));
 
-        Log.d("restore", "onRestoreInstanceState: " + currentCard);
+        Log.d("restore", "onRestoreInstanceState: " + mCurrentCard);
     }
     @Override
     public void onSaveInstanceState(@NonNull Bundle outState) {
-        outState.putInt("currentId", currentCard.getId());
-        outState.putInt("currentGender", currentCard.getGender());
-        outState.putString("currentDesc",currentCard.getDescription());
-        outState.putString("currentName",currentCard.getName());
+        outState.putInt("currentId", mCurrentCard.getId());
+        outState.putInt("currentGender", mCurrentCard.getGender());
+        outState.putString("currentDesc",mCurrentCard.getDescription());
+        outState.putString("currentName",mCurrentCard.getName());
 
         super.onSaveInstanceState(outState);
 
@@ -145,12 +145,12 @@ public class SwipeActivity extends AppCompatActivity {
     }
 
     public void chooseName(View view) throws URISyntaxException {
-        if (currentCard == null) return;
-        int currentID = currentCard.getId();
+        if (mCurrentCard == null) return;
+        int currentID = mCurrentCard.getId();
         initLoading();
         String action = "disapprove";
         if (view.getId() == R.id.btnApprove) action = "approve";
-        currentCard = null; //Núllað út þannig að það sé ekki hægt að spamma bara hægri og búa til requests
+        mCurrentCard = null; //Núllað út þannig að það sé ekki hægt að spamma bara hægri og búa til requests
         ApiController.getInstance().chooseName(action, currentID, binding.cbGenderMale.isChecked(),
                 binding.cbGenderFemale.isChecked(), this, new VolleyCallBack<NameCard>() {
                     @Override
@@ -160,8 +160,8 @@ public class SwipeActivity extends AppCompatActivity {
 
                     @Override
                     public void onResponse(NameCard nc) {
-                        currentCard = nc;
-                        showNameCard(currentCard);
+                        mCurrentCard = nc;
+                        showNameCard(mCurrentCard);
 
                     }
 
@@ -185,7 +185,7 @@ public class SwipeActivity extends AppCompatActivity {
                     public void onResponse(NameCard nc) {
                         binding.llLoadingContainer.setVisibility(View.INVISIBLE);
                         binding.tvTexti.setText(nc.getDescription());
-                        currentCard = nc;
+                        mCurrentCard = nc;
                         SpannableStringBuilder ssb = new SpannableStringBuilder(nc.getName() + "  ");
                         int icon = (nc.getGender() == 1 ) ? (R.drawable.ic_gender_female) :  (R.drawable.ic_gender_male);
                         ssb.setSpan(new ImageSpan(getApplicationContext(),icon, DynamicDrawableSpan.ALIGN_CENTER), nc.getName().length() + 1, nc.getName().length() + 2, Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);

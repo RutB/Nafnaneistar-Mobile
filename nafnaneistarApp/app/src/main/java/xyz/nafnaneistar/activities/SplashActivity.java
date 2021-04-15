@@ -17,20 +17,20 @@ import java.util.Set;
 
 public class SplashActivity extends AppCompatActivity {
     private ActivitySplashBinding binding;
-    private Prefs prefs;
+    private Prefs mPrefs;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        prefs = new Prefs(SplashActivity.this);
-        if(prefs.getUser().length == 2){
-            prefs.CheckLogin(prefs.getUser());
+        mPrefs = new Prefs(SplashActivity.this);
+        if(mPrefs.getUser().length == 2){
+            mPrefs.CheckLogin(mPrefs.getUser());
         }
         setContentView(R.layout.activity_splash);
         binding = DataBindingUtil.setContentView(this, R.layout.activity_splash);
         Uri video = Uri.parse("android.resource://" + getPackageName() + "/" + R.raw.splash);
         binding.videoView.setVideoURI(video);
         binding.videoView.start();
-        binding.videoView.setOnCompletionListener(mediaPlayer -> prefs.CheckLogin(prefs.getUser()));
+        binding.videoView.setOnCompletionListener(mediaPlayer -> mPrefs.CheckLogin(mPrefs.getUser()));
         binding.videoView.setOnPreparedListener(mp -> {
             mp.setVolume(0,0);
 

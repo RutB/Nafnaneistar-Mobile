@@ -35,13 +35,12 @@ import xyz.nafnaneistar.loginactivity.databinding.FragmentNavbarBinding;
 public class NavbarFragment extends Fragment {
     FragmentNavbarBinding binding;
     Activity context;
-    private Prefs prefs;
+    private Prefs mPrefs;
 
     public NavbarFragment() {
         // Required empty public constructor
 
     }
-
 
     public static NavbarFragment newInstance() {
         NavbarFragment fragment = new NavbarFragment();
@@ -52,9 +51,7 @@ public class NavbarFragment extends Fragment {
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         this.context = getActivity();
-        prefs = new Prefs(context);
-
-
+        mPrefs = new Prefs(context);
     }
 
     public Boolean onNavigationItemSelected(MenuItem view){
@@ -107,8 +104,8 @@ public class NavbarFragment extends Fragment {
         }
         return false;
     }
-    private void removeFragment(String tag) {
 
+    private void removeFragment(String tag) {
         Fragment f = getParentFragmentManager().findFragmentByTag(tag);
         if (f != null) {
             getParentFragmentManager().beginTransaction()
@@ -131,23 +128,18 @@ public class NavbarFragment extends Fragment {
         return view;
     }
 
-
-
     public void logout() {
-        prefs.Logout();
+        mPrefs.Logout();
         context.finish();
         Intent i = new Intent(context, LoginActivity.class);
         startActivity(i);
     }
 
-
     /**
      * When the menu button is pressed then we toggle the navmenu to the left
      *
-     * @param view
      */
     public void ToggleNavDrawer() {
-
         if (binding.navViewDrawer.getVisibility() == View.VISIBLE) {
             Animation slideOut = AnimationUtils.loadAnimation(getContext(), R.anim.slide_out);
             binding.navViewDrawer.startAnimation(slideOut);

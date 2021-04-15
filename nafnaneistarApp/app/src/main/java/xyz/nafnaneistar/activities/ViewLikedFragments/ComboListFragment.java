@@ -43,9 +43,9 @@ public class ComboListFragment extends Fragment implements  AdapterView.OnItemSe
     FragmentComboListBinding binding;
     FragmentManager fragmentManager;
     Activity context;
-    Prefs prefs;
-    ArrayList<Long> partnerIds = new ArrayList<>();
-    Long currentSelectedPartnerId = Long.valueOf(-1);
+    Prefs mPrefs;
+    ArrayList<Long> mPartnerIds = new ArrayList<>();
+    Long mCurrentSelectedPartnerId = Long.valueOf(-1);
     public ComboListFragment() {
         // Required empty public constructor
     }
@@ -59,7 +59,7 @@ public class ComboListFragment extends Fragment implements  AdapterView.OnItemSe
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         this.context = getActivity();
-        prefs = new Prefs(context);
+        mPrefs = new Prefs(context);
         fragmentManager = getParentFragmentManager();
     }
 
@@ -83,7 +83,7 @@ public class ComboListFragment extends Fragment implements  AdapterView.OnItemSe
     public void getPartnerList(ArrayList<String> list){
         list.clear();
         list.add("Velja...");
-        String[] user = prefs.getUser();
+        String[] user = mPrefs.getUser();
         String user_email = user[0];
         String pass = user[1];
         String listeningPath = "linkpartner";
@@ -105,7 +105,7 @@ public class ComboListFragment extends Fragment implements  AdapterView.OnItemSe
                     String name = partner.getString("name");
                     Long id = partner.getLong("id");
                     list.add(name);
-                    partnerIds.add(id);
+                    mPartnerIds.add(id);
                 }
                 populateSpinner(list);
 
@@ -122,10 +122,11 @@ public class ComboListFragment extends Fragment implements  AdapterView.OnItemSe
         ApiController.getInstance().addToRequestQueue(jsonObjReq);
     }
 
+    //afhverju er fragment að kvarta?
     public void openListView(View view) {
         Fragment f = fragmentManager.findFragmentById(R.layout.fragment_combo_list_manager);
         if(f != null) return;;
-        if(currentSelectedPartnerId < 0){
+        if(mCurrentSelectedPartnerId < 0){
             Toast.makeText(getContext(), R.string.please_choose_list, Toast.LENGTH_SHORT)
                     .show();
             return;
@@ -134,7 +135,7 @@ public class ComboListFragment extends Fragment implements  AdapterView.OnItemSe
         if (f == null) {
             f = new ComboListManagerFragment();
             Bundle bundle = new Bundle();
-            bundle.putLong("partnerId",currentSelectedPartnerId);
+            bundle.putLong("partnerId",mCurrentSelectedPartnerId);
             f.setArguments(bundle);
             fragmentManager.beginTransaction()
                     .add(R.id.viewLikedContainer, f, "listViewCombo")
@@ -160,19 +161,13 @@ public class ComboListFragment extends Fragment implements  AdapterView.OnItemSe
 
     @Override
     public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
-        if(partnerIds.size() > 0){
+        if(mPartnerIds.size() > 0){
             try {
-                currentSelectedPartnerId = partnerIds.get(i-1);
-
+                mCurrentSelectedPartnerId = mPartnerIds.get(i-1);
             }
             catch (Exception e){
-
             }
-
-
         }
-
-
 
     }
     @Override

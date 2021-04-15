@@ -38,7 +38,7 @@ import xyz.nafnaneistar.model.User;
  */
 public class LinkPartnerActivity extends AppCompatActivity implements LinkRecyclerViewAdapter.OnItemListener {
     private ActivityLinkPartnerBinding binding;
-    private User currentUser = new User();
+    //private User currentUser = new User();
     private Prefs mPrefs;
     static LinkRecyclerViewAdapter adapter;
     private ArrayList<UserItem> mPartnerList = new ArrayList<>();

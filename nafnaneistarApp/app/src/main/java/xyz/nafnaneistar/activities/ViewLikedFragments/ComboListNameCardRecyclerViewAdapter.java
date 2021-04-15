@@ -29,11 +29,11 @@ import xyz.nafnaneistar.loginactivity.R;
 import java.util.ArrayList;
 
 public class ComboListNameCardRecyclerViewAdapter extends RecyclerView.Adapter<ComboListNameCardRecyclerViewAdapter.ViewHolder> {
-    private ArrayList<NameCardItem> comboList;
+    private ArrayList<NameCardItem> mComboList;
     private OnItemListener onItemListener;
 
     public ComboListNameCardRecyclerViewAdapter(ArrayList<NameCardItem> comboList, OnItemListener onItemListener){
-        this.comboList = comboList;
+        this.mComboList = comboList;
         this.onItemListener = onItemListener;
     }
 
@@ -69,9 +69,9 @@ public class ComboListNameCardRecyclerViewAdapter extends RecyclerView.Adapter<C
 
     @Override
     public void onBindViewHolder(@NonNull ComboListNameCardRecyclerViewAdapter.ViewHolder holder, int position) {
-        String name = comboList.get(position).getName();
-        int rating = comboList.get(position).getRating();
-        holder.name.setText(getGenderSign(name,comboList.get(position).getGender(),holder.rating.getContext()),TextView.BufferType.SPANNABLE);
+        String name = mComboList.get(position).getName();
+        int rating = mComboList.get(position).getRating();
+        holder.name.setText(getGenderSign(name, mComboList.get(position).getGender(), holder.rating.getContext()), TextView.BufferType.SPANNABLE);
         for(int i = 0; i < 5; i++){
             String ratingString = "";
             if(i < rating) ratingString += "❤";
@@ -80,7 +80,7 @@ public class ComboListNameCardRecyclerViewAdapter extends RecyclerView.Adapter<C
             tv.setText(ratingString);
         }
         TextView tv = (TextView) holder.rating.getChildAt(5);
-        tv.setText(String.valueOf(comboList.get(position).getId()));
+        tv.setText(String.valueOf(mComboList.get(position).getId()));
     }
 
 
@@ -106,6 +106,6 @@ public class ComboListNameCardRecyclerViewAdapter extends RecyclerView.Adapter<C
 
     @Override
     public int getItemCount() {
-        return comboList.size();
+        return mComboList.size();
     }
 }

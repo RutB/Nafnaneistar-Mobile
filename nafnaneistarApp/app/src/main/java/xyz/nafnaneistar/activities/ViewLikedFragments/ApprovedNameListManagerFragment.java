@@ -44,14 +44,14 @@ import xyz.nafnaneistar.loginactivity.databinding.FragmentComboListManagerBindin
  */
 public class ApprovedNameListManagerFragment extends Fragment implements  ApprovedListCardRecyclerViewAdapter.OnItemListener {
     private FragmentApprovedListManagerBinding binding;
-    private Prefs prefs;
+    private Prefs mPrefs;
     static ApprovedListCardRecyclerViewAdapter adapter;
-    private ArrayList<NameCardItem> approvedList;
-    private ArrayList<NameCardItem> approvedListAll = new ArrayList<>();
+    private ArrayList<NameCardItem> mApprovedList;
+    private ArrayList<NameCardItem> mApprovedListAll = new ArrayList<>();
     private RecyclerView recyclerView;
     
-    private int sortingSwitchState = 0;
-    private int genderSwitchState = 0;
+    private int mSortingSwitchState = 0;
+    private int mGenderSwitchState = 0;
     
 
     public ApprovedNameListManagerFragment() {
@@ -66,21 +66,21 @@ public class ApprovedNameListManagerFragment extends Fragment implements  Approv
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        prefs = new Prefs(getActivity());
-        approvedList = new ArrayList<>();
+        mPrefs = new Prefs(getActivity());
+        mApprovedList = new ArrayList<>();
     }
 
     @Override
     public void onSaveInstanceState(@NonNull Bundle outState) {
-        outState.putInt("genderSwitchState",genderSwitchState);
-        outState.putInt("sortingSwitchState", sortingSwitchState);
+        outState.putInt("genderSwitchState", mGenderSwitchState);
+        outState.putInt("sortingSwitchState", mSortingSwitchState);
         super.onSaveInstanceState(outState);
     }
 
 
 
     private void setAdapater() {
-        adapter = new ApprovedListCardRecyclerViewAdapter(approvedList, this);
+        adapter = new ApprovedListCardRecyclerViewAdapter(mApprovedList, this);
         RecyclerView.LayoutManager layoutManager = new LinearLayoutManager(getActivity().getApplicationContext());
         binding.rvComboList.setItemAnimator(new DefaultItemAnimator());
         binding.rvComboList.setLayoutManager(layoutManager);
@@ -90,21 +90,21 @@ public class ApprovedNameListManagerFragment extends Fragment implements  Approv
     }
     public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
         if(isChecked) {
-            sortByRating(approvedList);
-            sortingSwitchState = 1;
+            sortByRating(mApprovedList);
+            mSortingSwitchState = 1;
         } else {
-            sortByName(approvedList);
-            sortingSwitchState = 0;
+            sortByName(mApprovedList);
+            mSortingSwitchState = 0;
         }
     }
 
     public void onGenderCheckedChange(CompoundButton buttonView, boolean isChecked) {
         if(isChecked) {
-            filterByGender(approvedList,0);
-            genderSwitchState = 1;
+            filterByGender(mApprovedList,0);
+            mGenderSwitchState = 1;
         } else {
-            filterByGender(approvedList,1);
-            genderSwitchState = 0;
+            filterByGender(mApprovedList,1);
+            mGenderSwitchState = 0;
         }
         adapter.notifyDataSetChanged();
     }
@@ -125,8 +125,8 @@ public class ApprovedNameListManagerFragment extends Fragment implements  Approv
         }
         View view = binding.getRoot();
         if(savedInstanceState != null){
-            genderSwitchState = savedInstanceState.getInt("genderSwitchState");
-            sortingSwitchState = savedInstanceState.getInt("sortingSwitchState");
+            mGenderSwitchState = savedInstanceState.getInt("genderSwitchState");
+            mSortingSwitchState = savedInstanceState.getInt("sortingSwitchState");
         }
         ApiController.getInstance().getApprovedNames((Activity) getContext(), new VolleyCallBack<ArrayList<NameCardItem>>() {
             @Override
@@ -137,9 +137,9 @@ public class ApprovedNameListManagerFragment extends Fragment implements  Approv
             @Override
             public void onResponse(ArrayList<NameCardItem> list) {
                 setAdapater();
-                approvedList.addAll(list);
-                approvedListAll.addAll(list);
-                if(approvedList.size()==0){
+                mApprovedList.addAll(list);
+                mApprovedListAll.addAll(list);
+                if(mApprovedList.size()==0){
                     Snackbar.make(binding.rvComboList, R.string.NoNameYet, Snackbar.LENGTH_SHORT)
                             .setAction(R.string.SwipeMoreNames, view1 -> {
                                 Intent i = new Intent(getActivity(), SwipeActivity.class);
@@ -148,10 +148,10 @@ public class ApprovedNameListManagerFragment extends Fragment implements  Approv
                             }).show();
                 }
                 else {
-                    if(genderSwitchState == 0) filterByGender(approvedList,1);
-                    else filterByGender(approvedList,0);
-                    if(sortingSwitchState == 0)sortByName(approvedList);
-                    else sortByRating(approvedList);
+                    if(mGenderSwitchState == 0) filterByGender(mApprovedList,1);
+                    else filterByGender(mApprovedList,0);
+                    if(mSortingSwitchState == 0)sortByName(mApprovedList);
+                    else sortByRating(mApprovedList);
 
 
                 }
@@ -182,7 +182,7 @@ public class ApprovedNameListManagerFragment extends Fragment implements  Approv
         ArrayList<NameCardItem> filteredList = new ArrayList<>();
         if(gender != 0 || gender != 1){
             comboList.clear();
-            comboList.addAll(approvedListAll);
+            comboList.addAll(mApprovedListAll);
         }
 
         comboList.forEach((key)-> {
@@ -193,7 +193,7 @@ public class ApprovedNameListManagerFragment extends Fragment implements  Approv
 
         comboList.clear();
         comboList.addAll(filteredList);
-        if(sortingSwitchState == 0) sortByName(comboList);
+        if(mSortingSwitchState == 0) sortByName(comboList);
         else sortByRating(comboList);
         adapter.notifyDataSetChanged();
 
@@ -212,11 +212,11 @@ public class ApprovedNameListManagerFragment extends Fragment implements  Approv
 
     @Override
     public void onItemClick(int position) {
-        removeFromApprovedList(approvedList.get(position).getId(),position);
+        removeFromApprovedList(mApprovedList.get(position).getId(),position);
         adapter.notifyDataSetChanged();
 
-        if(sortingSwitchState == 0) sortByName(approvedList);
-        else sortByRating(approvedList);
+        if(mSortingSwitchState == 0) sortByName(mApprovedList);
+        else sortByRating(mApprovedList);
 
     }
 
@@ -233,9 +233,9 @@ public class ApprovedNameListManagerFragment extends Fragment implements  Approv
             }
             @Override
             public void onResponse(JSONObject response) {
-                NameCardItem nc = approvedList.get(position);
-                approvedListAll.remove(nc);
-                approvedList.remove(position);
+                NameCardItem nc = mApprovedList.get(position);
+                mApprovedListAll.remove(nc);
+                mApprovedList.remove(position);
                 adapter.notifyDataSetChanged();
             }
             @Override
