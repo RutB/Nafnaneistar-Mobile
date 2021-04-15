@@ -35,7 +35,7 @@ import xyz.nafnaneistar.loginactivity.databinding.FragmentNavbarBinding;
 public class NavbarFragment extends Fragment {
     FragmentNavbarBinding binding;
     Activity context;
-    private Prefs mPrefs;
+    private Prefs prefs;
 
     public NavbarFragment() {
         // Required empty public constructor
@@ -51,7 +51,7 @@ public class NavbarFragment extends Fragment {
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         this.context = getActivity();
-        mPrefs = new Prefs(context);
+        prefs = new Prefs(context);
     }
 
     public Boolean onNavigationItemSelected(MenuItem view){
@@ -129,7 +129,7 @@ public class NavbarFragment extends Fragment {
     }
 
     public void logout() {
-        mPrefs.Logout();
+        prefs.Logout();
         context.finish();
         Intent i = new Intent(context, LoginActivity.class);
         startActivity(i);

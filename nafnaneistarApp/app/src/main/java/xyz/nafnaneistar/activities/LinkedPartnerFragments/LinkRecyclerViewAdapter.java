@@ -30,7 +30,7 @@ import xyz.nafnaneistar.loginactivity.R;
  *
  */
 public class LinkRecyclerViewAdapter extends RecyclerView.Adapter<LinkRecyclerViewAdapter.ViewHolder> {
-    private ArrayList<UserItem> mUserList;
+    private ArrayList<UserItem> userList;
     private OnItemListener onItemListener;
 
     /**
@@ -39,7 +39,7 @@ public class LinkRecyclerViewAdapter extends RecyclerView.Adapter<LinkRecyclerVi
      * @param onItemListener
      */
     public LinkRecyclerViewAdapter(ArrayList<UserItem> userList, LinkRecyclerViewAdapter.OnItemListener onItemListener) {
-        this.mUserList = userList;
+        this.userList = userList;
         this.onItemListener = onItemListener;
     }
 
@@ -63,8 +63,8 @@ public class LinkRecyclerViewAdapter extends RecyclerView.Adapter<LinkRecyclerVi
      */
     @Override
     public void onBindViewHolder(@NonNull LinkRecyclerViewAdapter.ViewHolder holder, int position) {
-        String name = mUserList.get(position).getName();
-        String email = mUserList.get(position).getEmail();
+        String name = userList.get(position).getName();
+        String email = userList.get(position).getEmail();
         holder.name.setText(name);
         holder.email.setText(email);
     }
@@ -101,7 +101,7 @@ public class LinkRecyclerViewAdapter extends RecyclerView.Adapter<LinkRecyclerVi
      */
     @Override
     public int getItemCount() {
-        return mUserList.size();
+        return userList.size();
     }
 
     public interface OnItemListener {

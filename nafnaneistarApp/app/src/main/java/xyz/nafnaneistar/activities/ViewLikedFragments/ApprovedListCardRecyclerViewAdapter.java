@@ -27,11 +27,11 @@ import xyz.nafnaneistar.controller.VolleyCallBack;
 import xyz.nafnaneistar.loginactivity.R;
 
 public class ApprovedListCardRecyclerViewAdapter extends RecyclerView.Adapter<ApprovedListCardRecyclerViewAdapter.ViewHolder> {
-    private ArrayList<NameCardItem> mApprovedList;
+    private ArrayList<NameCardItem> approvedList;
     private OnItemListener onItemListener;
 
     public ApprovedListCardRecyclerViewAdapter(ArrayList<NameCardItem> approvedList, OnItemListener onItemListener){
-        this.mApprovedList = approvedList;
+        this.approvedList = approvedList;
         this.onItemListener = onItemListener;
     }
 
@@ -92,7 +92,7 @@ public class ApprovedListCardRecyclerViewAdapter extends RecyclerView.Adapter<Ap
         default:
             break;
         }
-        mApprovedList.get(position).setRating(nameCardRating);
+        approvedList.get(position).setRating(nameCardRating);
         updateNameCardRating(nameCardId,nameCardRating, (Activity) view.getContext(),ratingContainer);
     }
     @NonNull
@@ -103,9 +103,9 @@ public class ApprovedListCardRecyclerViewAdapter extends RecyclerView.Adapter<Ap
     }
     @Override
     public void onBindViewHolder(@NonNull ApprovedListCardRecyclerViewAdapter.ViewHolder holder, int position) {
-        String name = mApprovedList.get(position).getName();
-        int rating = mApprovedList.get(position).getRating();
-        holder.name.setText(getGenderSign(name, mApprovedList.get(position).getGender(),holder.rating.getContext()),TextView.BufferType.SPANNABLE);
+        String name = approvedList.get(position).getName();
+        int rating = approvedList.get(position).getRating();
+        holder.name.setText(getGenderSign(name, approvedList.get(position).getGender(),holder.rating.getContext()),TextView.BufferType.SPANNABLE);
         for(int i = 0; i < 5; i++){
             String ratingString = "";
             if(i < rating) ratingString += "❤";
@@ -114,7 +114,7 @@ public class ApprovedListCardRecyclerViewAdapter extends RecyclerView.Adapter<Ap
             tv.setText(ratingString);
         }
         TextView tv = (TextView) holder.rating.getChildAt(5);
-        tv.setText(String.valueOf(mApprovedList.get(position).getId()));
+        tv.setText(String.valueOf(approvedList.get(position).getId()));
     }
     public void updateNameCardRating(int id, int rating, Activity context, LinearLayout ratingContainer){
 
@@ -165,6 +165,6 @@ public class ApprovedListCardRecyclerViewAdapter extends RecyclerView.Adapter<Ap
 
     @Override
     public int getItemCount() {
-        return mApprovedList.size();
+        return approvedList.size();
     }
 }

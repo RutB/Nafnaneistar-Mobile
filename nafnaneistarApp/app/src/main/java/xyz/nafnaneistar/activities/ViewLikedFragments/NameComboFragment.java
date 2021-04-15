@@ -40,9 +40,9 @@ import xyz.nafnaneistar.loginactivity.databinding.FragmentNamecomboBinding;
 public class NameComboFragment extends Fragment {
     FragmentNamecomboBinding binding;
     Activity context;
-    Prefs mPrefs;
-    int mSelectedGender = 1;
-    String mLastName = "";
+    Prefs prefs;
+    int selectedGender = 1;
+    String lastName = "";
     public NameComboFragment() {
         // Required empty public constructor
     }
@@ -56,7 +56,7 @@ public class NameComboFragment extends Fragment {
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         this.context = getActivity();
-        mPrefs = new Prefs(context);
+        prefs = new Prefs(context);
 
 
     }
@@ -65,15 +65,15 @@ public class NameComboFragment extends Fragment {
     public void onActivityCreated(@Nullable Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
         if(savedInstanceState != null){
-            mSelectedGender = savedInstanceState.getInt("selectedGender");
-            mLastName = savedInstanceState.getString("lastName");
-            restoreView(mSelectedGender,mLastName);
+            selectedGender = savedInstanceState.getInt("selectedGender");
+            lastName = savedInstanceState.getString("lastName");
+            restoreView(selectedGender,lastName);
         }
     }
 
     @Override
     public void onSaveInstanceState(@NonNull Bundle outState) {
-        outState.putInt("selectedGender",mSelectedGender);
+        outState.putInt("selectedGender",selectedGender);
         outState.putString("lastName", String.valueOf(binding.etComboNameLastName.getText()));
         super.onSaveInstanceState(outState);
     }
@@ -97,12 +97,12 @@ public class NameComboFragment extends Fragment {
             if(gender == 1) {
                 binding.rbNameComboMale.setChecked(false);
                 binding.rbNameComboFemale.setChecked(true);
-                mSelectedGender = 1;
+                selectedGender = 1;
             }
             else {
                 binding.rbNameComboMale.setChecked(true);
                 binding.rbNameComboFemale.setChecked(false);
-                mSelectedGender = 0;
+                selectedGender = 0;
 
             }
             binding.etComboNameLastName.setText(lastName);
@@ -112,12 +112,12 @@ public class NameComboFragment extends Fragment {
         if(view == binding.rbNameComboFemale){
             binding.rbNameComboMale.setChecked(false);
             binding.rbNameComboFemale.setChecked(true);
-            mSelectedGender = 1;
+            selectedGender = 1;
         }
         else {
             binding.rbNameComboMale.setChecked(true);
             binding.rbNameComboFemale.setChecked(false);
-            mSelectedGender = 0;
+            selectedGender = 0;
         }
 
     }
@@ -143,7 +143,7 @@ public class NameComboFragment extends Fragment {
                         .show();
                 Intent i = new Intent(getContext(), LoginActivity.class);
                 context.finish();
-                mPrefs.Logout();
+                prefs.Logout();
                 startActivity(i);
             }
         });

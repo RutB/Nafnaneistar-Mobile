@@ -33,6 +33,9 @@ import xyz.nafnaneistar.loginactivity.R;
 import xyz.nafnaneistar.loginactivity.databinding.ActivityLinkPartnerBinding;
 import xyz.nafnaneistar.model.User;
 
+/**
+ *
+ */
 public class LinkPartnerActivity extends AppCompatActivity implements LinkRecyclerViewAdapter.OnItemListener {
     private ActivityLinkPartnerBinding binding;
     private User currentUser = new User();
@@ -40,6 +43,11 @@ public class LinkPartnerActivity extends AppCompatActivity implements LinkRecycl
     static LinkRecyclerViewAdapter adapter;
     private ArrayList<UserItem> userList = new ArrayList<>();
 
+    /**
+     * Overrides, populates the table for the activity, shows the navbar fragment,
+     * initializes a listener for btnLink that updates table from new data
+     * @param savedInstanceState
+     */
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -62,6 +70,9 @@ public class LinkPartnerActivity extends AppCompatActivity implements LinkRecycl
         populateTable();
     }
 
+    /**
+     * Sets a new adapter for LinkReclyclerView and binds with rvCombolist
+     */
     private void setAdapater() {
         adapter = new LinkRecyclerViewAdapter(userList, this);
         RecyclerView.LayoutManager layoutManager = new LinearLayoutManager(getApplicationContext());
@@ -70,6 +81,10 @@ public class LinkPartnerActivity extends AppCompatActivity implements LinkRecycl
         binding.rvComboList.setAdapter(adapter);
     }
 
+    /**
+     * Removes user at the placement position //and notifies of changes
+     * @param position
+     */
     @Override
     public void onItemClick(int position) {
         userList.get(position);
@@ -77,6 +92,9 @@ public class LinkPartnerActivity extends AppCompatActivity implements LinkRecycl
         adapter.notifyDataSetChanged();
     }
 
+    /**
+     * Fills in the table from backend????
+     */
     public void populateTable() {
         ApiController.getInstance().getLinkedPartners((Activity) binding.btnLink.getContext(), new VolleyCallBack<ArrayList<UserItem>>() {
 
@@ -101,6 +119,12 @@ public class LinkPartnerActivity extends AppCompatActivity implements LinkRecycl
         });
     }
 
+    /**
+     * Removes user corresponding to email from current users linked partner list
+     * and removes it relating to postition from the table
+     * @param email
+     * @param position
+     */
     public void removeFromUserList(String email, int position) {
         ApiController.getInstance().removeFromLinkPartners(email, (Activity) binding.btnLink.getContext(), new VolleyCallBack<JSONObject>() {
             @Override
@@ -123,6 +147,11 @@ public class LinkPartnerActivity extends AppCompatActivity implements LinkRecycl
         });
     }
 
+    /**
+     * Updates the table with new linked partner from the text view.
+     * If the email doesn't correlate to some user a toast will come.
+     * @param view
+     */
     public void populateNewTable(View view) {
         String email = binding.etEmail2.getText().toString().trim();
         Pattern pattern = Pattern.compile("^.+@.+\\..+$");
