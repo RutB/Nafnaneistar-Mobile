@@ -2,6 +2,8 @@ package xyz.nafnaneistar.activities;
 
 import android.app.Activity;
 import android.content.Context;
+import android.graphics.Typeface;
+import android.os.Handler;
 import android.text.Spannable;
 import android.text.SpannableStringBuilder;
 import android.text.style.DynamicDrawableSpan;
@@ -14,7 +16,14 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
+import androidx.core.content.ContextCompat;
 import androidx.recyclerview.widget.RecyclerView;
+
+import com.skydoves.balloon.ArrowOrientation;
+import com.skydoves.balloon.ArrowPositionRules;
+import com.skydoves.balloon.Balloon;
+import com.skydoves.balloon.BalloonAnimation;
+import com.skydoves.balloon.BalloonSizeSpec;
 
 import org.json.JSONObject;
 
@@ -77,12 +86,21 @@ public class SearchNameAdapter extends RecyclerView.Adapter<SearchNameAdapter.Vi
     public void onBindViewHolder(@NonNull SearchNameAdapter.ViewHolder holder, int position) {
         String name = nameCardList.get(position).getName();
         String desc = nameCardList.get(position).getDescription();
+
         int id = nameCardList.get(position).getId();
         int gender = nameCardList.get(position).getGender();
+
         AtomicBoolean male = new AtomicBoolean(false);
         AtomicBoolean female = new AtomicBoolean(false);
 
-        holder.tvNameResult.setText(getGenderSign(name, nameCardList.get(position).getGender(),holder.tvNameResult.getContext()),TextView.BufferType.SPANNABLE);
+        holder.tvNameResult.setText(
+                getGenderSign(name,
+                        nameCardList.get(position).getGender(),
+                        holder.tvNameResult.getContext()
+                ),
+                TextView.BufferType.SPANNABLE
+        );
+
         if (Utils.nameCardListContains(approvedList, nameCardList.get(position))) {
             holder.btnAddToLiked.setVisibility(View.GONE);
             holder.btnRemoveFromLiked.setVisibility(View.VISIBLE);
@@ -90,12 +108,19 @@ public class SearchNameAdapter extends RecyclerView.Adapter<SearchNameAdapter.Vi
             holder.btnAddToLiked.setVisibility(View.VISIBLE);
             holder.btnRemoveFromLiked.setVisibility(View.GONE);
         };
+
+        holder.btnDescription.setOnClickListener( view -> {
+            Balloon balloon = createBalloon(holder.btnDescription.getContext(), desc);
+            balloon.showAlignBottom(holder.btnDescription);
+        });
+
         holder.btnRemoveFromLiked.setOnClickListener( view -> {
             toggleView(view);
             toggleView(holder.btnAddToLiked);
             removeFromApprovedList(id, holder.btnRemoveFromLiked.getContext());
             approvedList.remove(nameCardList.get(position));
         });
+
         holder.btnAddToLiked.setOnClickListener( view -> {
             toggleView(view);
             approvedList.add(nameCardList.get(position));
@@ -108,7 +133,12 @@ public class SearchNameAdapter extends RecyclerView.Adapter<SearchNameAdapter.Vi
                  female.set(true);
             }
             try {
-                addOrRemoveFromApprovedList("approve", id, male.get(), female.get(), (Activity) holder.btnRemoveFromLiked.getContext());
+                approveName("approve",
+                        id,
+                        male.get(),
+                        female.get(),
+                        (Activity) holder.btnRemoveFromLiked.getContext()
+                );
             } catch (URISyntaxException e) {
                 e.printStackTrace();
             }
@@ -143,7 +173,7 @@ public class SearchNameAdapter extends RecyclerView.Adapter<SearchNameAdapter.Vi
         });
     }
 
-    public void addOrRemoveFromApprovedList(String action, int nameCardId, boolean male, boolean female, Activity context) throws URISyntaxException {
+    public void approveName(String action, int nameCardId, boolean male, boolean female, Activity context) throws URISyntaxException {
 
         ApiController.getInstance().chooseName(action, nameCardId, false, false, context, new VolleyCallBack<NameCard>() {
             @Override
@@ -166,6 +196,38 @@ public class SearchNameAdapter extends RecyclerView.Adapter<SearchNameAdapter.Vi
 
             }
         });
+    }
+
+    public Balloon createBalloon(Context context, String text) {
+        /**
+         * TODO:
+         * Lifecycle til að koma í veg fyrir memory leaks (.setLifeCycleOwner(lifecycleowner))
+         * Útlit:
+         *  Setja sömu leturgerð á balloon texta
+         */
+        Balloon balloon = new Balloon.Builder(context)
+                .setArrowSize(10)
+                .setArrowOrientation(ArrowOrientation.TOP)
+                .setIsVisibleArrow(true)
+                .setArrowPosition((float) 0.5)
+                .setArrowPositionRules(ArrowPositionRules.ALIGN_ANCHOR)
+                //.setArrowPosition(0.3f)
+                .setHeight(BalloonSizeSpec.WRAP)
+                .setWidth(BalloonSizeSpec.WRAP)
+                .setTextSize(15f)
+                .setTextTypeface(Typeface.BOLD_ITALIC)
+                .setText(text)
+                .setTextColor(ContextCompat.getColor(context, R.color.black))
+                .setBackgroundColor(ContextCompat.getColor(context, R.color.btn_color_lg))
+                .setCornerRadius(4f)
+                .setBalloonAnimation(BalloonAnimation.FADE)
+                .setDismissWhenClicked(true)
+                .setDismissWhenTouchOutside(true)
+                .setPadding(8)
+                .setMarginRight(14)
+                .setMarginLeft(14)
+                .build();
+        return balloon;
     }
 
 

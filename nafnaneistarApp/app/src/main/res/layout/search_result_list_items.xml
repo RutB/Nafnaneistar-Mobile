@@ -22,12 +22,10 @@
         android:id="@+id/btDescription"
         android:layout_width="30dp"
         android:layout_height="40dp"
+        android:layout_marginStart="24dp"
         android:text="i"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toStartOf="@+id/btRemoveFromLiked"
-        app:layout_constraintHorizontal_bias="0.556"
         app:layout_constraintStart_toEndOf="@+id/tvNameResult"
-        app:layout_constraintTop_toTopOf="parent" />
+        tools:layout_editor_absoluteY="4dp" />
 
     <Button
         android:id="@+id/btAddToLiked"
