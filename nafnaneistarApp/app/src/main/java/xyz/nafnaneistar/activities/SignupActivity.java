@@ -31,7 +31,7 @@ import xyz.nafnaneistar.loginactivity.databinding.ActivitySignupBinding;
  */
 public class SignupActivity extends AppCompatActivity {
     private ActivitySignupBinding binding;
-    private Prefs prefs;
+    private Prefs mPrefs;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -45,7 +45,7 @@ public class SignupActivity extends AppCompatActivity {
                 e.printStackTrace();
             }
         });
-        prefs = new Prefs(SignupActivity.this);
+        mPrefs = new Prefs(SignupActivity.this);
 
     }
 
@@ -107,7 +107,7 @@ public class SignupActivity extends AppCompatActivity {
                 if(p.getName() != null){
                     Toast.makeText(SignupActivity.this, R.string.signupSuccess ,Toast.LENGTH_SHORT)
                             .show();
-                    prefs.saveUser(email, pass);
+                    mPrefs.saveUser(email, pass);
                     finish();
                     startActivity(new Intent( SignupActivity.this, SwipeActivity.class));
                 }
