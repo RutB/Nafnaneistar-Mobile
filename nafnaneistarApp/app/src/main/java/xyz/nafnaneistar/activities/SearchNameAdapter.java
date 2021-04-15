@@ -46,6 +46,7 @@ public class SearchNameAdapter extends RecyclerView.Adapter<SearchNameAdapter.Vi
         private TextView tvNameResult;
         private Button btnAddToLiked;
         private Button btnRemoveFromLiked;
+        private Button btnDescription;
         OnItemListener onItemListener;
 
         public ViewHolder(@NonNull View itemView, OnItemListener onItemListener) {
@@ -55,6 +56,7 @@ public class SearchNameAdapter extends RecyclerView.Adapter<SearchNameAdapter.Vi
             tvNameResult = itemView.findViewById(R.id.tvNameResult);
             btnAddToLiked = itemView.findViewById(R.id.btAddToLiked);
             btnRemoveFromLiked = itemView.findViewById(R.id.btRemoveFromLiked);
+            btnDescription = itemView.findViewById(R.id.btDescription);
         }
 
         @Override
@@ -74,6 +76,7 @@ public class SearchNameAdapter extends RecyclerView.Adapter<SearchNameAdapter.Vi
     @Override
     public void onBindViewHolder(@NonNull SearchNameAdapter.ViewHolder holder, int position) {
         String name = nameCardList.get(position).getName();
+        String desc = nameCardList.get(position).getDescription();
         int id = nameCardList.get(position).getId();
         int gender = nameCardList.get(position).getGender();
         AtomicBoolean male = new AtomicBoolean(false);
