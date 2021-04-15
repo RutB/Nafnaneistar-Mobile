@@ -1,4 +1,5 @@
 package xyz.nafnaneistar.activities;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
 import android.provider.Settings;
@@ -64,7 +65,7 @@ public class SettingsActivity extends AppCompatActivity {
      * @param view
      */
     public void NameSettings (View view) {
-        Intent i = new Intent(SettingsActivity.this, NameChangeActivity.class);
+        Intent i = new Intent(SettingsActivity.this, ChangeNameActivity.class);
         finish();
         startActivity(i);
 
