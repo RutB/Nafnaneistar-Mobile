@@ -33,8 +33,6 @@ import static xyz.nafnaneistar.loginactivity.R.*;
 
 /**
  * TODO:
- * Er aðeins hægt að adda einu nafni í listann með searchname?
- * Er það að eyða úr listanum relieable?
  * Útlit
  */
 

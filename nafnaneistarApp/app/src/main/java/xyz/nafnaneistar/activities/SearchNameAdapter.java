@@ -105,7 +105,7 @@ public class SearchNameAdapter extends RecyclerView.Adapter<SearchNameAdapter.Vi
                  female.set(true);
             }
             try {
-                addOrRemoveFromApprovedList("approve", id, (boolean) male.get(), (boolean) female.get(), (Activity) holder.btnRemoveFromLiked.getContext());
+                addOrRemoveFromApprovedList("approve", id, male.get(), female.get(), (Activity) holder.btnRemoveFromLiked.getContext());
             } catch (URISyntaxException e) {
                 e.printStackTrace();
             }

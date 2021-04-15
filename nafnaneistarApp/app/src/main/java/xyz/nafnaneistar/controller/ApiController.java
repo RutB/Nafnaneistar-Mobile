@@ -154,8 +154,6 @@ public class ApiController extends Application {
                                     nc.getInt("rating"),
                                     nc.getInt("gender")
                             ));
-
-
                         } catch (JSONException e) {
                             e.printStackTrace();
                         }
