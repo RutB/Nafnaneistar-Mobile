@@ -11,6 +11,7 @@ import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
 import android.view.inputmethod.InputMethodManager;
+import android.widget.EditText;
 import android.widget.Toast;
 
 import java.net.URISyntaxException;
@@ -63,6 +64,11 @@ public class SearchActivity extends AppCompatActivity implements SearchNameAdapt
         prefs = new Prefs(SearchActivity.this);
         binding = DataBindingUtil.setContentView(this, layout.activity_search);
         recyclerView = (RecyclerView) binding.rvSearchResults;
+        EditText etNameSearch = findViewById(id.etNameSearch);
+        etNameSearch.requestFocus();
+        InputMethodManager imm = (InputMethodManager)getSystemService(etNameSearch.getContext().INPUT_METHOD_SERVICE);
+        imm.toggleSoftInput(InputMethodManager.SHOW_FORCED, InputMethodManager.HIDE_IMPLICIT_ONLY);
+
         binding.btnSearchName.setOnClickListener(view -> {
             try {
                 SearchName(view);
@@ -77,12 +83,8 @@ public class SearchActivity extends AppCompatActivity implements SearchNameAdapt
         adapter = new SearchNameAdapter(nameCardList, approvedList, this);
         RecyclerView.LayoutManager layoutManager = new LinearLayoutManager(getApplicationContext());
         recyclerView.setLayoutManager(layoutManager);
-        // TODO: Custom animator
         recyclerView.setItemAnimator(new DefaultItemAnimator());
         recyclerView.setAdapter(adapter);
-
-        //Initialize the navbar fragment
-
     }
 
     @Override
