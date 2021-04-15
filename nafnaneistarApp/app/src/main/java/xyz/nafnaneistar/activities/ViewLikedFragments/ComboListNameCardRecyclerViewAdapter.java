@@ -59,7 +59,12 @@ public class ComboListNameCardRecyclerViewAdapter extends RecyclerView.Adapter<C
         }
     }
 
-
+    /**
+     * Inflates the table for approved names
+     * @param parent
+     * @param viewType
+     * @return
+     */
     @NonNull
     @Override
     public ComboListNameCardRecyclerViewAdapter.ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
@@ -67,6 +72,11 @@ public class ComboListNameCardRecyclerViewAdapter extends RecyclerView.Adapter<C
         return new ViewHolder(itemView, onItemListener);
     }
 
+    /**
+     * Updates the contents of the view holder in correlation with position
+     * @param holder
+     * @param position
+     */
     @Override
     public void onBindViewHolder(@NonNull ComboListNameCardRecyclerViewAdapter.ViewHolder holder, int position) {
         String name = mComboList.get(position).getName();
@@ -83,8 +93,13 @@ public class ComboListNameCardRecyclerViewAdapter extends RecyclerView.Adapter<C
         tv.setText(String.valueOf(mComboList.get(position).getId()));
     }
 
-
-
+    /**
+     *
+     * @param name
+     * @param gender
+     * @param context
+     * @return
+     */
     public SpannableStringBuilder getGenderSign(String name, int gender, Context context){
         SpannableStringBuilder stringBuild = new SpannableStringBuilder(name + "  ");
         if(gender == 0){
@@ -95,8 +110,6 @@ public class ComboListNameCardRecyclerViewAdapter extends RecyclerView.Adapter<C
             stringBuild.setSpan(
                     new ImageSpan(context, R.drawable.ic_gender_female, DynamicDrawableSpan.ALIGN_BASELINE), name.length() + 1, name.length() + 2, Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
         }
-
-
        return stringBuild;
     }
 
@@ -104,6 +117,10 @@ public class ComboListNameCardRecyclerViewAdapter extends RecyclerView.Adapter<C
         void onItemClick(int position);
     }
 
+    /**
+     *
+     * @return the number of names that the current user has
+     */
     @Override
     public int getItemCount() {
         return mComboList.size();

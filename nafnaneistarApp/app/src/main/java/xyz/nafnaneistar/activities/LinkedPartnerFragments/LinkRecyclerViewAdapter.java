@@ -26,17 +26,29 @@ import xyz.nafnaneistar.controller.ApiController;
 import xyz.nafnaneistar.controller.VolleyCallBack;
 import xyz.nafnaneistar.loginactivity.R;
 
-
+/**
+ *
+ */
 public class LinkRecyclerViewAdapter extends RecyclerView.Adapter<LinkRecyclerViewAdapter.ViewHolder> {
     private ArrayList<UserItem> mUserList;
     private OnItemListener onItemListener;
 
-
+    /**
+     * Constructor
+     * @param userList
+     * @param onItemListener
+     */
     public LinkRecyclerViewAdapter(ArrayList<UserItem> userList, LinkRecyclerViewAdapter.OnItemListener onItemListener) {
         this.mUserList = userList;
         this.onItemListener = onItemListener;
     }
 
+    /**
+     * Inflates the table for linked partners
+     * @param parent
+     * @param viewType
+     * @return
+     */
     @NonNull
     @Override
     public ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
@@ -44,6 +56,11 @@ public class LinkRecyclerViewAdapter extends RecyclerView.Adapter<LinkRecyclerVi
         return new ViewHolder(itemView, onItemListener);
     }
 
+    /**
+     * Updates the contents of the view holder in correlation with position
+     * @param holder
+     * @param position
+     */
     @Override
     public void onBindViewHolder(@NonNull LinkRecyclerViewAdapter.ViewHolder holder, int position) {
         String name = mUserList.get(position).getName();
@@ -52,6 +69,9 @@ public class LinkRecyclerViewAdapter extends RecyclerView.Adapter<LinkRecyclerVi
         holder.email.setText(email);
     }
 
+    /**
+     *
+     */
     public class ViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
         private TextView name;
         private TextView email;
@@ -75,6 +95,10 @@ public class LinkRecyclerViewAdapter extends RecyclerView.Adapter<LinkRecyclerVi
         }
     }
 
+    /**
+     *
+     * @return the number of linked partners to current user
+     */
     @Override
     public int getItemCount() {
         return mUserList.size();

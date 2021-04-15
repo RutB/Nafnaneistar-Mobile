@@ -23,19 +23,19 @@ import xyz.nafnaneistar.model.User;
 
 public class LoginActivity extends AppCompatActivity {
     private ActivityLoginBinding binding;
-   // private User mCurrentUser = new User();
+    private User currentUser = new User();
     private final int REQUEST_CODE = 2;
-    private Prefs mPrefs;
+    private Prefs prefs;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        mPrefs = new Prefs(LoginActivity.this);
+        prefs = new Prefs(LoginActivity.this);
         String[] user;
 
         binding = DataBindingUtil.setContentView(this, R.layout.activity_login);
-        if (mPrefs.getUser().length == 2) {
-            user = mPrefs.getUser();
+        if (prefs.getUser().length == 2) {
+            user = prefs.getUser();
             binding.etEmail.setText(user[0]);
             binding.etPassword.setText(user[1]);
             try {
@@ -89,7 +89,7 @@ public class LoginActivity extends AppCompatActivity {
                 if (p.getName() != null) {
                     Toast.makeText(LoginActivity.this, R.string.loginSuccess, Toast.LENGTH_SHORT)
                             .show();
-                    mPrefs.saveUser(email, pass);
+                    prefs.saveUser(email, pass);
                     startActivity(new Intent(LoginActivity.this, SwipeActivity.class));
                 } else {
                     Snackbar.make(binding.etEmail, R.string.loginFailed, Snackbar.LENGTH_INDEFINITE)
@@ -129,7 +129,7 @@ public class LoginActivity extends AppCompatActivity {
                 if (p.getName() != null) {
                     Toast.makeText(LoginActivity.this, R.string.loginSuccess, Toast.LENGTH_SHORT)
                             .show();
-                    mPrefs.saveUser(email, pass);
+                    prefs.saveUser(email, pass);
                     startActivity(new Intent(LoginActivity.this, SwipeActivity.class));
                     finish();
                 } else {
