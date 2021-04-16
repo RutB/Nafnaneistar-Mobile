@@ -150,6 +150,9 @@ public class SearchActivity extends AppCompatActivity implements SearchNameAdapt
             public void onResponse(ArrayList<NameCard> response) {
                 setAdapter();
                 nameCardListAll.clear();
+                if (response.size() <= 0) {
+                    Toast.makeText(binding.btnSearchName.getContext(), "Leit skilaði engum niðurstöðum", Toast.LENGTH_LONG).show();
+                }
                 nameCardListAll.addAll(response);
                 filterListByGender(response);
                 adapter.notifyDataSetChanged();

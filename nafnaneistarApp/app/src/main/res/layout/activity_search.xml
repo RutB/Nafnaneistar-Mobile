@@ -106,6 +106,7 @@
             android:id="@+id/rvSearchResults"
             android:layout_width="361dp"
             android:layout_height="429dp"
+            android:background="@color/btn_color_lg"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"

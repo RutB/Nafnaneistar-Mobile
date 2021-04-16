@@ -175,7 +175,7 @@ public class SearchNameAdapter extends RecyclerView.Adapter<SearchNameAdapter.Vi
 
     public void approveName(String action, int nameCardId, boolean male, boolean female, Activity context) throws URISyntaxException {
 
-        ApiController.getInstance().chooseName(action, nameCardId, false, false, context, new VolleyCallBack<NameCard>() {
+        ApiController.getInstance().chooseName(action, nameCardId, male, female, context, new VolleyCallBack<NameCard>() {
             @Override
             public ArrayList<NameCardItem> onSuccess() {
                 if (action.equals("approve")) {
@@ -199,26 +199,19 @@ public class SearchNameAdapter extends RecyclerView.Adapter<SearchNameAdapter.Vi
     }
 
     public Balloon createBalloon(Context context, String text) {
-        /**
-         * TODO:
-         * Lifecycle til að koma í veg fyrir memory leaks (.setLifeCycleOwner(lifecycleowner))
-         * Útlit:
-         *  Setja sömu leturgerð á balloon texta
-         */
         Balloon balloon = new Balloon.Builder(context)
                 .setArrowSize(10)
                 .setArrowOrientation(ArrowOrientation.TOP)
                 .setIsVisibleArrow(true)
-                .setArrowPosition((float) 0.5)
+                .setArrowPosition(0.5f)
                 .setArrowPositionRules(ArrowPositionRules.ALIGN_ANCHOR)
-                //.setArrowPosition(0.3f)
                 .setHeight(BalloonSizeSpec.WRAP)
                 .setWidth(BalloonSizeSpec.WRAP)
                 .setTextSize(15f)
                 .setTextTypeface(Typeface.BOLD_ITALIC)
                 .setText(text)
                 .setTextColor(ContextCompat.getColor(context, R.color.black))
-                .setBackgroundColor(ContextCompat.getColor(context, R.color.btn_color_lg))
+                .setBackgroundColor(ContextCompat.getColor(context, R.color.ambiant))
                 .setCornerRadius(4f)
                 .setBalloonAnimation(BalloonAnimation.FADE)
                 .setDismissWhenClicked(true)
@@ -226,6 +219,7 @@ public class SearchNameAdapter extends RecyclerView.Adapter<SearchNameAdapter.Vi
                 .setPadding(8)
                 .setMarginRight(14)
                 .setMarginLeft(14)
+                .setAlpha(0.85f)
                 .build();
         return balloon;
     }
