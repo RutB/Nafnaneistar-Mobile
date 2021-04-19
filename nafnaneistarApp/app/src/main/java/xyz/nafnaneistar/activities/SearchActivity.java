@@ -34,12 +34,6 @@ import xyz.nafnaneistar.model.NameCard;
 
 import static xyz.nafnaneistar.loginactivity.R.*;
 
-/**
- * TODO:
- * Útlit
- */
-
-
 public class SearchActivity extends AppCompatActivity implements SearchNameAdapter.OnItemListener {
     private ActivitySearchBinding binding;
     private Prefs prefs;
@@ -84,12 +78,22 @@ public class SearchActivity extends AppCompatActivity implements SearchNameAdapt
 
     }
 
+    /**
+     * Listens to changes of the checkboxes. Makes sure that search results only include the gender
+     * indicated by the ticked checkboxes.
+     *
+     * @param compoundButton Button
+     * @param b Boolean
+     */
     private void OnCheckedChangeListener(CompoundButton compoundButton, boolean b) {
         if (nameCardListAll != null) {
             filterListByGender(nameCardListAll);
         }
     }
 
+    /**
+     * Set the adapter for the RecyclerView
+     */
     private void setAdapter() {
         adapter = new SearchNameAdapter(nameCardList, approvedList, this);
         RecyclerView.LayoutManager layoutManager = new LinearLayoutManager(getApplicationContext());
@@ -102,7 +106,13 @@ public class SearchActivity extends AppCompatActivity implements SearchNameAdapt
     public void onItemClick(int position) {
         Log.d("onItemClick","Keyrir");
     }
-    
+
+    /**
+     * Handles click event of the search button.
+     *
+     * @param view
+     * @throws URISyntaxException
+     */
     public void SearchName(View view) throws URISyntaxException {
         String nameQuery = binding.etNameSearch.getText().toString().trim();
         if (nameQuery.length() <= 1){
@@ -114,6 +124,12 @@ public class SearchActivity extends AppCompatActivity implements SearchNameAdapt
         getIdsOfApproved(nameQuery);
     }
 
+    /**
+     * Updates the list of names the current user has liked and will also search for names that are
+     * similar to the user-provided string.
+     *
+     * @param query String to search by.
+     */
     private void getIdsOfApproved(String query) {
         ApiController.getInstance().getApprovedNameCards((Activity) binding.btnSearchName.getContext(), new VolleyCallBack<ArrayList<NameCard>>() {
             @Override
@@ -136,6 +152,10 @@ public class SearchActivity extends AppCompatActivity implements SearchNameAdapt
         });
     }
 
+    /**
+     * Updates the search results by the string provided by the user.
+     * @param query String used for the search of a name.
+     */
     public void getNamesByName(String query) {
         ApiController.getInstance().getNameCardsByName((Activity) binding.btnSearchName.getContext(), query, new VolleyCallBack<ArrayList<NameCard>>() {
             @Override
@@ -161,6 +181,10 @@ public class SearchActivity extends AppCompatActivity implements SearchNameAdapt
         });
     }
 
+    /**
+     * Updates the search result by removing names according to the gender indicated by the checkboxes.
+     * @param list ArrayList of NameCards to be filtered.
+     */
     private void filterListByGender(ArrayList<NameCard> list) {
         nameCardList.clear();
         Boolean male = binding.cbGenderMaleSearch.isChecked();
