@@ -22,6 +22,7 @@ import java.net.URISyntaxException;
 import java.util.ArrayList;
 
 import xyz.nafnaneistar.activities.LoginActivity;
+import xyz.nafnaneistar.activities.SearchActivity;
 import xyz.nafnaneistar.activities.items.NameCardItem;
 import xyz.nafnaneistar.activities.items.UserItem;
 import xyz.nafnaneistar.helpers.Prefs;
@@ -35,9 +36,9 @@ import xyz.nafnaneistar.model.User;
  */
 public class ApiController extends Application {
     private static ApiController instance;
-    private static String domainURL = "http://46.22.102.179:7979/";
+    // private static String domainURL = "http://46.22.102.179:7979/";
     //private static String domainURL = "http://192.168.1.207:7979/";
-    //private static String domainURL = "localhost:7979/";
+    // private static String domainURL = "localhost:7979/";
     // private static String domainURL = "http://127.0.0.1:7979/";
 
 
@@ -152,8 +153,6 @@ public class ApiController extends Application {
                                     nc.getInt("rating"),
                                     nc.getInt("gender")
                             ));
-
-
                         } catch (JSONException e) {
                             e.printStackTrace();
                         }
@@ -204,6 +203,49 @@ public class ApiController extends Application {
                         }
                     }
                     volleyCallBack.onResponse((ArrayList<NameCardItem>) approvedList);
+                }, error -> {
+            volleyCallBack.onError( getString(R.string.errorGettingPartners));
+        });
+        ApiController.getInstance().addToRequestQueue(jsonObjReq);
+    }
+
+    public void getApprovedNameCards(Activity context, VolleyCallBack<ArrayList<NameCard>> volleyCallBack) {
+        Prefs prefs = new Prefs(context);
+        String [] user = prefs.getUser();
+        String email = user[0];
+        String pass = user[1];
+        ArrayList<NameCard> approvedList = new ArrayList<>();
+        String listeningPath = "viewliked/approvedlist";
+        URIBuilder b = null;
+        try {
+            b = new URIBuilder(ApiController.getDomainURL() + listeningPath);
+        } catch (URISyntaxException e) {
+            e.printStackTrace();
+        }
+        b.addParameter("email", email);
+        b.addParameter("pass", pass);
+        JsonObjectRequest jsonObjReq = new JsonObjectRequest(Request.Method.GET, b.toString(), null,
+                response -> {
+                    JSONArray namecards = null;
+                    try {
+                        namecards = response.getJSONArray("namecards");
+                    } catch (JSONException e) {
+                        e.printStackTrace();
+                    }
+                    for (int i = 0; i < namecards.length(); i++) {
+                        try {
+                            JSONObject nc = (JSONObject) namecards.get(i);
+                            approvedList.add(new NameCard(
+                                    nc.getInt("id"),
+                                    nc.getString("name"),
+                                    nc.getString("rating"),
+                                    nc.getInt("gender")
+                            ));
+                        } catch (JSONException e) {
+                            e.printStackTrace();
+                        }
+                    }
+                    volleyCallBack.onResponse((ArrayList<NameCard>) approvedList);
                 }, error -> {
             volleyCallBack.onError( getString(R.string.errorGettingPartners));
         });
@@ -517,6 +559,59 @@ public class ApiController extends Application {
                 },error -> {
                     volleyCallBack.onError(getResources().getString(R.string.errorRetrievingData));
 
+        });
+        ApiController.getInstance().addToRequestQueue(jsonObjReq);
+
+    }
+
+    /**
+     * WIP - HAT
+     *
+     */
+    public void getNameCardsByName(Activity context, String nameQuery, VolleyCallBack<ArrayList<NameCard>> volleyCallBack) {
+        Prefs prefs = new Prefs(context);
+        String [] user = prefs.getUser();
+        String email = user[0];
+        String pass = user[1];
+        String listeningPath = "searchname";
+        URIBuilder b = null;
+        String url = "";
+
+        try {
+            b = new URIBuilder(ApiController.getDomainURL()+listeningPath);
+            b.addParameter("email",email);
+            b.addParameter("pass",pass);
+            b.addParameter("query", nameQuery);
+            url = b.build().toString();
+        } catch (URISyntaxException e) {
+            e.printStackTrace();
+        }
+
+        JsonObjectRequest jsonObjReq = new JsonObjectRequest(Request.Method.GET, url,null,
+                response -> {
+                    Gson g = new Gson();
+                    // NameCard queryResults = g.fromJson(String.valueOf(response), NameCard.class);
+
+                    ArrayList<NameCard> nameCards = new ArrayList<>();
+                    try {
+                        Log.d("nameSearch", "Searchname: "+response.getJSONArray("results").toString());
+                        JSONArray result = response.getJSONArray("results");
+                        for (int i = 0; i < result.length(); i++ ) {
+                            JSONObject nc = (JSONObject) result.get(i);
+                            nameCards.add( new NameCard(
+                                    nc.getInt("id"),
+                                    nc.getString("name"),
+                                    nc.getString("description"),
+                                    nc.getInt("gender")
+                            ));
+
+                        }
+                    } catch (JSONException e) {
+                        e.printStackTrace();
+                    }
+                    volleyCallBack.onResponse((ArrayList<NameCard>) nameCards);
+                },error -> {
+                    volleyCallBack.onError("Leit tókst ekki");
         });
         ApiController.getInstance().addToRequestQueue(jsonObjReq);
 
