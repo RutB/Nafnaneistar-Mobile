@@ -40,7 +40,7 @@ public class ApiController extends Application {
     //private static String domainURL = "http://192.168.1.207:7979/";
     // private static String domainURL = "localhost:7979/";
     // private static String domainURL = "http://127.0.0.1:7979/";
-
+    private static String domainURL = "http://192.168.0.164:7979/";
 
     private RequestQueue requestQueue;
 
@@ -340,6 +340,7 @@ public class ApiController extends Application {
     }
 
     public void chooseName(String action, int currentCardId,boolean male, boolean female, Activity context, VolleyCallBack<NameCard> volleyCallBack) throws URISyntaxException {
+        Log.d("ApiController.chooseName", "Action: " + action + " nameCardId: " + currentCardId + " male: " + male + " female: " + female + " Context: " + context );
         Prefs prefs = new Prefs(context);
         String[] user = prefs.getUser();
         String email = user[0];
@@ -358,7 +359,32 @@ public class ApiController extends Application {
                     Gson g = new Gson();
                     NameCard nc = g.fromJson(String.valueOf(response), NameCard.class);
                     volleyCallBack.onResponse(nc);
+                }, error -> {
+            volleyCallBack.onError(getString(R.string.systemError));
+        });
+        ApiController.getInstance().addToRequestQueue(jsonObjReq);
+    }
 
+    public void addToLiked(int currentCardId,boolean male, boolean female, Activity context, VolleyCallBack<NameCard> volleyCallBack) throws URISyntaxException {
+        Log.d("ApiController.chooseName",  "nameCardId: " + currentCardId + " male: " + male + " female: " + female + " Context: " + context );
+        Prefs prefs = new Prefs(context);
+        String[] user = prefs.getUser();
+        String email = user[0];
+        String pass = user[1];
+        String listeningPath = "searchname/addtoliked";
+        URIBuilder b = new URIBuilder(ApiController.getDomainURL() + listeningPath);
+        b.addParameter("id", String.valueOf(currentCardId));
+        b.addParameter("email", email);
+        b.addParameter("pass", pass);
+        if (female)
+            b.addParameter("female", "true");
+        if (male)
+            b.addParameter("male", "true");
+        JsonObjectRequest jsonObjReq = new JsonObjectRequest(Request.Method.GET, b.build().toString(), null,
+                response -> {
+                    Gson g = new Gson();
+                    NameCard nc = g.fromJson(String.valueOf(response), NameCard.class);
+                    volleyCallBack.onResponse(nc);
                 }, error -> {
             volleyCallBack.onError(getString(R.string.systemError));
         });

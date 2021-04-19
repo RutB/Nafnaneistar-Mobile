@@ -42,7 +42,6 @@ import static xyz.nafnaneistar.loginactivity.R.*;
 
 public class SearchActivity extends AppCompatActivity implements SearchNameAdapter.OnItemListener {
     private ActivitySearchBinding binding;
-    // private user currentUser = new User();
     private Prefs prefs;
     private String tvNameResult;
     private ArrayList<NameCard> nameCardList = new ArrayList<>();
@@ -56,7 +55,6 @@ public class SearchActivity extends AppCompatActivity implements SearchNameAdapt
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        // setContentView(R.layout.activity_search);
         FragmentManager fragmentManager = getSupportFragmentManager();
         Fragment navbar = fragmentManager.findFragmentById(R.id.navbar);
 
@@ -69,14 +67,13 @@ public class SearchActivity extends AppCompatActivity implements SearchNameAdapt
         prefs = new Prefs(SearchActivity.this);
         binding = DataBindingUtil.setContentView(this, layout.activity_search);
         recyclerView = (RecyclerView) binding.rvSearchResults;
+        binding.rvSearchResults.setVisibility(View.INVISIBLE);
         EditText etNameSearch = binding.etNameSearch;
         etNameSearch.requestFocus();
         InputMethodManager imm = (InputMethodManager)getSystemService(etNameSearch.getContext().INPUT_METHOD_SERVICE);
         imm.toggleSoftInput(InputMethodManager.SHOW_FORCED, InputMethodManager.HIDE_IMPLICIT_ONLY);
-        isMale = binding.cbGenderMaleSearch;
-        isFemale = binding.cbGenderFemaleSearch;
-        isMale.setOnCheckedChangeListener(this::OnCheckedChangeListener);
-        isFemale.setOnCheckedChangeListener(this::OnCheckedChangeListener);
+        binding.cbGenderMaleSearch.setOnCheckedChangeListener(this::OnCheckedChangeListener);
+        binding.cbGenderFemaleSearch.setOnCheckedChangeListener(this::OnCheckedChangeListener);
         binding.btnSearchName.setOnClickListener(view -> {
             try {
                 SearchName(view);
@@ -149,6 +146,7 @@ public class SearchActivity extends AppCompatActivity implements SearchNameAdapt
             @Override
             public void onResponse(ArrayList<NameCard> response) {
                 setAdapter();
+                binding.rvSearchResults.setVisibility(View.VISIBLE);
                 nameCardListAll.clear();
                 if (response.size() <= 0) {
                     Toast.makeText(binding.btnSearchName.getContext(), "Leit skilaði engum niðurstöðum", Toast.LENGTH_LONG).show();
@@ -165,9 +163,8 @@ public class SearchActivity extends AppCompatActivity implements SearchNameAdapt
 
     private void filterListByGender(ArrayList<NameCard> list) {
         nameCardList.clear();
-        Boolean male = isMale.isChecked();
-        Boolean female = isFemale.isChecked();
-        Log.d("filterListByGender", "male: "+ male + " female: " + female);
+        Boolean male = binding.cbGenderMaleSearch.isChecked();
+        Boolean female = binding.cbGenderFemaleSearch.isChecked();
         int gender;
         if ((male && female) || (!male && !female)) {
             nameCardList.clear();

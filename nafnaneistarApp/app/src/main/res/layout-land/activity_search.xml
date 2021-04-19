@@ -1,0 +1,89 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
+
+    <data>
+
+    </data>
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/SearchNameContainer"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="@color/background"
+        tools:context="xyz.nafnaneistar.activities.SearchActivity">
+
+        <Button
+            android:id="@+id/btnSearchName"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="28dp"
+            android:text="@string/btnSearchName"
+            android:textColor="@color/font"
+            app:layout_constraintEnd_toStartOf="@+id/rvSearchResults"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/etNameSearch" />
+
+        <EditText
+            android:id="@+id/etNameSearch"
+            android:layout_width="251dp"
+            android:layout_height="44dp"
+            android:layout_marginTop="65dp"
+            android:background="@drawable/edittext_rounded"
+            android:backgroundTint="@color/white"
+            android:ems="10"
+            android:focusable="true"
+            android:hint="@string/hint_search_name"
+            android:importantForAutofill="no"
+            android:inputType="textPersonName"
+            android:textAlignment="center"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toStartOf="@+id/rvSearchResults"
+            app:layout_constraintHorizontal_bias="0.484"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintVertical_bias="0.009" />
+
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/rvSearchResults"
+            android:layout_width="395dp"
+            android:layout_height="304dp"
+            android:layout_marginTop="80dp"
+            android:layout_marginEnd="16dp"
+            android:layout_marginBottom="24dp"
+            android:background="@color/btn_color_lg"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            tools:listitem="@layout/linkcombolist" />
+
+        <CheckBox
+            android:id="@+id/cbGenderFemaleSearch"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:buttonTint="@color/btn_color"
+            android:checked="true"
+            android:text="@string/cbFemale"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toStartOf="@+id/cbGenderMaleSearch"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/btnSearchName"
+            app:layout_constraintVertical_bias="0.19" />
+
+        <CheckBox
+            android:id="@+id/cbGenderMaleSearch"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:buttonTint="@color/btn_color"
+            android:checked="true"
+            android:text="@string/cbMale"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toStartOf="@+id/rvSearchResults"
+            app:layout_constraintHorizontal_bias="0.82"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/btnSearchName"
+            app:layout_constraintVertical_bias="0.19" />
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+</layout>
