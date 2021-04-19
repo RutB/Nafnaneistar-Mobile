@@ -43,8 +43,6 @@ public class SearchActivity extends AppCompatActivity implements SearchNameAdapt
     private ArrayList<NameCard> nameCardListAll = new ArrayList<>();
     private RecyclerView recyclerView;
     private SearchNameAdapter adapter;
-    private CheckBox isMale;
-    private CheckBox isFemale;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
