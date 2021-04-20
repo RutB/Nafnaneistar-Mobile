@@ -85,4 +85,5 @@
     <string name="FetchingList">Sæki lista</string>
     <string name="NoNameYet">Enginn Nöfn kominn</string>
     <string name="please_choose_list">Vinsamlega veldu lista</string>
+    <string name="title_activity_change_name">ChangeName</string>
 </resources>
