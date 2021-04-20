@@ -432,8 +432,8 @@ public class NameRestController {
      * @return Boolean, returns true if action is a success, othe.rwise it returns
      *         false.
      */
-    @GetMapping(path = "/searchname/addtoliked/{id}", produces = "application/json")
-    public boolean approveSearchedName(@PathVariable String id, HttpSession session) {
+    @GetMapping(path = "/searchname/addtoliked_OLD/{id}", produces = "application/json")
+    public boolean approveSearchedName_OLD(@PathVariable String id, HttpSession session) {
         User currentUser = (User) session.getAttribute("currentUser");
         if (!UserUtils.isLoggedIn(currentUser))
             return false;
@@ -445,6 +445,34 @@ public class NameRestController {
             return false;
         }
 
+    }
+
+    /**
+     * WIP
+     * 
+     * @param id
+     * @param email
+     * @param pass
+     * @param male
+     * @param female
+     * @return
+     */
+    @GetMapping(path = "/searchname/addtoliked", produces = "application/json")
+    public String approveSearchedName(@RequestParam(required = false) int id,
+            @RequestParam(required = true) String email, @RequestParam(required = true) String pass,
+            @RequestParam(required = false) String male, @RequestParam(required = false) String female) {
+
+        if (UserUtils.isAuthenticated(userService, email, pass)) {
+            User user = userService.findByEmail(email);
+            Optional<NameCard> nc = nameService.findById(id);
+            System.out.println("Name added to users approved list: " + nc.get().getName() + " with id: " + nc.get().getId());
+            System.out.println("Logged in user: " + user.getEmail());
+            user.getApprovedNames().put(nc.get().getId(), 0);
+            userService.save(user);
+
+            return nc.get().toJsonString();
+        }
+        return "{}";
     }
 
     /**

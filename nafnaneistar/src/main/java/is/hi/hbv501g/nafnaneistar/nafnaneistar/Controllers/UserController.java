@@ -23,7 +23,6 @@ import is.hi.hbv501g.nafnaneistar.utils.UserUtils;
 @Controller
 public class UserController {
     private UserService userService;
-    private NameService nameService;
 
     /**
      * Constructor for UserController, it needs a UserService and a NameService to
@@ -35,7 +34,6 @@ public class UserController {
     @Autowired
     public UserController(UserService userService, NameService nameService) {
         this.userService = userService;
-        this.nameService = nameService;
     }
 
     /**

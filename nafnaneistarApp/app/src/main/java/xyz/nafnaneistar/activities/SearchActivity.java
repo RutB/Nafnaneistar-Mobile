@@ -34,15 +34,8 @@ import xyz.nafnaneistar.model.NameCard;
 
 import static xyz.nafnaneistar.loginactivity.R.*;
 
-/**
- * TODO:
- * Útlit
- */
-
-
 public class SearchActivity extends AppCompatActivity implements SearchNameAdapter.OnItemListener {
     private ActivitySearchBinding binding;
-    // private user currentUser = new User();
     private Prefs prefs;
     private String tvNameResult;
     private ArrayList<NameCard> nameCardList = new ArrayList<>();
@@ -50,13 +43,10 @@ public class SearchActivity extends AppCompatActivity implements SearchNameAdapt
     private ArrayList<NameCard> nameCardListAll = new ArrayList<>();
     private RecyclerView recyclerView;
     private SearchNameAdapter adapter;
-    private CheckBox isMale;
-    private CheckBox isFemale;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        // setContentView(R.layout.activity_search);
         FragmentManager fragmentManager = getSupportFragmentManager();
         Fragment navbar = fragmentManager.findFragmentById(R.id.navbar);
 
@@ -69,14 +59,13 @@ public class SearchActivity extends AppCompatActivity implements SearchNameAdapt
         prefs = new Prefs(SearchActivity.this);
         binding = DataBindingUtil.setContentView(this, layout.activity_search);
         recyclerView = (RecyclerView) binding.rvSearchResults;
+        binding.rvSearchResults.setVisibility(View.INVISIBLE);
         EditText etNameSearch = binding.etNameSearch;
         etNameSearch.requestFocus();
         InputMethodManager imm = (InputMethodManager)getSystemService(etNameSearch.getContext().INPUT_METHOD_SERVICE);
         imm.toggleSoftInput(InputMethodManager.SHOW_FORCED, InputMethodManager.HIDE_IMPLICIT_ONLY);
-        isMale = binding.cbGenderMaleSearch;
-        isFemale = binding.cbGenderFemaleSearch;
-        isMale.setOnCheckedChangeListener(this::OnCheckedChangeListener);
-        isFemale.setOnCheckedChangeListener(this::OnCheckedChangeListener);
+        binding.cbGenderMaleSearch.setOnCheckedChangeListener(this::OnCheckedChangeListener);
+        binding.cbGenderFemaleSearch.setOnCheckedChangeListener(this::OnCheckedChangeListener);
         binding.btnSearchName.setOnClickListener(view -> {
             try {
                 SearchName(view);
@@ -87,12 +76,22 @@ public class SearchActivity extends AppCompatActivity implements SearchNameAdapt
 
     }
 
+    /**
+     * Listens to changes of the checkboxes. Makes sure that search results only include the gender
+     * indicated by the ticked checkboxes.
+     *
+     * @param compoundButton Button
+     * @param b Boolean
+     */
     private void OnCheckedChangeListener(CompoundButton compoundButton, boolean b) {
         if (nameCardListAll != null) {
             filterListByGender(nameCardListAll);
         }
     }
 
+    /**
+     * Set the adapter for the RecyclerView
+     */
     private void setAdapter() {
         adapter = new SearchNameAdapter(nameCardList, approvedList, this);
         RecyclerView.LayoutManager layoutManager = new LinearLayoutManager(getApplicationContext());
@@ -105,7 +104,13 @@ public class SearchActivity extends AppCompatActivity implements SearchNameAdapt
     public void onItemClick(int position) {
         Log.d("onItemClick","Keyrir");
     }
-    
+
+    /**
+     * Handles click event of the search button.
+     *
+     * @param view
+     * @throws URISyntaxException
+     */
     public void SearchName(View view) throws URISyntaxException {
         String nameQuery = binding.etNameSearch.getText().toString().trim();
         if (nameQuery.length() <= 1){
@@ -117,6 +122,12 @@ public class SearchActivity extends AppCompatActivity implements SearchNameAdapt
         getIdsOfApproved(nameQuery);
     }
 
+    /**
+     * Updates the list of names the current user has liked and will also search for names that are
+     * similar to the user-provided string.
+     *
+     * @param query String to search by.
+     */
     private void getIdsOfApproved(String query) {
         ApiController.getInstance().getApprovedNameCards((Activity) binding.btnSearchName.getContext(), new VolleyCallBack<ArrayList<NameCard>>() {
             @Override
@@ -139,6 +150,10 @@ public class SearchActivity extends AppCompatActivity implements SearchNameAdapt
         });
     }
 
+    /**
+     * Updates the search results by the string provided by the user.
+     * @param query String used for the search of a name.
+     */
     public void getNamesByName(String query) {
         ApiController.getInstance().getNameCardsByName((Activity) binding.btnSearchName.getContext(), query, new VolleyCallBack<ArrayList<NameCard>>() {
             @Override
@@ -149,6 +164,7 @@ public class SearchActivity extends AppCompatActivity implements SearchNameAdapt
             @Override
             public void onResponse(ArrayList<NameCard> response) {
                 setAdapter();
+                binding.rvSearchResults.setVisibility(View.VISIBLE);
                 nameCardListAll.clear();
                 if (response.size() <= 0) {
                     Toast.makeText(binding.btnSearchName.getContext(), "Leit skilaði engum niðurstöðum", Toast.LENGTH_LONG).show();
@@ -163,11 +179,14 @@ public class SearchActivity extends AppCompatActivity implements SearchNameAdapt
         });
     }
 
+    /**
+     * Updates the search result by removing names according to the gender indicated by the checkboxes.
+     * @param list ArrayList of NameCards to be filtered.
+     */
     private void filterListByGender(ArrayList<NameCard> list) {
         nameCardList.clear();
-        Boolean male = isMale.isChecked();
-        Boolean female = isFemale.isChecked();
-        Log.d("filterListByGender", "male: "+ male + " female: " + female);
+        Boolean male = binding.cbGenderMaleSearch.isChecked();
+        Boolean female = binding.cbGenderFemaleSearch.isChecked();
         int gender;
         if ((male && female) || (!male && !female)) {
             nameCardList.clear();

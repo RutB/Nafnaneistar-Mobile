@@ -8,6 +8,7 @@ import android.text.Spannable;
 import android.text.SpannableStringBuilder;
 import android.text.style.DynamicDrawableSpan;
 import android.text.style.ImageSpan;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -133,8 +134,7 @@ public class SearchNameAdapter extends RecyclerView.Adapter<SearchNameAdapter.Vi
                  female.set(true);
             }
             try {
-                approveName("approve",
-                        id,
+                approveName(id,
                         male.get(),
                         female.get(),
                         (Activity) holder.btnRemoveFromLiked.getContext()
@@ -173,27 +173,23 @@ public class SearchNameAdapter extends RecyclerView.Adapter<SearchNameAdapter.Vi
         });
     }
 
-    public void approveName(String action, int nameCardId, boolean male, boolean female, Activity context) throws URISyntaxException {
-
-        ApiController.getInstance().chooseName(action, nameCardId, male, female, context, new VolleyCallBack<NameCard>() {
+    public void approveName(int nameCardId, boolean male, boolean female, Activity context) throws URISyntaxException {
+        Log.d("SearcNameAdapter.approveName",  "nameCardId: " + nameCardId + " male: " + male + " female: " + female + " context: " + context.toString());
+        ApiController.getInstance().addToLiked(nameCardId, male, female, context, new VolleyCallBack<NameCard>() {
             @Override
             public ArrayList<NameCardItem> onSuccess() {
-                if (action.equals("approve")) {
-                    Toast.makeText(context, "Nafni bætt við á lista", Toast.LENGTH_SHORT).show();
-                } else {
-                    Toast.makeText(context, "Nafn fjarlægt af lista", Toast.LENGTH_SHORT).show();
-                }
                 return null;
             }
 
             @Override
             public void onResponse(NameCard response) {
-
+                Log.d("SearcNameAdapter.approveName", "Response: " + response.getName());
+                Toast.makeText(context, "Nafni bætt við á lista", Toast.LENGTH_SHORT).show();
             }
 
             @Override
             public void onError(String error) {
-
+                Log.d("SearcNameAdapter.approveName", "Error: " + error);
             }
         });
     }
