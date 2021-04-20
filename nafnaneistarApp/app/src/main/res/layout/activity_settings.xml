@@ -11,6 +11,26 @@
         android:background="@color/background"
         tools:context="xyz.nafnaneistar.activities.SettingsActivity">
 
+        <Button
+            android:id="@+id/btnRestartList"
+            android:layout_width="430dp"
+            android:layout_height="52dp"
+            android:layout_marginStart="29dp"
+            android:layout_marginBottom="358dp"
+            android:text="Endurstilla nafnalista"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintStart_toStartOf="parent" />
+
+        <Button
+            android:id="@+id/btnChangeName"
+            android:layout_width="430dp"
+            android:layout_height="52dp"
+            android:layout_marginStart="28dp"
+            android:layout_marginBottom="488dp"
+            android:text="Breyta nafni"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintStart_toStartOf="parent" />
+
         <TextView
             android:id="@+id/tvList"
             android:layout_width="wrap_content"
@@ -79,45 +99,13 @@
             app:layout_constraintTop_toTopOf="parent"
             app:layout_constraintVertical_bias="0.0" />
 
-        <EditText
-            android:id="@+id/ettPassword"
-            android:layout_width="430dp"
-            android:layout_height="45dp"
-            android:layout_marginTop="160dp"
-            android:layout_marginBottom="645dp"
-            android:ems="10"
-            android:hint="Sláðu inn nýtt lykilorð hér"
-            android:inputType="textPassword"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHorizontal_bias="0.69"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent"
-            app:layout_constraintVertical_bias="0.0" />
-
-        <com.google.android.material.textfield.TextInputEditText
-            android:id="@+id/tilChangeName"
-            android:layout_width="430dp"
-            android:layout_height="40dp"
-            android:layout_marginStart="30dp"
-            android:layout_marginTop="21dp"
-            android:layout_marginEnd="30dp"
-            android:layout_marginBottom="156dp"
-            android:hint="Sláðu inn nýtt nafn hér"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHorizontal_bias="0.055"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent"
-            app:layout_constraintVertical_bias="0.44" />
-
         <Button
-            android:id="@+id/btnRestartList"
+            android:id="@+id/btnChangePassword"
             android:layout_width="430dp"
             android:layout_height="52dp"
-            android:layout_marginStart="29dp"
-            android:layout_marginBottom="358dp"
-            android:text="Endurstilla nafnalista"
+            android:layout_marginStart="28dp"
+            android:layout_marginBottom="624dp"
+            android:text="Breyta lykilorði"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintStart_toStartOf="parent" />
     </androidx.constraintlayout.widget.ConstraintLayout>

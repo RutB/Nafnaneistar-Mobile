@@ -1,4 +1,5 @@
 package xyz.nafnaneistar.activities;
+import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
@@ -6,6 +7,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.Toast;
 
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
@@ -15,6 +17,10 @@ import androidx.fragment.app.FragmentManager;
 
 import org.w3c.dom.NameList;
 
+import java.net.URISyntaxException;
+import java.util.HashMap;
+
+import xyz.nafnaneistar.activities.ViewLikedFragments.NameComboFragment;
 import xyz.nafnaneistar.helpers.Prefs;
 import xyz.nafnaneistar.loginactivity.R;
 import xyz.nafnaneistar.loginactivity.databinding.ActivitySettingsBinding;
@@ -46,8 +52,8 @@ public class SettingsActivity extends ViewLikedActivity {
          * ekki sér síður fyrir þetta
          * **/
         binding.sNotifications.setOnClickListener(this::PushNotifications);
-        binding.tilChangeName.setOnClickListener(this::NameSettings);
-        binding.ettPassword.setOnClickListener(this::PasswordSettings);
+        binding.btnChangeName.setOnClickListener(this::ChangeName);
+        binding.btnChangePassword.setOnClickListener(this::ChangePassword);
         binding.btnRestartList.setOnClickListener(this::RestartNameList);
     }
 
@@ -55,7 +61,8 @@ public class SettingsActivity extends ViewLikedActivity {
      * onClick event sem leiðir á aðra síðu þar sem að passwordinu verður breytt
      * @param view
      */
-    public void PasswordSettings (View view) {
+    public void ChangePassword (View view) {
+
 
 
     }
@@ -64,10 +71,7 @@ public class SettingsActivity extends ViewLikedActivity {
      * onClick event sem leiðir á síðu þar sem breytingar verða gerðar
      * @param view
      */
-    public void NameSettings (View view) {
-        Intent i = new Intent(SettingsActivity.this, ChangeNameActivity.class);
-        finish();
-        startActivity(i);
+    public void ChangeName (View view) {
 
     }
 
@@ -84,7 +88,7 @@ public class SettingsActivity extends ViewLikedActivity {
                 .setPositiveButton("Já", new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
-                        currentUser.getAvailableNames(currentUser, )
+                            currentUser.setApprovedNames(new HashMap<Integer, Integer>());
                     }
                 })
                 .setNegativeButton("Hætta við", null)
@@ -109,10 +113,5 @@ public class SettingsActivity extends ViewLikedActivity {
 
     }
 
-    public View onCreateView(LayoutInflater inflater, ViewGroup container,
-                             Bundle savedInstanceState) {
-        return inflater.inflate(R.layout.activity_change_name, container,false);
-
-    }
 
 }
