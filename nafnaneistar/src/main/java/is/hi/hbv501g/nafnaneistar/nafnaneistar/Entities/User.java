@@ -111,6 +111,7 @@ public class User {
         this.availableNames.remove(index);
         return this.availableNames;
     }
+    
 
     /**
      * Removes the id from the approvedNames

@@ -27,7 +27,7 @@ import xyz.nafnaneistar.loginactivity.databinding.ActivitySettingsBinding;
 import xyz.nafnaneistar.model.NameCard;
 import xyz.nafnaneistar.model.User;
 
-public class SettingsActivity extends ViewLikedActivity {
+public class SettingsActivity extends AppCompatActivity {
     private ActivitySettingsBinding binding;
     private User currentUser = new User();
     private Prefs prefs;
