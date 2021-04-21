@@ -288,6 +288,4 @@ public class ViewLikedActivity extends AppCompatActivity {
         });
         ApiController.getInstance().addToRequestQueue(jsonObjReq);
     }
-
-
 }

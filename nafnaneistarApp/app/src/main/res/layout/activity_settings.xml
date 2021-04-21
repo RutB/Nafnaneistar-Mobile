@@ -13,75 +13,74 @@
 
         <Button
             android:id="@+id/btnRestartList"
-            android:layout_width="430dp"
-            android:layout_height="52dp"
-            android:layout_marginStart="29dp"
-            android:layout_marginBottom="358dp"
+            android:layout_width="415dp"
+            android:layout_height="70dp"
             android:text="Endurstilla nafnalista"
             app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintStart_toStartOf="parent" />
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.35"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintVertical_bias="0.591" />
 
         <Button
             android:id="@+id/btnChangeName"
-            android:layout_width="430dp"
-            android:layout_height="52dp"
-            android:layout_marginStart="28dp"
-            android:layout_marginBottom="488dp"
+            android:layout_width="415dp"
+            android:layout_height="70dp"
             android:text="Breyta nafni"
             app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintStart_toStartOf="parent" />
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.368"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintVertical_bias="0.383" />
 
         <TextView
             android:id="@+id/tvList"
             android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="29dp"
-            android:layout_marginBottom="415dp"
+            android:layout_height="30dp"
             android:text="Nafnalisti"
             app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintStart_toStartOf="parent" />
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.05"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintVertical_bias="0.486" />
 
         <TextView
             android:id="@+id/tvName"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginStart="29dp"
-            android:layout_marginBottom="562dp"
+            android:layout_marginStart="16dp"
             android:text="Nafn"
             app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintStart_toStartOf="parent" />
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintVertical_bias="0.315" />
 
         <Switch
             android:id="@+id/sNotifications"
-            android:layout_width="430dp"
-            android:layout_height="43dp"
-            android:layout_marginStart="25dp"
-            android:layout_marginTop="611dp"
-            android:layout_marginEnd="10dp"
-            android:layout_marginBottom="48dp"
+            android:layout_width="415dp"
+            android:layout_height="70dp"
             android:text="Kveikja á tilkynningum"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHorizontal_bias="0.454"
+            app:layout_constraintHorizontal_bias="0.368"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
-            app:layout_constraintVertical_bias="0.0" />
+            app:layout_constraintVertical_bias="0.784" />
 
         <TextView
             android:id="@+id/tvNotifications"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginStart="20dp"
-            android:layout_marginTop="573dp"
-            android:layout_marginEnd="357dp"
-            android:layout_marginBottom="257dp"
             android:text="Tilkynningar"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHorizontal_bias="0.473"
+            app:layout_constraintHorizontal_bias="0.053"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
-            app:layout_constraintVertical_bias="1.0" />
+            app:layout_constraintVertical_bias="0.679" />
 
         <TextView
             android:id="@+id/tvPassword"
@@ -94,19 +93,21 @@
             android:text="Lykilorð"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHorizontal_bias="0.473"
+            app:layout_constraintHorizontal_bias="0.0"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
             app:layout_constraintVertical_bias="0.0" />
 
         <Button
             android:id="@+id/btnChangePassword"
-            android:layout_width="430dp"
-            android:layout_height="52dp"
-            android:layout_marginStart="28dp"
-            android:layout_marginBottom="624dp"
+            android:layout_width="415dp"
+            android:layout_height="70dp"
             android:text="Breyta lykilorði"
             app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintStart_toStartOf="parent" />
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.368"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintVertical_bias="0.22" />
     </androidx.constraintlayout.widget.ConstraintLayout>
 </layout>
