@@ -1,5 +1,6 @@
 package xyz.nafnaneistar.activities;
 
+import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
@@ -82,7 +83,9 @@ public class LoginActivity extends AppCompatActivity {
         ApiController.getInstance().login(new VolleyCallBack<User>() {
             @Override
             public ArrayList<NameCardItem> onSuccess() {
-                return null;
+
+                return  null;
+
             }
 
             @Override
@@ -100,6 +103,11 @@ public class LoginActivity extends AppCompatActivity {
                                 startActivity(i);
                             })
                             .show();
+                }
+                try {
+                    ApiController.getInstance().checkNotifications((Activity) binding.btnLogin.getContext());
+                } catch (URISyntaxException e) {
+                    e.printStackTrace();
                 }
             }
 
@@ -141,6 +149,11 @@ public class LoginActivity extends AppCompatActivity {
                                 startActivity(i);
                             })
                             .show();
+                }
+                try {
+                    ApiController.getInstance().checkNotifications((Activity) binding.btnLogin.getContext());
+                } catch (URISyntaxException e) {
+                    e.printStackTrace();
                 }
             }
 

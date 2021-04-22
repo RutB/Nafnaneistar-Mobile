@@ -19,6 +19,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import is.hi.hbv501g.nafnaneistar.nafnaneistar.Entities.NameCard;
+import is.hi.hbv501g.nafnaneistar.nafnaneistar.Entities.Notification;
 import is.hi.hbv501g.nafnaneistar.nafnaneistar.Entities.User;
 import is.hi.hbv501g.nafnaneistar.nafnaneistar.Services.NameService;
 import is.hi.hbv501g.nafnaneistar.nafnaneistar.Services.UserService;
@@ -32,7 +33,7 @@ public class NameRestController {
 
     NameService nameService;
     UserService userService;
-
+    public static String Name_Notification_Channel = "NameApproved__Channel";
     /**
      * The NameRestController requires a NameService and UserService
      * 
@@ -96,6 +97,13 @@ public class NameRestController {
         if (UserUtils.isAuthenticated(userService, email, pass)) {
             User user = userService.findByEmail(email);
             user.approveName(Integer.parseInt(id));
+            String name =  nameService.findById(Integer.parseInt(id)).get().getName();
+            for(Long partnerId : user.getLinkedPartners()) {
+                User partner = userService.findById(partnerId).get();
+                partner.addNotification(Name_Notification_Channel, "Þú og " + user.getEmail() + " líkuðuð við nafnið " + name);
+                user.addNotification(Name_Notification_Channel, "Þú og " + partner.getEmail() + " líkuðuð við nafnið " + name);
+                userService.save(partner);
+            }
             userService.save(user);
             NameCard nc = getNewNameCard(user, nameService, gender).get();
 
@@ -465,9 +473,17 @@ public class NameRestController {
         if (UserUtils.isAuthenticated(userService, email, pass)) {
             User user = userService.findByEmail(email);
             Optional<NameCard> nc = nameService.findById(id);
+            String name =  nc.get().getName();
+            for(Long partnerId : user.getLinkedPartners()) {
+                User partner = userService.findById(partnerId).get();
+                partner.addNotification(Name_Notification_Channel, "Þú og " + user.getEmail() + " líkuðuð við nafnið " + name);
+                user.addNotification(Name_Notification_Channel, "Þú og " + partner.getEmail() + " líkuðuð við nafnið " + name);
+                userService.save(partner);
+            }
             System.out.println("Name added to users approved list: " + nc.get().getName() + " with id: " + nc.get().getId());
             System.out.println("Logged in user: " + user.getEmail());
             user.getApprovedNames().put(nc.get().getId(), 0);
+           
             userService.save(user);
 
             return nc.get().toJsonString();

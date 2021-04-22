@@ -109,7 +109,7 @@ public class SettingsActivity extends AppCompatActivity {
         binding.btnRestartList.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                AlertDialog alertDialog = new AlertDialog.Builder(this)
+                AlertDialog alertDialog = new AlertDialog.Builder(binding.btnChangeName.getContext())
                         .setTitle("Endurstilla nafnalista")
                         .setMessage("Ertu viss um að þú vilt endurstilla listann?" +
                         " Öll núverandi nöfn munu hverfa")

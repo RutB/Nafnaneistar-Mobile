@@ -109,6 +109,11 @@ public class LinkPartnerActivity extends AppCompatActivity implements LinkRecycl
                 setAdapater();
                 if (!list.isEmpty())
                     userList.addAll(list);
+                try {
+                    ApiController.getInstance().checkNotifications((Activity) binding.btnLink.getContext());
+                } catch (URISyntaxException e) {
+                    e.printStackTrace();
+                }
             }
 
             @Override
@@ -137,6 +142,11 @@ public class LinkPartnerActivity extends AppCompatActivity implements LinkRecycl
                 UserItem user = userList.get(position);
                 userList.remove(user);
                 adapter.notifyDataSetChanged();
+                try {
+                    ApiController.getInstance().checkNotifications((Activity) binding.rvComboList.getContext());
+                } catch (URISyntaxException e) {
+                    e.printStackTrace();
+                }
             }
 
             @Override
@@ -184,6 +194,11 @@ public class LinkPartnerActivity extends AppCompatActivity implements LinkRecycl
                 // binding.etEmail2.setText(" ");
                 //binding.etEmail2.clearFocus();
                 // binding.etEmail2.setHint(R.string.hint_email);
+                try {
+                    ApiController.getInstance().checkNotifications((Activity) binding.rvComboList.getContext());
+                } catch (URISyntaxException e) {
+                    e.printStackTrace();
+                }
             }
 
             @Override

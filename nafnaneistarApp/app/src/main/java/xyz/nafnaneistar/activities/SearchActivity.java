@@ -172,6 +172,11 @@ public class SearchActivity extends AppCompatActivity implements SearchNameAdapt
                 nameCardListAll.addAll(response);
                 filterListByGender(response);
                 adapter.notifyDataSetChanged();
+                try {
+                    ApiController.getInstance().checkNotifications((Activity) binding.btnSearchName.getContext());
+                } catch (URISyntaxException e) {
+                    e.printStackTrace();
+                }
             }
 
             @Override

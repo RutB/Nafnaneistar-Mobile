@@ -55,6 +55,8 @@ public class User {
      * reflections the created User must be given an List of availableNames after
      * initialization or else the User will throw error.
      */
+    @Lob
+    private HashMap<String,String> notifications;
     public User() {
 
         this.approvedNames = new HashMap<Integer, Integer>();
@@ -77,6 +79,7 @@ public class User {
         this.availableNames = availableNames;
         this.approvedNames = new HashMap<Integer, Integer>();
         this.linkedPartners = new ArrayList<Long>();
+        this.notifications = new HashMap<String,String>();
     }
 
     // Custom Functions and Metods
@@ -262,5 +265,16 @@ public class User {
 	@Override
 	public String toString() {
         return "User: " + this.name + " listleft: " + this.getAvailableNamesSize();
+    }
+    public void addNotification(String id, String message){
+        if(this.notifications != null)
+            this.notifications.put(id,message);
+
+    }
+    public void removeNotification(){
+        this.notifications = new HashMap<String,String>();
+    }
+    public HashMap<String,String> getNotifications(){
+        return this.notifications;
     }
 }

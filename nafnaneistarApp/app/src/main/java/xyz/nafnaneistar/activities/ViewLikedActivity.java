@@ -18,6 +18,7 @@ import xyz.nafnaneistar.loginactivity.R;
 import xyz.nafnaneistar.loginactivity.databinding.ActivityViewLikedBinding;
 import xyz.nafnaneistar.model.User;
 
+import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
 import android.os.PersistableBundle;
@@ -255,6 +256,11 @@ public class ViewLikedActivity extends AppCompatActivity {
                     binding.tvFemaleStatRejected.setText(disapprovedFemale);
                     binding.tvFemalestatsLeft.setText(leftFemale);
                 } catch (JSONException e) {
+                    e.printStackTrace();
+                }
+                try {
+                    ApiController.getInstance().checkNotifications((Activity) binding.tvViewLikedMenuCombinedList.getContext());
+                } catch (URISyntaxException e) {
                     e.printStackTrace();
                 }
             }

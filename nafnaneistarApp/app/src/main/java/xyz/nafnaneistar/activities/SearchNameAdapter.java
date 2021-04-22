@@ -158,6 +158,11 @@ public class SearchNameAdapter extends RecyclerView.Adapter<SearchNameAdapter.Vi
             @Override
             public ArrayList<NameCardItem> onSuccess() {
                 Toast.makeText(context, "Nafn fjarlægt af lista", Toast.LENGTH_SHORT).show();
+                try {
+                    ApiController.getInstance().checkNotifications((Activity) context);
+                } catch (URISyntaxException e) {
+                    e.printStackTrace();
+                }
                 return null;
             }
 

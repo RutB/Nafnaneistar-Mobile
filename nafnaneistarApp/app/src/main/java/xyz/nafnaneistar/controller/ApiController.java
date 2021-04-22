@@ -2,9 +2,8 @@ package xyz.nafnaneistar.controller;
 
 import android.app.Activity;
 import android.app.Application;
-import android.content.Intent;
+import android.app.Notification;
 import android.util.Log;
-import android.view.View;
 import android.widget.Toast;
 
 import com.android.volley.Request;
@@ -21,8 +20,7 @@ import org.json.JSONObject;
 import java.net.URISyntaxException;
 import java.util.ArrayList;
 
-import xyz.nafnaneistar.activities.LoginActivity;
-import xyz.nafnaneistar.activities.SearchActivity;
+import androidx.core.app.NotificationManagerCompat;
 import xyz.nafnaneistar.activities.items.NameCardItem;
 import xyz.nafnaneistar.activities.items.UserItem;
 import xyz.nafnaneistar.helpers.Prefs;
@@ -36,14 +34,15 @@ import xyz.nafnaneistar.model.User;
  */
 public class ApiController extends Application {
     private static ApiController instance;
-    private static String domainURL = "http://46.22.102.179:7979/";
-    //private static String domainURL = "http://192.168.1.207:7979/";
+    NotificationController nc = new NotificationController();
+    private NotificationManagerCompat notificationManager;
+    // static String domainURL = "http://46.22.102.179:7979/";
+    private static String domainURL = "http://192.168.1.207:7979/";
     // private static String domainURL = "localhost:7979/";
     // private static String domainURL = "http://127.0.0.1:7979/";
     //private static String domainURL = "http://192.168.0.164:7979/";
 
     private RequestQueue requestQueue;
-
 
     /**
      * Return the current instance to prevent multiple instances
@@ -91,8 +90,46 @@ public class ApiController extends Application {
     public void onCreate() {
         super.onCreate();
         instance = this;
+        notificationManager = NotificationManagerCompat.from(this);
     }
 
+    public void checkNotifications(Activity context) throws URISyntaxException {
+        Prefs prefs = new Prefs(context);
+        String [] user = prefs.getUser();
+        String email = user[0];
+        String pass = user[1];
+        String listeningPath = "notify";
+        URIBuilder b = null;
+        try {
+            b = new URIBuilder(ApiController.getDomainURL()+listeningPath);
+        } catch (URISyntaxException e) {
+            e.printStackTrace();
+        }
+        b.addParameter("email",email);
+        b.addParameter("pass",pass);
+        JsonObjectRequest jsonObjReq = new JsonObjectRequest(Request.Method.GET,b.build().toString(),
+                null, response -> {
+            if(response.has(NotificationController.Name_Notification_Channel)){
+                try {
+                    Notification notification = nc.createApprovedNameNotification(context,response.getString(NotificationController.Name_Notification_Channel));
+                    notificationManager.notify(1,notification);
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                }
+            }
+            if(response.has(NotificationController.Partner_Notification_Channel)){
+                try {
+                    Notification notification = nc.createPartnerNotification(context,response.getString(NotificationController.Partner_Notification_Channel));
+                    notificationManager.notify(2,notification);
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                }
+            }
+        }, error ->{
+            Log.d("notify", "checkNotifications: "+ error.getMessage());
+        });
+        ApiController.getInstance().addToRequestQueue(jsonObjReq);
+    }
     public void login(VolleyCallBack<User> volleyCallBack, String email, String pass) throws URISyntaxException {
         String listeningPath = "login/check";
         URIBuilder b = null;
@@ -310,6 +347,7 @@ public class ApiController extends Application {
             volleyCallBack.onError(getString(R.string.errorRetrievingData));
         });
         ApiController.getInstance().addToRequestQueue(jsonObjReq);
+
     }
 
     public void getNewName(boolean male, boolean female, Activity context, VolleyCallBack<NameCard> volleyCallBack) throws URISyntaxException {
