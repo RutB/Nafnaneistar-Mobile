@@ -269,12 +269,18 @@ public class User {
     public void addNotification(String id, String message){
         if(this.notifications != null)
             this.notifications.put(id,message);
+        else {
+            this.notifications = new HashMap<String,String>();
+            this.notifications.put(id,message);
+        }
 
     }
     public void removeNotification(){
         this.notifications = new HashMap<String,String>();
     }
     public HashMap<String,String> getNotifications(){
+        if(this.notifications == null)
+            this.notifications = new HashMap<String,String>();
         return this.notifications;
     }
 }
