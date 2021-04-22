@@ -204,6 +204,11 @@ public class ApiController extends Application {
         ApiController.getInstance().addToRequestQueue(jsonObjReq);
     }
 
+    /**
+     * Returns a list of the current users approved NameCardItems
+     * @param context
+     * @param volleyCallBack
+     */
     public void getApprovedNames(Activity context, VolleyCallBack<ArrayList<NameCardItem>> volleyCallBack) {
         Prefs prefs = new Prefs(context);
         String [] user = prefs.getUser();
@@ -236,8 +241,6 @@ public class ApiController extends Application {
                                     nc.getInt("rating"),
                                     nc.getInt("gender")
                             ));
-
-
                         } catch (JSONException e) {
                             e.printStackTrace();
                         }
@@ -249,6 +252,11 @@ public class ApiController extends Application {
         ApiController.getInstance().addToRequestQueue(jsonObjReq);
     }
 
+    /**
+     * Returns a list of the current users approved NameCards.
+     * @param context
+     * @param volleyCallBack
+     */
     public void getApprovedNameCards(Activity context, VolleyCallBack<ArrayList<NameCard>> volleyCallBack) {
         Prefs prefs = new Prefs(context);
         String [] user = prefs.getUser();
@@ -462,7 +470,6 @@ public class ApiController extends Application {
      * @param context
      * @param volleyCallBack
      */
-
     public void getLinkedPartners(Activity context, VolleyCallBack<ArrayList<UserItem>> volleyCallBack) {
         Prefs prefs = new Prefs(context);
         String [] user = prefs.getUser();
@@ -632,8 +639,10 @@ public class ApiController extends Application {
     }
 
     /**
-     * WIP - HAT
-     *
+     * Returns an ArrayList of NameCards by name from the total stored in the database.
+     * @param context application context
+     * @param nameQuery String
+     * @param volleyCallBack
      */
     public void getNameCardsByName(Activity context, String nameQuery, VolleyCallBack<ArrayList<NameCard>> volleyCallBack) {
         Prefs prefs = new Prefs(context);
