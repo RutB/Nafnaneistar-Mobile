@@ -200,6 +200,8 @@ public class SearchNameAdapter extends RecyclerView.Adapter<SearchNameAdapter.Vi
     }
 
     public Balloon createBalloon(Context context, String text) {
+        String cap = text.substring(0, 1).toUpperCase().concat(text.substring(1));
+
         Balloon balloon = new Balloon.Builder(context)
                 .setArrowSize(10)
                 .setArrowOrientation(ArrowOrientation.TOP)
@@ -210,7 +212,7 @@ public class SearchNameAdapter extends RecyclerView.Adapter<SearchNameAdapter.Vi
                 .setWidth(BalloonSizeSpec.WRAP)
                 .setTextSize(15f)
                 .setTextTypeface(Typeface.BOLD_ITALIC)
-                .setText(text)
+                .setText(cap)
                 .setTextColor(ContextCompat.getColor(context, R.color.black))
                 .setBackgroundColor(ContextCompat.getColor(context, R.color.nav))
                 .setCornerRadius(4f)
