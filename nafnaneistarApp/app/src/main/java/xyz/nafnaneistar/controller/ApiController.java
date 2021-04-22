@@ -36,8 +36,8 @@ public class ApiController extends Application {
     private static ApiController instance;
     NotificationController nc = new NotificationController();
     private NotificationManagerCompat notificationManager;
-    // static String domainURL = "http://46.22.102.179:7979/";
-    private static String domainURL = "http://192.168.1.207:7979/";
+    static String domainURL = "http://46.22.102.179:7979/";
+    //private static String domainURL = "http://192.168.1.207:7979/";
     // private static String domainURL = "localhost:7979/";
     // private static String domainURL = "http://127.0.0.1:7979/";
     //private static String domainURL = "http://192.168.0.164:7979/";

@@ -21,6 +21,7 @@ import androidx.fragment.app.FragmentManager;
 
 import java.util.jar.Attributes;
 
+import xyz.nafnaneistar.activities.ViewLikedFragments.ViewNameStatsFragment;
 import xyz.nafnaneistar.helpers.Prefs;
 import xyz.nafnaneistar.loginactivity.R;
 import xyz.nafnaneistar.loginactivity.databinding.ActivitySettingsBinding;
@@ -46,15 +47,19 @@ public class SettingsActivity extends AppCompatActivity {
         //Initialize the navbar fragment
         FragmentManager fragmentManager = getSupportFragmentManager();
         Fragment navbar = fragmentManager.findFragmentById(R.id.navbar);
-
-        newName = (EditText) findViewById(R.id.etName);
-        newPassword = (EditText) findViewById(R.id.etPassword);
-        nameList = (TextView) findViewById(R.id.tvViewLikedMenuYfirlit);
+        Fragment nameStats = fragmentManager.findFragmentById(R.id.clNameStats);
 
         if (navbar == null) {
             navbar = new NavbarFragment();
             fragmentManager.beginTransaction()
                     .add(R.id.settingsContainer, navbar)
+                    .commit();
+        }
+
+        if (nameStats == null) {
+            nameStats = new ViewNameStatsFragment();
+            fragmentManager.beginTransaction()
+                    .add(R.id.clStatContainer, nameStats)
                     .commit();
         }
 
