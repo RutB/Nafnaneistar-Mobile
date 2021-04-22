@@ -212,7 +212,7 @@ public class SearchNameAdapter extends RecyclerView.Adapter<SearchNameAdapter.Vi
                 .setTextTypeface(Typeface.BOLD_ITALIC)
                 .setText(text)
                 .setTextColor(ContextCompat.getColor(context, R.color.black))
-                .setBackgroundColor(ContextCompat.getColor(context, R.color.ambiant))
+                .setBackgroundColor(ContextCompat.getColor(context, R.color.nav))
                 .setCornerRadius(4f)
                 .setBalloonAnimation(BalloonAnimation.FADE)
                 .setDismissWhenClicked(true)
