@@ -301,7 +301,7 @@ public class UserRestController {
         User currentUser = userService.findByEmail(email);
         String jsonNotifications = new JSONObject(currentUser.getNotifications()).toJSONString();
         currentUser.removeNotification();
-        userService.save(currentUser)
+        userService.save(currentUser);
         return jsonNotifications;
     }
 
