@@ -30,12 +30,13 @@
         app:iconGravity="textTop"
         app:iconPadding="0dp"
         app:iconSize="40dp"
-        app:iconTint="@color/ambiant"
+        app:iconTint="@android:color/holo_red_light"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.81"
         app:layout_constraintStart_toEndOf="@+id/btDescription"
-        app:layout_constraintTop_toTopOf="parent"/>
+        app:layout_constraintTop_toTopOf="parent"
+        tools:visibility="invisible" />
 
     <com.google.android.material.button.MaterialButton
         android:id="@+id/btDescription"
@@ -51,7 +52,7 @@
         app:iconGravity="textStart"
         app:iconPadding="0dp"
         app:iconSize="20dp"
-        app:iconTint="@color/ambiant"
+        app:iconTint="@color/white"
         app:iconTintMode="src_in"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
@@ -82,12 +83,13 @@
         app:iconGravity="textTop"
         app:iconPadding="0dp"
         app:iconSize="40dp"
-        app:iconTint="@color/ambiant"
+        app:iconTint="@android:color/white"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.81"
         app:layout_constraintStart_toEndOf="@+id/btDescription"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintTop_toTopOf="parent"
+        tools:visibility="visible" />
 
     <TextView
         android:id="@+id/tvNameResult"
