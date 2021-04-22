@@ -54,15 +54,6 @@ public class ViewNameStatsFragment extends Fragment {
         // Required empty public constructor
     }
 
-    /**
-     * Use this factory method to create a new instance of
-     * this fragment using the provided parameters.
-     *
-     * @param param1 Parameter 1.
-     * @param param2 Parameter 2.
-     * @return A new instance of fragment ViewNameStats.
-     */
-    // TODO: Rename and change types and number of parameters
     public static ViewNameStatsFragment newInstance() {
         ViewNameStatsFragment fragment = new ViewNameStatsFragment();
         return fragment;
@@ -168,4 +159,6 @@ public class ViewNameStatsFragment extends Fragment {
         maleString.setSpan(new ImageSpan(context, R.drawable.ic_gender_male, DynamicDrawableSpan.ALIGN_CENTER), male.length() + 1, male.length() + 2, Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
         binding.tvTitleMale.setText(maleString, TextView.BufferType.SPANNABLE);
     }
+
+
 }

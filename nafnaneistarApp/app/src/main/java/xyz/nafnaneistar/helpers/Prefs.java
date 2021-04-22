@@ -52,11 +52,11 @@ public class Prefs {
         userSet.add(pass);
         preferences.edit().putStringSet(userRef, userSet).apply();
     }
-    public void enableNotifications(boolean enable) {
-        preferences.edit().putBoolean(notifyRef,enable);
+    public void setEnableNotifications(boolean enable) {
+        preferences.edit().putBoolean(notifyRef,enable).apply();
     }
     public boolean getEnableNotifications(){
-        boolean enabled =  preferences.getBoolean(notifyRef,false);
+        boolean enabled =  preferences.getBoolean(notifyRef,true);
         return enabled;
 
     }
