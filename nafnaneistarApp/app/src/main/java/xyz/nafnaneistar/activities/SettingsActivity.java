@@ -83,6 +83,16 @@ public class SettingsActivity extends AppCompatActivity {
                 bundle.putInt("type", 2);
                 break;
         }
+        if(changedata != null){
+            fragmentManager.beginTransaction().remove(changedata).commit();
+            changedata = fragmentManager.findFragmentByTag("changedata");
+            changedata = new ChangeDataFragment();
+            changedata.setArguments(bundle);
+            fragmentManager.beginTransaction()
+                    .add(R.id.clStatContainer, changedata,"changedata")
+                    .commit();
+
+        }
         if (changedata == null) {
             changedata = new ChangeDataFragment();
             changedata.setArguments(bundle);
