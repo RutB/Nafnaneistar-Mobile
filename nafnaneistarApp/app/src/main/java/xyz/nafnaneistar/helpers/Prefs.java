@@ -27,6 +27,7 @@ public class Prefs {
     private SharedPreferences preferences;
     private final String userRef = "UserRef";
     private final String prefContext = "userPref";
+    private final String notifyRef = "NotifyRef";
     private Activity context;
 
     /**
@@ -50,6 +51,14 @@ public class Prefs {
         userSet.add(user);
         userSet.add(pass);
         preferences.edit().putStringSet(userRef, userSet).apply();
+    }
+    public void setEnableNotifications(boolean enable) {
+        preferences.edit().putBoolean(notifyRef,enable).apply();
+    }
+    public boolean getEnableNotifications(){
+        boolean enabled =  preferences.getBoolean(notifyRef,true);
+        return enabled;
+
     }
     public void CheckLogin(String[] user) {
         if (user.length != 2) {

@@ -13,101 +13,77 @@
 
         <Button
             android:id="@+id/btnRestartList"
-            android:layout_width="415dp"
-            android:layout_height="70dp"
-            android:text="Endurstilla nafnalista"
-            app:layout_constraintBottom_toBottomOf="parent"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="8dp"
+            android:layout_marginEnd="16dp"
+            android:layout_marginStart="16dp"
+            android:layout_marginTop="8dp"
+            android:text="Núllstilla Nafnalista"
+            android:textColor="@color/font"
+            app:layout_constraintBottom_toTopOf="@+id/swNotifications"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHorizontal_bias="0.35"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent"
-            app:layout_constraintVertical_bias="0.591" />
+            app:layout_constraintTop_toBottomOf="@+id/btnChangePassword" />
 
         <Button
             android:id="@+id/btnChangeName"
-            android:layout_width="415dp"
-            android:layout_height="70dp"
-            android:text="Breyta nafni"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHorizontal_bias="0.368"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent"
-            app:layout_constraintVertical_bias="0.383" />
-
-        <TextView
-            android:id="@+id/tvList"
-            android:layout_width="wrap_content"
-            android:layout_height="30dp"
-            android:text="Nafnalisti"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHorizontal_bias="0.05"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent"
-            app:layout_constraintVertical_bias="0.486" />
-
-        <TextView
-            android:id="@+id/tvName"
-            android:layout_width="wrap_content"
+            android:layout_width="0dp"
             android:layout_height="wrap_content"
+            android:layout_marginBottom="10dp"
+            android:layout_marginEnd="16dp"
             android:layout_marginStart="16dp"
-            android:text="Nafn"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent"
-            app:layout_constraintVertical_bias="0.315" />
-
-        <Switch
-            android:id="@+id/sNotifications"
-            android:layout_width="415dp"
-            android:layout_height="70dp"
-            android:text="Kveikja á tilkynningum"
-            app:layout_constraintBottom_toBottomOf="parent"
+            android:layout_marginTop="65dp"
+            android:text="Breyta nafni"
+            android:textColor="@color/font"
+            app:layout_constraintBottom_toTopOf="@+id/btnRestartList"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHorizontal_bias="0.368"
-            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintStart_toEndOf="@+id/btnChangePassword"
             app:layout_constraintTop_toTopOf="parent"
-            app:layout_constraintVertical_bias="0.784" />
-
-        <TextView
-            android:id="@+id/tvNotifications"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="Tilkynningar"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHorizontal_bias="0.053"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent"
-            app:layout_constraintVertical_bias="0.679" />
-
-        <TextView
-            android:id="@+id/tvPassword"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="20dp"
-            android:layout_marginTop="131dp"
-            android:layout_marginEnd="384dp"
-            android:layout_marginBottom="589dp"
-            android:text="Lykilorð"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHorizontal_bias="0.0"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent"
-            app:layout_constraintVertical_bias="0.0" />
+            app:layout_constraintVertical_bias="0.818" />
 
         <Button
             android:id="@+id/btnChangePassword"
-            android:layout_width="415dp"
-            android:layout_height="70dp"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginEnd="16dp"
+            android:layout_marginStart="16dp"
+            android:layout_marginTop="65dp"
             android:text="Breyta lykilorði"
+            android:textColor="@color/font"
+            app:layout_constraintBottom_toTopOf="@+id/btnRestartList"
+            app:layout_constraintEnd_toStartOf="@+id/btnChangeName"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <Switch
+            android:id="@+id/swNotifications"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="8dp"
+            android:layout_marginEnd="16dp"
+            android:layout_marginStart="16dp"
+            android:layout_marginTop="8dp"
+            android:text="Kveikt á tilkynningum"
+            app:layout_constraintBottom_toTopOf="@+id/clStatContainer"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/btnRestartList" />
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:id="@+id/clStatContainer"
+            android:layout_width="0dp"
+            android:layout_height="507dp"
+            android:layout_marginBottom="16dp"
+            android:layout_marginEnd="16dp"
+            android:layout_marginStart="16dp"
+            android:layout_marginTop="16dp"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHorizontal_bias="0.368"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent"
-            app:layout_constraintVertical_bias="0.22" />
+            app:layout_constraintTop_toBottomOf="@+id/swNotifications">
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
+
     </androidx.constraintlayout.widget.ConstraintLayout>
 </layout>

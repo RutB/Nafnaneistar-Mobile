@@ -10,6 +10,7 @@ import xyz.nafnaneistar.activities.ViewLikedFragments.ApprovedNameListManagerFra
 import xyz.nafnaneistar.activities.ViewLikedFragments.ComboListFragment;
 import xyz.nafnaneistar.activities.ViewLikedFragments.ComboListManagerFragment;
 import xyz.nafnaneistar.activities.ViewLikedFragments.NameComboFragment;
+import xyz.nafnaneistar.activities.ViewLikedFragments.ViewNameStatsFragment;
 import xyz.nafnaneistar.activities.items.NameCardItem;
 import xyz.nafnaneistar.controller.ApiController;
 import xyz.nafnaneistar.controller.VolleyCallBack;
@@ -120,7 +121,14 @@ public class ViewLikedActivity extends AppCompatActivity {
         changedSelectedMenu(binding.tvViewLikedMenuYfirlit);
         getStatData();
         hideAllMenuPages();
-        binding.clNameStats.setVisibility(View.VISIBLE);
+        Fragment f = fragmentManager.findFragmentById(R.layout.fragment_view_name_stats);
+        if (f == null) {
+            f = new ViewNameStatsFragment();
+            fragmentManager.beginTransaction()
+                    .add(R.id.clFragmentContainer, f, "ViewLikedStats")
+                    .commit();
+        }
+        //binding.clNameStats.setVisibility(View.VISIBLE);
     }
 
     private void loadComboListMenu(){
