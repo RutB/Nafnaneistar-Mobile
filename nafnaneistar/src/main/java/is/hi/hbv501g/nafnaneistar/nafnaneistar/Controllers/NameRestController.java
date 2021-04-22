@@ -100,9 +100,12 @@ public class NameRestController {
             String name =  nameService.findById(Integer.parseInt(id)).get().getName();
             for(Long partnerId : user.getLinkedPartners()) {
                 User partner = userService.findById(partnerId).get();
-                partner.addNotification(Name_Notification_Channel, "Þú og " + user.getEmail() + " líkuðuð við nafnið " + name);
-                user.addNotification(Name_Notification_Channel, "Þú og " + partner.getEmail() + " líkuðuð við nafnið " + name);
-                userService.save(partner);
+                if(partner.getApprovedNames().containsKey(Integer.parseInt(id))){
+                    partner.addNotification(Name_Notification_Channel, "Þú og " + user.getEmail() + " líkuðuð við nafnið " + name);
+                    user.addNotification(Name_Notification_Channel, "Þú og " + partner.getEmail() + " líkuðuð við nafnið " + name);
+                    userService.save(partner);
+                }
+        
             }
             userService.save(user);
             NameCard nc = getNewNameCard(user, nameService, gender).get();
@@ -476,9 +479,11 @@ public class NameRestController {
             String name =  nc.get().getName();
             for(Long partnerId : user.getLinkedPartners()) {
                 User partner = userService.findById(partnerId).get();
-                partner.addNotification(Name_Notification_Channel, "Þú og " + user.getEmail() + " líkuðuð við nafnið " + name);
-                user.addNotification(Name_Notification_Channel, "Þú og " + partner.getEmail() + " líkuðuð við nafnið " + name);
-                userService.save(partner);
+                if(partner.getApprovedNames().containsKey(id)){
+                    partner.addNotification(Name_Notification_Channel, "Þú og " + user.getEmail() + " líkuðuð við nafnið " + name);
+                    user.addNotification(Name_Notification_Channel, "Þú og " + partner.getEmail() + " líkuðuð við nafnið " + name);
+                    userService.save(partner);
+                }
             }
             System.out.println("Name added to users approved list: " + nc.get().getName() + " with id: " + nc.get().getId());
             System.out.println("Logged in user: " + user.getEmail());

@@ -96,6 +96,9 @@ public class ApiController extends Application {
     public void checkNotifications(Activity context) throws URISyntaxException {
         Prefs prefs = new Prefs(context);
         String [] user = prefs.getUser();
+        if(user.length ==0){
+            return;
+        }
         String email = user[0];
         String pass = user[1];
         String listeningPath = "notify";
