@@ -331,7 +331,7 @@ public class UserRestController {
         if(UserUtils.helperValidatingPartner(currentUser, linkPartner)){
             currentUser.addLinkedPartner(linkPartner.getId());
             linkPartner.addLinkedPartner(currentUser.getId());
-            linkPartner.addNotification(Partner_Notification_Channel, currentUser.getEmail() + " bætti þér við nánum aðila");
+            linkPartner.addNotification(Partner_Notification_Channel, currentUser.getEmail() + " bætti þér við sem nánum aðila");
             userService.save(currentUser);
 
         for(Long id : currentUser.getLinkedPartners()){
