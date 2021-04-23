@@ -20,6 +20,7 @@
             android:layout_height="wrap_content"
             android:layout_marginTop="28dp"
             android:text="@string/btnSearchName"
+            android:stateListAnimator="@null"
             android:textColor="@color/font"
             app:layout_constraintEnd_toStartOf="@+id/rvSearchResults"
             app:layout_constraintStart_toStartOf="parent"
