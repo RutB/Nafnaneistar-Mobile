@@ -232,8 +232,7 @@ public class ApprovedNameListManagerFragment extends Fragment implements  Approv
         ApiController.getInstance().removeFromApprovedList(namecardId,position, (Activity) getContext(), new VolleyCallBack<JSONObject>() {
             @Override
             public ArrayList<NameCardItem> onSuccess() {
-                Toast.makeText(getContext(), getResources().getString(R.string.operationSuccess) ,Toast.LENGTH_SHORT)
-                        .show();
+
                 adapter.notifyDataSetChanged();
                 return null;
             }

@@ -1,4 +1,5 @@
 package xyz.nafnaneistar.activities;
+import android.app.AlertDialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
@@ -14,17 +15,22 @@ import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import androidx.appcompat.app.AlertDialog;
+import org.json.JSONObject;
+
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.app.AppCompatDialogFragment;
 import androidx.databinding.DataBindingUtil;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 
+import java.util.ArrayList;
 import java.util.jar.Attributes;
 
 import xyz.nafnaneistar.activities.SettingsFragment.ChangeDataFragment;
 import xyz.nafnaneistar.activities.ViewLikedFragments.ViewNameStatsFragment;
+import xyz.nafnaneistar.activities.items.NameCardItem;
+import xyz.nafnaneistar.controller.ApiController;
+import xyz.nafnaneistar.controller.VolleyCallBack;
 import xyz.nafnaneistar.helpers.Prefs;
 import xyz.nafnaneistar.loginactivity.R;
 import xyz.nafnaneistar.loginactivity.databinding.ActivitySettingsBinding;
@@ -59,7 +65,7 @@ public class SettingsActivity extends AppCompatActivity {
         if (nameStats == null) {
             nameStats = new ViewNameStatsFragment();
             fragmentManager.beginTransaction()
-                    .add(R.id.clStatContainer, nameStats)
+                    .add(R.id.clStatContainer, nameStats,"nameStats")
                     .commit();
         }
         binding = DataBindingUtil.setContentView(this, R.layout.activity_settings);
@@ -68,7 +74,22 @@ public class SettingsActivity extends AppCompatActivity {
         binding.btnChangePassword.setOnClickListener(this::changeDataPopup);
         initNotificationToggle();
         binding.swNotifications.setOnCheckedChangeListener(this::toggleNotifications);
+        binding.btnRestartList.setOnClickListener(this::createResetListAlert);
 
+    }
+    private  void closeFragment() {
+        Fragment f = fragmentManager.findFragmentByTag("nameStats");
+        if(f != null)
+            fragmentManager.beginTransaction().remove(f).commit();
+    }
+
+    public void reloadStats() {
+        closeFragment();
+        Fragment nameStats;
+        nameStats = new ViewNameStatsFragment();
+        fragmentManager.beginTransaction()
+                .add(R.id.clStatContainer, nameStats,"nameStats")
+                .commit();
     }
 
     public void changeDataPopup(View view) {
@@ -109,6 +130,39 @@ public class SettingsActivity extends AppCompatActivity {
 
     public void toggleNotifications(CompoundButton buttonView, boolean isChecked){
         prefs.setEnableNotifications(isChecked);
+    }
+    public void createResetListAlert(View view) {
+        android.app.AlertDialog alert =  new AlertDialog.Builder(this)
+                .setTitle("Núllstilla listana")
+                .setMessage("Ertu Alveg viss um að þú viljir núllstilla nöfnin?")
+
+                .setPositiveButton("Já", new DialogInterface.OnClickListener() {
+                    public void onClick(DialogInterface dialog, int which) {
+                        ApiController.getInstance().resetUserLists(view.getContext(), new VolleyCallBack<JSONObject>() {
+                            @Override
+                            public ArrayList<NameCardItem> onSuccess() {
+                                return null;
+                            }
+
+                            @Override
+                            public void onResponse(JSONObject response) {
+                                reloadStats();
+                                Toast.makeText(view.getContext(), getResources().getString(R.string.operationSuccess) ,Toast.LENGTH_SHORT)
+                                        .show();
+                            }
+
+                            @Override
+                            public void onError(String error) {
+
+                            }
+                        });
+                    }
+                })
+
+                // A null listener allows the button to dismiss the dialog and take no further action.
+                .setNegativeButton("Nei 😯", null)
+                .setIcon(android.R.drawable.ic_dialog_alert)
+                .show();
     }
 }
 
