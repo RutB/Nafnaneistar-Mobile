@@ -33,9 +33,8 @@ import xyz.nafnaneistar.model.User;
  * Singleton Class for contacting the nafnaneistar.xyz API/Server
  * Prevents creating multiple networking objects and queues for traffic
  */
-public class ApiController extends Application {
+public class ApiController extends NotificationController {
     private static ApiController instance;
-
     private NotificationManagerCompat notificationManager;
     //static String domainURL = "http://46.22.102.179:7979/";
     private static String domainURL = "http://192.168.1.207:7979/";
@@ -92,11 +91,12 @@ public class ApiController extends Application {
         super.onCreate();
         instance = this;
 
+        notificationManager = NotificationManagerCompat.from(this);
+
     }
 
     public void checkNotifications(Activity context) throws URISyntaxException {
-        NotificationController notificationController = new NotificationController();
-        notificationManager = NotificationManagerCompat.from(context);
+
         Prefs prefs = new Prefs(context);
         String [] user = prefs.getUser();
         if(!prefs.getEnableNotifications())
@@ -119,7 +119,7 @@ public class ApiController extends Application {
                 null, response -> {
             if(response.has(NotificationController.Name_Notification_Channel)){
                 try {
-                    Notification notification = notificationController.createApprovedNameNotification(context,response.getString(NotificationController.Name_Notification_Channel));
+                    Notification notification = NotificationController.createApprovedNameNotification(context,response.getString(NotificationController.Name_Notification_Channel));
                     notificationManager.notify(1,notification);
                 } catch (JSONException e) {
                     e.printStackTrace();
@@ -127,7 +127,7 @@ public class ApiController extends Application {
             }
             if(response.has(NotificationController.Partner_Notification_Channel)){
                 try {
-                    Notification notification = notificationController.createPartnerNotification(context,response.getString(NotificationController.Partner_Notification_Channel));
+                    Notification notification = NotificationController.createPartnerNotification(context,response.getString(NotificationController.Partner_Notification_Channel));
                     notificationManager.notify(2,notification);
                 } catch (JSONException e) {
                     e.printStackTrace();

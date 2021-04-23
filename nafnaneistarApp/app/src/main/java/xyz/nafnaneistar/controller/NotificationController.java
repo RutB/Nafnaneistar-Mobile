@@ -17,7 +17,6 @@ public class NotificationController extends Application {
     @Override
     public void onCreate() {
         super.onCreate();
-
         createNotificationChannels();
     }
 
@@ -45,9 +44,11 @@ public class NotificationController extends Application {
         }
     }
 
-    public Notification createPartnerNotification(Context context, String message) {
+
+
+    public static Notification createPartnerNotification(Context context, String message) {
         Notification notification = new NotificationCompat.Builder(context, Partner_Notification_Channel)
-                .setSmallIcon(R.drawable.ic_partner)
+                .setSmallIcon(R.drawable.fill)
                 .setContentTitle("Ný Tenging á lista")
                 .setContentText(message)
                 .setPriority(NotificationCompat.PRIORITY_HIGH)
@@ -56,9 +57,9 @@ public class NotificationController extends Application {
         return  notification;
     }
 
-    public Notification createApprovedNameNotification(Context context, String message) {
+    public static Notification createApprovedNameNotification(Context context, String message) {
         Notification notification = new NotificationCompat.Builder(context, Name_Notification_Channel)
-                .setSmallIcon(R.drawable.ic_heart)
+                .setSmallIcon(R.drawable.fill)
                 .setContentTitle("Nýtt sameiginlegt nafn fundið")
                 .setContentText(message)
                 .setPriority(NotificationCompat.PRIORITY_HIGH)
