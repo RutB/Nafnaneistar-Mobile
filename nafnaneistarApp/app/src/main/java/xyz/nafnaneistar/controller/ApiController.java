@@ -35,10 +35,10 @@ import xyz.nafnaneistar.model.User;
  */
 public class ApiController extends Application {
     private static ApiController instance;
-    NotificationController nc = new NotificationController();
+
     private NotificationManagerCompat notificationManager;
-    static String domainURL = "http://46.22.102.179:7979/";
-    //private static String domainURL = "http://192.168.1.207:7979/";
+    //static String domainURL = "http://46.22.102.179:7979/";
+    private static String domainURL = "http://192.168.1.207:7979/";
     // private static String domainURL = "localhost:7979/";
     // private static String domainURL = "http://127.0.0.1:7979/";
     //private static String domainURL = "http://192.168.0.164:7979/";
@@ -91,10 +91,12 @@ public class ApiController extends Application {
     public void onCreate() {
         super.onCreate();
         instance = this;
-        notificationManager = NotificationManagerCompat.from(this);
+
     }
 
     public void checkNotifications(Activity context) throws URISyntaxException {
+        NotificationController notificationController = new NotificationController();
+        notificationManager = NotificationManagerCompat.from(context);
         Prefs prefs = new Prefs(context);
         String [] user = prefs.getUser();
         if(!prefs.getEnableNotifications())
@@ -117,7 +119,7 @@ public class ApiController extends Application {
                 null, response -> {
             if(response.has(NotificationController.Name_Notification_Channel)){
                 try {
-                    Notification notification = nc.createApprovedNameNotification(context,response.getString(NotificationController.Name_Notification_Channel));
+                    Notification notification = notificationController.createApprovedNameNotification(context,response.getString(NotificationController.Name_Notification_Channel));
                     notificationManager.notify(1,notification);
                 } catch (JSONException e) {
                     e.printStackTrace();
@@ -125,7 +127,7 @@ public class ApiController extends Application {
             }
             if(response.has(NotificationController.Partner_Notification_Channel)){
                 try {
-                    Notification notification = nc.createPartnerNotification(context,response.getString(NotificationController.Partner_Notification_Channel));
+                    Notification notification = notificationController.createPartnerNotification(context,response.getString(NotificationController.Partner_Notification_Channel));
                     notificationManager.notify(2,notification);
                 } catch (JSONException e) {
                     e.printStackTrace();

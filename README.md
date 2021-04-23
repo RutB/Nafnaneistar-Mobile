@@ -36,10 +36,7 @@ Forritið keyrir sjálfgefið á http://localhost:7979/ og taka skal eftir að �
 Það ætti að vera hægt bara að clone-a repoið eða sækja repo-ið og keyra í VsCode með springboot extension pakkanum eða í öðrum studdum ritlum (t.d. Eclipse).
 
 # Þekktir kvillar:
- - Takkar á leita af nafni og tengja á partnera fara yfir valmyndarstikuna
- - Það á eftir að útfæra útlit á flestu í Landscape
- - Það á eftir að birta leitarniðurstöður í lista, sést aðeins í console
- - Hægt er að smella mjög hratt 2x á Skoða lista í sameiginlegum listum og þá opnast fragment 2x og seinna án navbars....?
+
 
 # Virkni sem er komin fyrir code review
   - Öll virkni er í portrait mode

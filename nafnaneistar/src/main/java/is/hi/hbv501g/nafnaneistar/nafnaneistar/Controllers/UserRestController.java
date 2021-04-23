@@ -136,9 +136,12 @@ public class UserRestController {
         if (UserUtils.isAuthenticated(userService, email, password)) {
         User currentUser = userService.findByEmail(email);
         try {
-            Long id = userService.findByEmail(partnerEmail).getId();
+            User partner = userService.findByEmail(partnerEmail);
+            Long id = partner.getId();
             currentUser.removeLinkedPartner(id);
+            partner.removeLinkedPartner(currentUser.getId());
             userService.save(currentUser);
+            userService.save(partner);
             return "{'result': 'true'}";
         } catch(Error e){
             return "{'result':'false'}";
