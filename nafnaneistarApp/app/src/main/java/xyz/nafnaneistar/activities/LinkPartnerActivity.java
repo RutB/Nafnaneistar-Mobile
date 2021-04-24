@@ -82,7 +82,7 @@ public class LinkPartnerActivity extends AppCompatActivity implements LinkRecycl
     }
 
     /**
-     * Removes user at the placement position //and notifies of changes
+     * Removes user at the placement position and notifies of changes
      * @param position
      */
     @Override
