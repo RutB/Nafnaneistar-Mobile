@@ -10,6 +10,7 @@ import xyz.nafnaneistar.activities.ViewLikedFragments.ApprovedNameListManagerFra
 import xyz.nafnaneistar.activities.ViewLikedFragments.ComboListFragment;
 import xyz.nafnaneistar.activities.ViewLikedFragments.ComboListManagerFragment;
 import xyz.nafnaneistar.activities.ViewLikedFragments.NameComboFragment;
+import xyz.nafnaneistar.activities.ViewLikedFragments.ViewNameStatsFragment;
 import xyz.nafnaneistar.activities.items.NameCardItem;
 import xyz.nafnaneistar.controller.ApiController;
 import xyz.nafnaneistar.controller.VolleyCallBack;
@@ -18,6 +19,7 @@ import xyz.nafnaneistar.loginactivity.R;
 import xyz.nafnaneistar.loginactivity.databinding.ActivityViewLikedBinding;
 import xyz.nafnaneistar.model.User;
 
+import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
 import android.os.PersistableBundle;
@@ -119,7 +121,14 @@ public class ViewLikedActivity extends AppCompatActivity {
         changedSelectedMenu(binding.tvViewLikedMenuYfirlit);
         getStatData();
         hideAllMenuPages();
-        binding.clNameStats.setVisibility(View.VISIBLE);
+        Fragment f = fragmentManager.findFragmentById(R.layout.fragment_view_name_stats);
+        if (f == null) {
+            f = new ViewNameStatsFragment();
+            fragmentManager.beginTransaction()
+                    .add(R.id.clFragmentContainer, f, "ViewLikedStats")
+                    .commit();
+        }
+        //binding.clNameStats.setVisibility(View.VISIBLE);
     }
 
     private void loadComboListMenu(){
@@ -257,6 +266,11 @@ public class ViewLikedActivity extends AppCompatActivity {
                 } catch (JSONException e) {
                     e.printStackTrace();
                 }
+                try {
+                    ApiController.getInstance().checkNotifications((Activity) binding.tvViewLikedMenuCombinedList.getContext());
+                } catch (URISyntaxException e) {
+                    e.printStackTrace();
+                }
             }
 
             @Override
@@ -288,6 +302,4 @@ public class ViewLikedActivity extends AppCompatActivity {
         });
         ApiController.getInstance().addToRequestQueue(jsonObjReq);
     }
-
-
 }

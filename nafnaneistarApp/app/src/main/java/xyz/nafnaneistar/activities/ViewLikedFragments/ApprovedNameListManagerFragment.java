@@ -16,6 +16,7 @@ import com.google.android.material.snackbar.Snackbar;
 
 import org.json.JSONObject;
 
+import java.net.URISyntaxException;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
@@ -131,6 +132,7 @@ public class ApprovedNameListManagerFragment extends Fragment implements  Approv
         ApiController.getInstance().getApprovedNames((Activity) getContext(), new VolleyCallBack<ArrayList<NameCardItem>>() {
             @Override
             public ArrayList<NameCardItem> onSuccess() {
+
                 return null;
             }
 
@@ -153,7 +155,11 @@ public class ApprovedNameListManagerFragment extends Fragment implements  Approv
                     if(sortingSwitchState == 0)sortByName(approvedList);
                     else sortByRating(approvedList);
 
-
+                }
+                try {
+                    ApiController.getInstance().checkNotifications((Activity) binding.btnViewLikedGoBack.getContext());
+                } catch (URISyntaxException e) {
+                    e.printStackTrace();
                 }
             }
 
@@ -226,8 +232,7 @@ public class ApprovedNameListManagerFragment extends Fragment implements  Approv
         ApiController.getInstance().removeFromApprovedList(namecardId,position, (Activity) getContext(), new VolleyCallBack<JSONObject>() {
             @Override
             public ArrayList<NameCardItem> onSuccess() {
-                Toast.makeText(getContext(), getResources().getString(R.string.operationSuccess) ,Toast.LENGTH_SHORT)
-                        .show();
+
                 adapter.notifyDataSetChanged();
                 return null;
             }
@@ -237,6 +242,11 @@ public class ApprovedNameListManagerFragment extends Fragment implements  Approv
                 approvedListAll.remove(nc);
                 approvedList.remove(position);
                 adapter.notifyDataSetChanged();
+                try {
+                    ApiController.getInstance().checkNotifications((Activity) binding.btnViewLikedGoBack.getContext());
+                } catch (URISyntaxException e) {
+                    e.printStackTrace();
+                }
             }
             @Override
             public void onError(String error) {

@@ -134,7 +134,13 @@ public class NameComboFragment extends Fragment {
 
             @Override
             public void onResponse(String name) {
+
                 binding.tvCombonameReslt.setText(name);
+                try {
+                    ApiController.getInstance().checkNotifications((Activity) binding.etComboNameLastName.getContext());
+                } catch (URISyntaxException e) {
+                    e.printStackTrace();
+                }
             }
 
             @Override

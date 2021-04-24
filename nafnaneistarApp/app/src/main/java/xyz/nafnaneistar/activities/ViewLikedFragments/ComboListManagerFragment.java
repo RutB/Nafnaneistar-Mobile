@@ -13,6 +13,7 @@ import com.google.android.material.snackbar.Snackbar;
 
 import org.json.JSONObject;
 
+import java.net.URISyntaxException;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
@@ -151,6 +152,11 @@ public class ComboListManagerFragment extends Fragment implements  ComboListName
                     else sortByRating(comboList);
 
                 }
+                try {
+                    ApiController.getInstance().checkNotifications((Activity) binding.rvComboList.getContext());
+                } catch (URISyntaxException e) {
+                    e.printStackTrace();
+                }
             }
             @Override
             public void onError(String error) {
@@ -212,6 +218,11 @@ public class ComboListManagerFragment extends Fragment implements  ComboListName
                 comboListAll.remove(nc);
                 comboList.remove(position);
                 adapter.notifyDataSetChanged();
+                try {
+                    ApiController.getInstance().checkNotifications((Activity) binding.rvComboList.getContext());
+                } catch (URISyntaxException e) {
+                    e.printStackTrace();
+                }
                 return null;
             }
             @Override

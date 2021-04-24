@@ -1,5 +1,6 @@
 package xyz.nafnaneistar.activities;
 
+import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
@@ -126,6 +127,11 @@ public class SignupActivity extends AppCompatActivity {
                         Toast.makeText(SignupActivity.this, R.string.signupFailed ,Toast.LENGTH_SHORT)
                                 .show();
                     }
+                }
+                try {
+                    ApiController.getInstance().checkNotifications((Activity) binding.btnLogin2.getContext());
+                } catch (URISyntaxException e) {
+                    e.printStackTrace();
                 }
             }
 

@@ -62,7 +62,6 @@ public class SearchNameAdapter extends RecyclerView.Adapter<SearchNameAdapter.Vi
         public ViewHolder(@NonNull View itemView, OnItemListener onItemListener) {
             super(itemView);
             this.onItemListener = onItemListener;
-
             tvNameResult = itemView.findViewById(R.id.tvNameResult);
             btnAddToLiked = itemView.findViewById(R.id.btAddToLiked);
             btnRemoveFromLiked = itemView.findViewById(R.id.btRemoveFromLiked);
@@ -71,7 +70,6 @@ public class SearchNameAdapter extends RecyclerView.Adapter<SearchNameAdapter.Vi
 
         @Override
         public void onClick(View view) {
-
         }
     }
 
@@ -87,13 +85,14 @@ public class SearchNameAdapter extends RecyclerView.Adapter<SearchNameAdapter.Vi
     public void onBindViewHolder(@NonNull SearchNameAdapter.ViewHolder holder, int position) {
         String name = nameCardList.get(position).getName();
         String desc = nameCardList.get(position).getDescription();
-
         int id = nameCardList.get(position).getId();
         int gender = nameCardList.get(position).getGender();
-
         AtomicBoolean male = new AtomicBoolean(false);
         AtomicBoolean female = new AtomicBoolean(false);
 
+        /**
+         * Adds name and correct icon to each search result field.
+         */
         holder.tvNameResult.setText(
                 getGenderSign(name,
                         nameCardList.get(position).getGender(),
@@ -102,6 +101,10 @@ public class SearchNameAdapter extends RecyclerView.Adapter<SearchNameAdapter.Vi
                 TextView.BufferType.SPANNABLE
         );
 
+        /**
+         * Initializes the add and remove buttons for each search result depending on
+         * if they are already in the approved list or not.
+         */
         if (Utils.nameCardListContains(approvedList, nameCardList.get(position))) {
             holder.btnAddToLiked.setVisibility(View.GONE);
             holder.btnRemoveFromLiked.setVisibility(View.VISIBLE);
@@ -110,11 +113,18 @@ public class SearchNameAdapter extends RecyclerView.Adapter<SearchNameAdapter.Vi
             holder.btnRemoveFromLiked.setVisibility(View.GONE);
         };
 
+        /**
+         * Creates information balloons on button click
+         */
         holder.btnDescription.setOnClickListener( view -> {
             Balloon balloon = createBalloon(holder.btnDescription.getContext(), desc);
             balloon.showAlignBottom(holder.btnDescription);
         });
 
+        /**
+         * Listener for removing a name in the search results
+         * from the users approved list on button click
+         */
         holder.btnRemoveFromLiked.setOnClickListener( view -> {
             toggleView(view);
             toggleView(holder.btnAddToLiked);
@@ -122,6 +132,10 @@ public class SearchNameAdapter extends RecyclerView.Adapter<SearchNameAdapter.Vi
             approvedList.remove(nameCardList.get(position));
         });
 
+        /**
+         * Listener for adding name from search results
+         * into the users approved list on button click
+         */
         holder.btnAddToLiked.setOnClickListener( view -> {
             toggleView(view);
             approvedList.add(nameCardList.get(position));
@@ -145,6 +159,10 @@ public class SearchNameAdapter extends RecyclerView.Adapter<SearchNameAdapter.Vi
         });
     }
 
+    /**
+     * Toogles visibility of a view
+     * @param view view to toggle visibility of.
+     */
     public void toggleView(View view){
         if(view.getVisibility()==View.GONE)
             view.setVisibility(View.VISIBLE);
@@ -152,12 +170,22 @@ public class SearchNameAdapter extends RecyclerView.Adapter<SearchNameAdapter.Vi
             view.setVisibility(View.GONE);
     }
 
+    /**
+     * Removes a nameCard from the users approved list by the id of the nameCard
+     * @param nameCardId int, id to remove.
+     * @param context application context.
+     */
     public void removeFromApprovedList(int nameCardId, Context context) {
         ApiController.getInstance().removeFromApprovedList(nameCardId, 0, (Activity) context,  new VolleyCallBack<JSONObject>() {
 
             @Override
             public ArrayList<NameCardItem> onSuccess() {
                 Toast.makeText(context, "Nafn fjarlægt af lista", Toast.LENGTH_SHORT).show();
+                try {
+                    ApiController.getInstance().checkNotifications((Activity) context);
+                } catch (URISyntaxException e) {
+                    e.printStackTrace();
+                }
                 return null;
             }
 
@@ -173,6 +201,14 @@ public class SearchNameAdapter extends RecyclerView.Adapter<SearchNameAdapter.Vi
         });
     }
 
+    /**
+     * Inserts a nameCard into the users approved list.
+     * @param nameCardId int, Id of namecard to approve
+     * @param male boolean, is the nameCard male?
+     * @param female boolean, is the nameCard female?
+     * @param context application context
+     * @throws URISyntaxException
+     */
     public void approveName(int nameCardId, boolean male, boolean female, Activity context) throws URISyntaxException {
         Log.d("SearcNameAdapter.approveName",  "nameCardId: " + nameCardId + " male: " + male + " female: " + female + " context: " + context.toString());
         ApiController.getInstance().addToLiked(nameCardId, male, female, context, new VolleyCallBack<NameCard>() {
@@ -194,7 +230,15 @@ public class SearchNameAdapter extends RecyclerView.Adapter<SearchNameAdapter.Vi
         });
     }
 
+    /**
+     * Creates a balloon with a message
+     * @param context application context
+     * @param text string, message to display
+     * @return
+     */
     public Balloon createBalloon(Context context, String text) {
+        String cap = text.substring(0, 1).toUpperCase().concat(text.substring(1));
+
         Balloon balloon = new Balloon.Builder(context)
                 .setArrowSize(10)
                 .setArrowOrientation(ArrowOrientation.TOP)
@@ -205,9 +249,9 @@ public class SearchNameAdapter extends RecyclerView.Adapter<SearchNameAdapter.Vi
                 .setWidth(BalloonSizeSpec.WRAP)
                 .setTextSize(15f)
                 .setTextTypeface(Typeface.BOLD_ITALIC)
-                .setText(text)
+                .setText(cap)
                 .setTextColor(ContextCompat.getColor(context, R.color.black))
-                .setBackgroundColor(ContextCompat.getColor(context, R.color.ambiant))
+                .setBackgroundColor(ContextCompat.getColor(context, R.color.nav))
                 .setCornerRadius(4f)
                 .setBalloonAnimation(BalloonAnimation.FADE)
                 .setDismissWhenClicked(true)
@@ -220,7 +264,13 @@ public class SearchNameAdapter extends RecyclerView.Adapter<SearchNameAdapter.Vi
         return balloon;
     }
 
-
+    /**
+     * Adds appropriate gender sign to a name
+     * @param name string name
+     * @param gender int gender, 0 is male, 1 is female
+     * @param context application context
+     * @return
+     */
     public SpannableStringBuilder getGenderSign(String name, int gender, Context context){
         SpannableStringBuilder stringBuild = new SpannableStringBuilder(name + "  ");
         if(gender == 0){

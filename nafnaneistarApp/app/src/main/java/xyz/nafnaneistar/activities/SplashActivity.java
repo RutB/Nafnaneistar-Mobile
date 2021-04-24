@@ -33,7 +33,6 @@ public class SplashActivity extends AppCompatActivity {
         binding.videoView.setOnCompletionListener(mediaPlayer -> prefs.CheckLogin(prefs.getUser()));
         binding.videoView.setOnPreparedListener(mp -> {
             mp.setVolume(0,0);
-
         });
     }
 }

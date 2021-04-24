@@ -1,43 +1,59 @@
 package xyz.nafnaneistar.activities;
+import android.app.AlertDialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
+import android.text.InputType;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.CompoundButton;
+import android.widget.EditText;
+import android.widget.TextView;
 import android.widget.Toast;
 
-import androidx.appcompat.app.AlertDialog;
+import org.json.JSONObject;
+
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.app.AppCompatDialogFragment;
 import androidx.databinding.DataBindingUtil;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 
-import org.w3c.dom.NameList;
+import java.util.ArrayList;
+import java.util.jar.Attributes;
 
-import java.net.URISyntaxException;
-import java.util.HashMap;
-
-import xyz.nafnaneistar.activities.ViewLikedFragments.NameComboFragment;
+import xyz.nafnaneistar.activities.SettingsFragment.ChangeDataFragment;
+import xyz.nafnaneistar.activities.ViewLikedFragments.ViewNameStatsFragment;
+import xyz.nafnaneistar.activities.items.NameCardItem;
+import xyz.nafnaneistar.controller.ApiController;
+import xyz.nafnaneistar.controller.VolleyCallBack;
 import xyz.nafnaneistar.helpers.Prefs;
 import xyz.nafnaneistar.loginactivity.R;
 import xyz.nafnaneistar.loginactivity.databinding.ActivitySettingsBinding;
 import xyz.nafnaneistar.model.NameCard;
 import xyz.nafnaneistar.model.User;
 
+import static android.app.PendingIntent.getActivity;
+
 public class SettingsActivity extends AppCompatActivity {
     private ActivitySettingsBinding binding;
     private User currentUser = new User();
     private Prefs prefs;
+    FragmentManager fragmentManager;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        //Initialize the navbar fragment
-        FragmentManager fragmentManager = getSupportFragmentManager();
+        setContentView(R.layout.activity_settings);
+        prefs = new Prefs(this);
+
+        fragmentManager = getSupportFragmentManager();
         Fragment navbar = fragmentManager.findFragmentById(R.id.navbar);
+        Fragment nameStats = fragmentManager.findFragmentById(R.id.clNameStats);
 
         if (navbar == null) {
             navbar = new NavbarFragment();
@@ -45,73 +61,174 @@ public class SettingsActivity extends AppCompatActivity {
                     .add(R.id.settingsContainer, navbar)
                     .commit();
         }
-        prefs = new Prefs(SettingsActivity.this);
+
+        if (nameStats == null) {
+            nameStats = new ViewNameStatsFragment();
+            fragmentManager.beginTransaction()
+                    .add(R.id.clStatContainer, nameStats,"nameStats")
+                    .commit();
+        }
         binding = DataBindingUtil.setContentView(this, R.layout.activity_settings);
-        /**
-         * Button/toggle activities eingöngu
-         * ekki sér síður fyrir þetta
-         * **/
-        binding.sNotifications.setOnClickListener(this::PushNotifications);
-        binding.btnChangeName.setOnClickListener(this::ChangeName);
-        binding.btnChangePassword.setOnClickListener(this::ChangePassword);
-        binding.btnRestartList.setOnClickListener(this::RestartNameList);
+
+        binding.btnChangeName.setOnClickListener(this::changeDataPopup);
+        binding.btnChangePassword.setOnClickListener(this::changeDataPopup);
+        initNotificationToggle();
+        binding.swNotifications.setOnCheckedChangeListener(this::toggleNotifications);
+        binding.btnRestartList.setOnClickListener(this::createResetListAlert);
+    }
+    private  void closeFragment() {
+        Fragment f = fragmentManager.findFragmentByTag("nameStats");
+        if(f != null)
+            fragmentManager.beginTransaction().remove(f).commit();
     }
 
-    /**
-     * onClick event sem leiðir á aðra síðu þar sem að passwordinu verður breytt
-     * @param view
-     */
-    public void ChangePassword (View view) {
-
-
-
+    public void reloadStats() {
+        closeFragment();
+        Fragment nameStats;
+        nameStats = new ViewNameStatsFragment();
+        fragmentManager.beginTransaction()
+                .add(R.id.clStatContainer, nameStats,"nameStats")
+                .commit();
     }
 
-    /**
-     * onClick event sem leiðir á síðu þar sem breytingar verða gerðar
-     * @param view
-     */
-    public void ChangeName (View view) {
+    public void changeDataPopup(View view) {
+        Bundle bundle = new Bundle();
 
+        Fragment changedata = fragmentManager.findFragmentByTag("changedata");
+        switch (view.getId()){
+            case R.id.btnChangeName:
+                bundle.putInt("type", 1);
+                break;
+            case R.id.btnChangePassword:
+                bundle.putInt("type", 2);
+                break;
+        }
+        if(changedata != null){
+            fragmentManager.beginTransaction().remove(changedata).commit();
+            changedata = fragmentManager.findFragmentByTag("changedata");
+            changedata = new ChangeDataFragment();
+            changedata.setArguments(bundle);
+            fragmentManager.beginTransaction()
+                    .add(R.id.clStatContainer, changedata,"changedata")
+                    .commit();
+
+        }
+        if (changedata == null) {
+            changedata = new ChangeDataFragment();
+            changedata.setArguments(bundle);
+            fragmentManager.beginTransaction()
+                    .add(R.id.clStatContainer, changedata,"changedata")
+                    .commit();
+        }
     }
 
-    /**
-     * onClick event
-     * @param view
-     * staðfestingar skilaboð eiga að poppa upp
-     */
-    public void RestartNameList (View view) {
-        AlertDialog alertDialog = new AlertDialog.Builder(this)
-                .setTitle("Endurstilla nafnalista")
-                .setMessage("Ertu viss um að þú vilt endurstilla listann?" +
-                        " Öll núverandi nöfn munu hverfa")
+    public void initNotificationToggle(){
+        Log.d("notify", "initNotificationToggle: " + prefs.getEnableNotifications());
+        binding.swNotifications.setChecked(prefs.getEnableNotifications());
+    }
+
+    public void toggleNotifications(CompoundButton buttonView, boolean isChecked){
+        prefs.setEnableNotifications(isChecked);
+    }
+    public void createResetListAlert(View view) {
+        android.app.AlertDialog alert =  new AlertDialog.Builder(this)
+                .setTitle("Núllstilla listana")
+                .setMessage("Ertu Alveg viss um að þú viljir núllstilla nöfnin?")
+
                 .setPositiveButton("Já", new DialogInterface.OnClickListener() {
-                    @Override
                     public void onClick(DialogInterface dialog, int which) {
-                            currentUser.setApprovedNames(new HashMap<Integer, Integer>());
+                        ApiController.getInstance().resetUserLists(view.getContext(), new VolleyCallBack<JSONObject>() {
+                            @Override
+                            public ArrayList<NameCardItem> onSuccess() {
+                                return null;
+                            }
+
+                            @Override
+                            public void onResponse(JSONObject response) {
+                                reloadStats();
+                                Toast.makeText(view.getContext(), getResources().getString(R.string.operationSuccess) ,Toast.LENGTH_SHORT)
+                                        .show();
+                            }
+
+                            @Override
+                            public void onError(String error) {
+
+                            }
+                        });
                     }
                 })
-                .setNegativeButton("Hætta við", null)
+
+                // A null listener allows the button to dismiss the dialog and take no further action.
+                .setNegativeButton("Nei 😯", null)
+                .setIcon(android.R.drawable.ic_dialog_alert)
                 .show();
-
-        Button positive = alertDialog.getButton(AlertDialog.BUTTON_POSITIVE);
-        positive.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-
-            }
-        });
-
     }
-
-    /**
-     * onClick event
-     * @param view
-     * ef játað, þá koma tilkynningar, engin skilaboð
-     */
-    public void PushNotifications (View view) {
-
-    }
-
-
 }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

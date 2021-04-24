@@ -16,76 +16,76 @@
             style="@style/Widget.MaterialComponents.Button"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:layout_marginBottom="8dp"
-            android:layout_marginEnd="16dp"
-            android:layout_marginStart="16dp"
-            android:layout_marginTop="8dp"
+            android:layout_marginEnd="48dp"
+            android:layout_marginStart="48dp"
+            android:layout_marginTop="16dp"
             android:stateListAnimator="@null"
             android:text="Núllstilla Nafnalista"
             android:textColor="@color/font"
             app:layout_constraintBottom_toTopOf="@+id/swNotifications"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintStart_toEndOf="@+id/clStatContainer"
             app:layout_constraintTop_toBottomOf="@+id/btnChangePassword" />
 
         <Button
             android:id="@+id/btnChangeName"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:layout_marginBottom="10dp"
-            android:layout_marginEnd="16dp"
-            android:layout_marginStart="16dp"
+            android:layout_marginEnd="48dp"
+            android:layout_marginStart="48dp"
             android:layout_marginTop="65dp"
             android:stateListAnimator="@null"
             android:text="Breyta nafni"
             android:textColor="@color/font"
-            app:layout_constraintBottom_toTopOf="@+id/btnRestartList"
+            app:layout_constraintBottom_toTopOf="@+id/btnChangePassword"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toEndOf="@+id/btnChangePassword"
-            app:layout_constraintTop_toTopOf="parent"
-            app:layout_constraintVertical_bias="0.523" />
+            app:layout_constraintStart_toEndOf="@+id/clStatContainer"
+            app:layout_constraintTop_toTopOf="parent" />
 
         <Button
             android:id="@+id/btnChangePassword"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:layout_marginEnd="16dp"
-            android:layout_marginStart="16dp"
-            android:layout_marginTop="65dp"
+            android:layout_marginEnd="48dp"
+            android:layout_marginStart="48dp"
+            android:layout_marginTop="16dp"
             android:stateListAnimator="@null"
             android:text="Breyta lykilorði"
             android:textColor="@color/font"
             app:layout_constraintBottom_toTopOf="@+id/btnRestartList"
-            app:layout_constraintEnd_toStartOf="@+id/btnChangeName"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent" />
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toEndOf="@+id/clStatContainer"
+            app:layout_constraintTop_toBottomOf="@+id/btnChangeName" />
 
         <Switch
             android:id="@+id/swNotifications"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:layout_marginBottom="8dp"
-            android:layout_marginEnd="16dp"
-            android:layout_marginStart="16dp"
-            android:layout_marginTop="8dp"
+            android:layout_marginBottom="16dp"
+            android:layout_marginEnd="48dp"
+            android:layout_marginStart="48dp"
+            android:layout_marginTop="16dp"
             android:text="Kveikt á tilkynningum"
-            app:layout_constraintBottom_toTopOf="@+id/clStatContainer"
+            app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/btnRestartList" />
+            app:layout_constraintHorizontal_bias="0.503"
+            app:layout_constraintStart_toEndOf="@+id/clStatContainer"
+            app:layout_constraintTop_toBottomOf="@+id/btnRestartList"
+            app:layout_constraintVertical_bias="0.043" />
 
         <androidx.constraintlayout.widget.ConstraintLayout
             android:id="@+id/clStatContainer"
-            android:layout_width="0dp"
-            android:layout_height="507dp"
+            android:layout_width="466dp"
+            android:layout_height="0dp"
             android:layout_marginBottom="16dp"
-            android:layout_marginEnd="16dp"
             android:layout_marginStart="16dp"
-            android:layout_marginTop="16dp"
+            android:layout_marginTop="65dp"
             app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintEnd_toStartOf="@+id/btnRestartList"
+            app:layout_constraintHorizontal_bias="0.089"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/swNotifications">
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintVertical_bias="0.0">
 
         </androidx.constraintlayout.widget.ConstraintLayout>
 

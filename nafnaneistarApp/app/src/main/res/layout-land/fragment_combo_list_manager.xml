@@ -31,13 +31,14 @@
             android:id="@+id/linearLayout4"
             style="@style/tableStyle"
             android:layout_width="0dp"
-            android:layout_height="45dp"
+            android:layout_height="wrap_content"
             android:layout_marginEnd="16dp"
             android:layout_marginTop="64dp"
             android:background="@drawable/toptableborder"
             android:orientation="horizontal"
             app:layout_constraintBottom_toTopOf="@+id/rvComboList"
             app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.0"
             app:layout_constraintStart_toEndOf="@+id/swOrderBy"
             app:layout_constraintTop_toTopOf="parent">
 
@@ -103,8 +104,8 @@
         <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/rvComboList"
             android:layout_width="0dp"
-            android:layout_height="319dp"
-            android:layout_marginBottom="32dp"
+            android:layout_height="266dp"
+            android:layout_marginBottom="16dp"
             android:layout_marginEnd="16dp"
             android:background="@color/btn_color_lg"
             app:layout_constraintBottom_toBottomOf="parent"

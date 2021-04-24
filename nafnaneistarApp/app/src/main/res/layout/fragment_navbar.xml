@@ -39,13 +39,16 @@
             android:layout_height="220dp"
             android:animateLayoutChanges="true"
             android:background="@color/nav"
+            android:translationZ="90dp"
             android:visibility="visible"
             app:itemTextColor="@color/menuFont"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintHorizontal_bias="0.0"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/navViewTop"
+
             app:menu="@menu/side_menu" />
+
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 </layout>

@@ -17,11 +17,13 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import is.hi.hbv501g.nafnaneistar.nafnaneistar.Entities.NameCard;
+import is.hi.hbv501g.nafnaneistar.nafnaneistar.Entities.Notification;
 import is.hi.hbv501g.nafnaneistar.nafnaneistar.Entities.User;
 import is.hi.hbv501g.nafnaneistar.nafnaneistar.Services.NameService;
 import is.hi.hbv501g.nafnaneistar.nafnaneistar.Services.UserService;
 import is.hi.hbv501g.nafnaneistar.utils.BCrypt;
 import is.hi.hbv501g.nafnaneistar.utils.UserUtils;
+import net.minidev.json.JSONObject;
 
 /**
  * UserRestController contains methods and functions to process fetch calls from
@@ -32,6 +34,7 @@ public class UserRestController {
 
     NameService nameService;
     UserService userService;
+    public static String Partner_Notification_Channel = "Partner__Channel";
 
     @Autowired
     public UserRestController(NameService nameService, UserService userService) {
@@ -133,9 +136,12 @@ public class UserRestController {
         if (UserUtils.isAuthenticated(userService, email, password)) {
         User currentUser = userService.findByEmail(email);
         try {
-            Long id = userService.findByEmail(partnerEmail).getId();
+            User partner = userService.findByEmail(partnerEmail);
+            Long id = partner.getId();
             currentUser.removeLinkedPartner(id);
+            partner.removeLinkedPartner(currentUser.getId());
             userService.save(currentUser);
+            userService.save(partner);
             return "{'result': 'true'}";
         } catch(Error e){
             return "{'result':'false'}";
@@ -284,6 +290,23 @@ public class UserRestController {
 
         return partnersObj.toString();
     }
+        /**
+     * A fetch call to get the list of partners for user specified in email and password
+     * @param email
+     * @param pass
+     * @return - Returns a list of linked partners for current user
+     */
+    @GetMapping(value = "/notify",  produces = "application/json")
+    public String checkNotifications(
+        @RequestParam String email,
+        @RequestParam String pass) {
+        if (!UserUtils.isAuthenticated(userService, email, pass)) return "{}";
+        User currentUser = userService.findByEmail(email);
+        String jsonNotifications = new JSONObject(currentUser.getNotifications()).toJSONString();
+        currentUser.removeNotification();
+        userService.save(currentUser);
+        return jsonNotifications;
+    }
 
     /**
      * A call to update the list of partners for user specified in email and password
@@ -308,6 +331,7 @@ public class UserRestController {
         if(UserUtils.helperValidatingPartner(currentUser, linkPartner)){
             currentUser.addLinkedPartner(linkPartner.getId());
             linkPartner.addLinkedPartner(currentUser.getId());
+            linkPartner.addNotification(Partner_Notification_Channel, currentUser.getEmail() + " bætti þér við sem nánum aðila");
             userService.save(currentUser);
 
         for(Long id : currentUser.getLinkedPartners()){

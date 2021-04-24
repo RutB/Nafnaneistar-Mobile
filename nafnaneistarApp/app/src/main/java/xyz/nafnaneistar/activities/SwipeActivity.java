@@ -1,6 +1,7 @@
 package xyz.nafnaneistar.activities;
 
 import android.annotation.SuppressLint;
+import android.app.Activity;
 import android.os.Bundle;
 import android.os.Parcelable;
 import android.text.Spannable;
@@ -166,6 +167,11 @@ public class SwipeActivity extends AppCompatActivity {
                     public void onResponse(NameCard nc) {
                         currentCard = nc;
                         showNameCard(currentCard);
+                        try {
+                            ApiController.getInstance().checkNotifications((Activity) binding.tvName.getContext());
+                        } catch (URISyntaxException e) {
+                            e.printStackTrace();
+                        }
 
                     }
 
@@ -194,6 +200,11 @@ public class SwipeActivity extends AppCompatActivity {
                         int icon = (nc.getGender() == 1 ) ? (R.drawable.ic_gender_female) :  (R.drawable.ic_gender_male);
                         ssb.setSpan(new ImageSpan(getApplicationContext(),icon, DynamicDrawableSpan.ALIGN_CENTER), nc.getName().length() + 1, nc.getName().length() + 2, Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
                         binding.tvName.setText(ssb, TextView.BufferType.SPANNABLE);
+                        try {
+                            ApiController.getInstance().checkNotifications((Activity) binding.tvName.getContext());
+                        } catch (URISyntaxException e) {
+                            e.printStackTrace();
+                        }
                     }
                     @Override
                     public void onError(String error) {

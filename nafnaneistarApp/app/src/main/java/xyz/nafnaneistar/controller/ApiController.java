@@ -2,9 +2,9 @@ package xyz.nafnaneistar.controller;
 
 import android.app.Activity;
 import android.app.Application;
-import android.content.Intent;
+import android.app.Notification;
+import android.content.Context;
 import android.util.Log;
-import android.view.View;
 import android.widget.Toast;
 
 import com.android.volley.Request;
@@ -21,8 +21,7 @@ import org.json.JSONObject;
 import java.net.URISyntaxException;
 import java.util.ArrayList;
 
-import xyz.nafnaneistar.activities.LoginActivity;
-import xyz.nafnaneistar.activities.SearchActivity;
+import androidx.core.app.NotificationManagerCompat;
 import xyz.nafnaneistar.activities.items.NameCardItem;
 import xyz.nafnaneistar.activities.items.UserItem;
 import xyz.nafnaneistar.helpers.Prefs;
@@ -34,8 +33,9 @@ import xyz.nafnaneistar.model.User;
  * Singleton Class for contacting the nafnaneistar.xyz API/Server
  * Prevents creating multiple networking objects and queues for traffic
  */
-public class ApiController extends Application {
+public class ApiController extends NotificationController {
     private static ApiController instance;
+    private NotificationManagerCompat notificationManager;
     //static String domainURL = "http://46.22.102.179:7979/";
     private static String domainURL = "http://192.168.1.207:7979/";
     // private static String domainURL = "localhost:7979/";
@@ -43,7 +43,6 @@ public class ApiController extends Application {
     //private static String domainURL = "http://192.168.0.164:7979/";
 
     private RequestQueue requestQueue;
-
 
     /**
      * Return the current instance to prevent multiple instances
@@ -91,8 +90,54 @@ public class ApiController extends Application {
     public void onCreate() {
         super.onCreate();
         instance = this;
+
+        notificationManager = NotificationManagerCompat.from(this);
+
     }
 
+    public void checkNotifications(Activity context) throws URISyntaxException {
+
+        Prefs prefs = new Prefs(context);
+        String [] user = prefs.getUser();
+        if(!prefs.getEnableNotifications())
+            return;
+        if(user.length ==0){
+            return;
+        }
+        String email = user[0];
+        String pass = user[1];
+        String listeningPath = "notify";
+        URIBuilder b = null;
+        try {
+            b = new URIBuilder(ApiController.getDomainURL()+listeningPath);
+        } catch (URISyntaxException e) {
+            e.printStackTrace();
+        }
+        b.addParameter("email",email);
+        b.addParameter("pass",pass);
+        JsonObjectRequest jsonObjReq = new JsonObjectRequest(Request.Method.GET,b.build().toString(),
+                null, response -> {
+            if(response.has(NotificationController.Name_Notification_Channel)){
+                try {
+                    Notification notification = NotificationController.createApprovedNameNotification(context,response.getString(NotificationController.Name_Notification_Channel));
+                    notificationManager.notify(1,notification);
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                }
+            }
+            if(response.has(NotificationController.Partner_Notification_Channel)){
+                try {
+                    Notification notification = NotificationController.createPartnerNotification(context,response.getString(NotificationController.Partner_Notification_Channel));
+                    notificationManager.notify(2,notification);
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                }
+            }
+        }, error ->{
+            Log.d("notify", "checkNotifications: "+ error.getMessage());
+        });
+        ApiController.getInstance().addToRequestQueue(jsonObjReq);
+    }
     public void login(VolleyCallBack<User> volleyCallBack, String email, String pass) throws URISyntaxException {
         String listeningPath = "login/check";
         URIBuilder b = null;
@@ -164,6 +209,11 @@ public class ApiController extends Application {
         ApiController.getInstance().addToRequestQueue(jsonObjReq);
     }
 
+    /**
+     * Returns a list of the current users approved NameCardItems
+     * @param context
+     * @param volleyCallBack
+     */
     public void getApprovedNames(Activity context, VolleyCallBack<ArrayList<NameCardItem>> volleyCallBack) {
         Prefs prefs = new Prefs(context);
         String [] user = prefs.getUser();
@@ -196,8 +246,6 @@ public class ApiController extends Application {
                                     nc.getInt("rating"),
                                     nc.getInt("gender")
                             ));
-
-
                         } catch (JSONException e) {
                             e.printStackTrace();
                         }
@@ -209,6 +257,11 @@ public class ApiController extends Application {
         ApiController.getInstance().addToRequestQueue(jsonObjReq);
     }
 
+    /**
+     * Returns a list of the current users approved NameCards.
+     * @param context
+     * @param volleyCallBack
+     */
     public void getApprovedNameCards(Activity context, VolleyCallBack<ArrayList<NameCard>> volleyCallBack) {
         Prefs prefs = new Prefs(context);
         String [] user = prefs.getUser();
@@ -310,6 +363,7 @@ public class ApiController extends Application {
             volleyCallBack.onError(getString(R.string.errorRetrievingData));
         });
         ApiController.getInstance().addToRequestQueue(jsonObjReq);
+
     }
 
     public void getNewName(boolean male, boolean female, Activity context, VolleyCallBack<NameCard> volleyCallBack) throws URISyntaxException {
@@ -421,7 +475,6 @@ public class ApiController extends Application {
      * @param context
      * @param volleyCallBack
      */
-
     public void getLinkedPartners(Activity context, VolleyCallBack<ArrayList<UserItem>> volleyCallBack) {
         Prefs prefs = new Prefs(context);
         String [] user = prefs.getUser();
@@ -591,8 +644,10 @@ public class ApiController extends Application {
     }
 
     /**
-     * WIP - HAT
-     *
+     * Returns an ArrayList of NameCards by name from the total stored in the database.
+     * @param context application context
+     * @param nameQuery String
+     * @param volleyCallBack
      */
     public void getNameCardsByName(Activity context, String nameQuery, VolleyCallBack<ArrayList<NameCard>> volleyCallBack) {
         Prefs prefs = new Prefs(context);
@@ -641,5 +696,90 @@ public class ApiController extends Application {
         });
         ApiController.getInstance().addToRequestQueue(jsonObjReq);
 
+    }
+
+    public  void updatePassword(Context context,String pass, String newpass, VolleyCallBack<JSONObject> volleyCallBack){
+        Prefs prefs = new Prefs((Activity) context);
+        String [] user = prefs.getUser();
+        String email = user[0];
+        String listeningPath = "api/settings/changepassword";
+        URIBuilder b = null;
+        String url = "";
+
+        try {
+            b = new URIBuilder(ApiController.getDomainURL()+listeningPath);
+            b.addParameter("email",email);
+            b.addParameter("pass",pass);
+            b.addParameter("newpass",newpass);
+
+            url = b.build().toString();
+        } catch (URISyntaxException e) {
+            e.printStackTrace();
+        }
+        JsonObjectRequest jsonObjReq = new JsonObjectRequest(Request.Method.GET, url,null,
+                response -> {
+                    volleyCallBack.onSuccess();
+                    volleyCallBack.onResponse(response);
+                },error -> {
+            volleyCallBack.onError("Kerfisvilla");
+        });
+        ApiController.getInstance().addToRequestQueue(jsonObjReq);
+    }
+
+
+    public  void updateUsersName(Context context,String newname, VolleyCallBack<JSONObject> volleyCallBack){
+        Prefs prefs = new Prefs((Activity) context);
+        String [] user = prefs.getUser();
+        String email = user[0];
+        String pass = user[1];
+        String listeningPath = "api/settings/updatename";
+        URIBuilder b = null;
+        String url = "";
+
+        try {
+            b = new URIBuilder(ApiController.getDomainURL()+listeningPath);
+            b.addParameter("email",email);
+            b.addParameter("pass",pass);
+            b.addParameter("newname",newname);
+
+            url = b.build().toString();
+        } catch (URISyntaxException e) {
+            e.printStackTrace();
+        }
+        JsonObjectRequest jsonObjReq = new JsonObjectRequest(Request.Method.GET, url,null,
+                response -> {
+                    volleyCallBack.onSuccess();
+                    volleyCallBack.onResponse(response);
+                },error -> {
+            volleyCallBack.onError("Kerfisvilla");
+        });
+        ApiController.getInstance().addToRequestQueue(jsonObjReq);
+    }
+
+    public  void resetUserLists(Context context, VolleyCallBack<JSONObject> volleyCallBack){
+        Prefs prefs = new Prefs((Activity) context);
+        String [] user = prefs.getUser();
+        String email = user[0];
+        String pass = user[1];
+        String listeningPath = "api/settings/resetlists";
+        URIBuilder b = null;
+        String url = "";
+
+        try {
+            b = new URIBuilder(ApiController.getDomainURL()+listeningPath);
+            b.addParameter("email",email);
+            b.addParameter("pass",pass);
+            url = b.build().toString();
+        } catch (URISyntaxException e) {
+            e.printStackTrace();
+        }
+        JsonObjectRequest jsonObjReq = new JsonObjectRequest(Request.Method.GET, url,null,
+                response -> {
+                    volleyCallBack.onSuccess();
+                    volleyCallBack.onResponse(response);
+                },error -> {
+            volleyCallBack.onError("Kerfisvilla");
+        });
+        ApiController.getInstance().addToRequestQueue(jsonObjReq);
     }
 }

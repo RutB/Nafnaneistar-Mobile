@@ -50,6 +50,7 @@ public class SettingsRestController {
         }       
     }
 
+
     @GetMapping(path="/settings/changepassword", produces = "application/json")
     public boolean updateNameRating(@RequestParam String oldpass,@RequestParam String newpass, HttpSession session) 
     {   User currentUser = (User) session.getAttribute("currentUser");
@@ -67,6 +68,8 @@ public class SettingsRestController {
         return false;
     }
 
+
+
     @GetMapping(path="/settings/resetlists", produces = "application/json")
     public boolean updateNameRating(HttpSession session) 
     {   User currentUser = (User) session.getAttribute("currentUser");
@@ -78,6 +81,47 @@ public class SettingsRestController {
             return true;
         }catch(Error e){
             return false;
+        }       
+    }
+    
+    @GetMapping(path="api/settings/updatename", produces = "application/json")
+    public String apiUpdateName(
+        @RequestParam(required=true)  String email,
+        @RequestParam(required=true)  String pass,
+        @RequestParam(required=true)  String newname) { 
+        if (!UserUtils.isAuthenticated(userService, email, pass)) return "{message: villa í auðkenningu}";
+        User currentUser = userService.findByEmail(email); 
+        currentUser.setName(newname);
+        userService.save(currentUser);
+        return "{success: true}";
+    }
+
+    @GetMapping(path="api/settings/changepassword", produces = "application/json")
+    public String apiChangePassword(
+        @RequestParam(required=true)  String email,
+        @RequestParam(required=true)  String pass,
+        @RequestParam(required=true)  String newpass) { 
+        if (!UserUtils.isAuthenticated(userService, email, pass)) return "{message: villa í auðkenningu}";
+        User currentUser = userService.findByEmail(email); 
+        String generatedPass = BCrypt.hashpw(newpass, BCrypt.gensalt(12));
+        currentUser.setPassword(generatedPass);
+        userService.save(currentUser);
+        return "{success: true}";
+    }
+
+    @GetMapping(path="api/settings/resetlists", produces = "application/json")
+    public String apiResetList(
+        @RequestParam String email,
+        @RequestParam String pass) { 
+        if (!UserUtils.isAuthenticated(userService, email, pass)) return "{message: villa í auðkenningu}";
+            User currentUser = userService.findByEmail(email); 
+        try {
+            UserUtils.initAvailableNames(currentUser, nameService);
+            currentUser.setApprovedNames(new HashMap<Integer,Integer>());
+            userService.save(currentUser);
+            return "{success: true}";
+        }catch(Error e){
+            return "{success: false}";
         }       
     }
 
