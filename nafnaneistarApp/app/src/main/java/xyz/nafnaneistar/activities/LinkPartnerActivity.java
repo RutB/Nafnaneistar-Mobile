@@ -23,7 +23,7 @@ import java.util.regex.Pattern;
 import androidx.recyclerview.widget.DefaultItemAnimator;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
-import xyz.nafnaneistar.activities.LinkedPartnerFragments.LinkRecyclerViewAdapter;
+
 import xyz.nafnaneistar.activities.items.NameCardItem;
 import xyz.nafnaneistar.activities.items.UserItem;
 import xyz.nafnaneistar.controller.ApiController;
@@ -33,12 +33,8 @@ import xyz.nafnaneistar.loginactivity.R;
 import xyz.nafnaneistar.loginactivity.databinding.ActivityLinkPartnerBinding;
 import xyz.nafnaneistar.model.User;
 
-/**
- *
- */
 public class LinkPartnerActivity extends AppCompatActivity implements LinkRecyclerViewAdapter.OnItemListener {
     private ActivityLinkPartnerBinding binding;
-    private User currentUser = new User();
     private Prefs prefs;
     static LinkRecyclerViewAdapter adapter;
     private ArrayList<UserItem> userList = new ArrayList<>();
@@ -93,7 +89,7 @@ public class LinkPartnerActivity extends AppCompatActivity implements LinkRecycl
     }
 
     /**
-     * Fills in the table from backend????
+     * Fills in the table for linked partner for current user
      */
     public void populateTable() {
         ApiController.getInstance().getLinkedPartners((Activity) binding.btnLink.getContext(), new VolleyCallBack<ArrayList<UserItem>>() {
@@ -159,7 +155,7 @@ public class LinkPartnerActivity extends AppCompatActivity implements LinkRecycl
 
     /**
      * Updates the table with new linked partner from the text view.
-     * If the email doesn't correlate to some user a toast will come.
+     * If the email doesn't correlate to some user a toast will show with a response.
      * @param view
      */
     public void populateNewTable(View view) {
@@ -176,7 +172,6 @@ public class LinkPartnerActivity extends AppCompatActivity implements LinkRecycl
             return;
         }
 
-
         ApiController.getInstance().putLinkedPartners(email, (Activity) binding.btnLink.getContext(), new VolleyCallBack<ArrayList<UserItem>>() {
 
             @Override
@@ -188,12 +183,8 @@ public class LinkPartnerActivity extends AppCompatActivity implements LinkRecycl
             @Override
             public void onResponse(ArrayList<UserItem> list) {
                 setAdapater();
-                // Log.d("test", "onResponse: "+ list.get(0));
                 userList.clear();
                 userList.addAll(list);
-                // binding.etEmail2.setText(" ");
-                //binding.etEmail2.clearFocus();
-                // binding.etEmail2.setHint(R.string.hint_email);
                 try {
                     ApiController.getInstance().checkNotifications((Activity) binding.rvComboList.getContext());
                 } catch (URISyntaxException e) {
@@ -208,7 +199,6 @@ public class LinkPartnerActivity extends AppCompatActivity implements LinkRecycl
                 binding.etEmail2.setHint(R.string.hint_email);
                 return null;
             }
-
         });
     }
 

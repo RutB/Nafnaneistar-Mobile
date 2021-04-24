@@ -36,8 +36,8 @@ import xyz.nafnaneistar.model.User;
 public class ApiController extends NotificationController {
     private static ApiController instance;
     private NotificationManagerCompat notificationManager;
-    //static String domainURL = "http://46.22.102.179:7979/";
-    private static String domainURL = "http://192.168.1.207:7979/";
+    static String domainURL = "http://46.22.102.179:7979/";
+    //private static String domainURL = "http://192.168.1.207:7979/";
     // private static String domainURL = "localhost:7979/";
     // private static String domainURL = "http://127.0.0.1:7979/";
     //private static String domainURL = "http://192.168.0.164:7979/";
@@ -96,7 +96,6 @@ public class ApiController extends NotificationController {
     }
 
     public void checkNotifications(Activity context) throws URISyntaxException {
-
         Prefs prefs = new Prefs(context);
         String [] user = prefs.getUser();
         if(!prefs.getEnableNotifications())
@@ -138,6 +137,7 @@ public class ApiController extends NotificationController {
         });
         ApiController.getInstance().addToRequestQueue(jsonObjReq);
     }
+
     public void login(VolleyCallBack<User> volleyCallBack, String email, String pass) throws URISyntaxException {
         String listeningPath = "login/check";
         URIBuilder b = null;
@@ -419,6 +419,15 @@ public class ApiController extends NotificationController {
         ApiController.getInstance().addToRequestQueue(jsonObjReq);
     }
 
+    /**
+     * Adds current card to liked names list for current user
+     * @param currentCardId
+     * @param male
+     * @param female
+     * @param context
+     * @param volleyCallBack
+     * @throws URISyntaxException
+     */
     public void addToLiked(int currentCardId,boolean male, boolean female, Activity context, VolleyCallBack<NameCard> volleyCallBack) throws URISyntaxException {
         Log.d("ApiController.chooseName",  "nameCardId: " + currentCardId + " male: " + male + " female: " + female + " Context: " + context );
         Prefs prefs = new Prefs(context);
@@ -445,6 +454,11 @@ public class ApiController extends NotificationController {
         ApiController.getInstance().addToRequestQueue(jsonObjReq);
     }
 
+    /**
+     * Returns statistics for current user
+     * @param context
+     * @param volleyCallBack
+     */
     public void getStatData(Activity context,VolleyCallBack<JSONObject> volleyCallBack){
         Prefs prefs = new Prefs(context);
         String [] user = prefs.getUser();
@@ -471,7 +485,7 @@ public class ApiController extends NotificationController {
     }
 
     /**
-     *
+     * Returns ArrayList of UserItems that are the linked partners to the current user
      * @param context
      * @param volleyCallBack
      */
@@ -500,7 +514,6 @@ public class ApiController extends NotificationController {
                     }
                     try {
                         for(int i = 0; i < resp.length(); i++) {
-                            Log.d("for", "for" + i);
                             JSONObject us = (JSONObject) resp.get(i);
                             String partner = us.getString("name");
                             String partnerEmail = us.getString("email");
@@ -519,6 +532,12 @@ public class ApiController extends NotificationController {
         ApiController.getInstance().addToRequestQueue(jsonObjReq);
     }
 
+    /**
+     * Puts new partner on linked partner list for current user based on pEmail
+     * @param pEmail
+     * @param context
+     * @param volleyCallBack
+     */
     public void putLinkedPartners(String pEmail, Activity context, VolleyCallBack<ArrayList<UserItem>> volleyCallBack) {
         Prefs prefs = new Prefs(context);
         String [] user = prefs.getUser();
@@ -551,7 +570,6 @@ public class ApiController extends NotificationController {
                     }
                     try {
                          for(int i = 0; i < resp.length(); i++) {
-                            Log.d("for", "for" + i);
                             JSONObject us = (JSONObject) resp.get(i);
                             String partner = us.getString("name");
                             String partnerEmail = us.getString("email");
@@ -600,6 +618,14 @@ public class ApiController extends NotificationController {
         ApiController.getInstance().addToRequestQueue(jsonObjReq);
     }
 
+    /**
+     * Returns generated full name based on inputs
+     * @param context
+     * @param middle
+     * @param gender
+     * @param lastName
+     * @param volleyCallBack
+     */
     public void generateComboName(Activity context, boolean middle, int gender, String lastName, VolleyCallBack<String> volleyCallBack){
         Prefs prefs = new Prefs(context);
         String [] user = prefs.getUser();
@@ -671,8 +697,6 @@ public class ApiController extends NotificationController {
         JsonObjectRequest jsonObjReq = new JsonObjectRequest(Request.Method.GET, url,null,
                 response -> {
                     Gson g = new Gson();
-                    // NameCard queryResults = g.fromJson(String.valueOf(response), NameCard.class);
-
                     ArrayList<NameCard> nameCards = new ArrayList<>();
                     try {
                         Log.d("nameSearch", "Searchname: "+response.getJSONArray("results").toString());
@@ -727,7 +751,7 @@ public class ApiController extends NotificationController {
     }
 
 
-    public  void updateUsersName(Context context,String newname, VolleyCallBack<JSONObject> volleyCallBack){
+    public void updateUsersName(Context context,String newname, VolleyCallBack<JSONObject> volleyCallBack){
         Prefs prefs = new Prefs((Activity) context);
         String [] user = prefs.getUser();
         String email = user[0];
@@ -756,7 +780,7 @@ public class ApiController extends NotificationController {
         ApiController.getInstance().addToRequestQueue(jsonObjReq);
     }
 
-    public  void resetUserLists(Context context, VolleyCallBack<JSONObject> volleyCallBack){
+    public void resetUserLists(Context context, VolleyCallBack<JSONObject> volleyCallBack){
         Prefs prefs = new Prefs((Activity) context);
         String [] user = prefs.getUser();
         String email = user[0];

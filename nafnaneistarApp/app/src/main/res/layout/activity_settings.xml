@@ -76,12 +76,12 @@
 
         <androidx.constraintlayout.widget.ConstraintLayout
             android:id="@+id/clStatContainer"
-            android:layout_width="0dp"
-            android:layout_height="507dp"
-            android:layout_marginBottom="16dp"
-            android:layout_marginEnd="16dp"
+            android:layout_width="379dp"
+            android:layout_height="367dp"
             android:layout_marginStart="16dp"
             android:layout_marginTop="16dp"
+            android:layout_marginEnd="16dp"
+            android:layout_marginBottom="16dp"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"

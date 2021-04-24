@@ -27,7 +27,7 @@ möppur eins og out, .vscode og dist má bara hunsa og eru ekki nauðsynlegar fy
 Ekki þarf að setja upp bakenda þar sem hann keyrir á http://46.22.102.179:7979 eins og sést í ApiController
 
 # Ef notaður er local bakendi
-Þá er hægt að keyra springboot möppuna sem er undir Nafnaneistar möppunni
+Þá er hægt að keyra springboot möppuna sem er undir Nafnaneistar möppunni.
 Forritið keyrir sjálfgefið á http://localhost:7979/ og taka skal eftir að það er port 7979 svo ef að það port er í notkun þarf að slökkva á þeirri þjónustu sem er keyrandi þar.
 * ef að repo-ið er sótt er hægt að breyta sjálfgefnu porti í application.properties skránni og breyta línunni sem inniheldur: server.port=7979 og breyta þá 7979 í eitthvað annað.
 

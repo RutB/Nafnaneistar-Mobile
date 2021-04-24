@@ -128,7 +128,6 @@ public class ViewLikedActivity extends AppCompatActivity {
                     .add(R.id.clFragmentContainer, f, "ViewLikedStats")
                     .commit();
         }
-        //binding.clNameStats.setVisibility(View.VISIBLE);
     }
 
     private void loadComboListMenu(){
@@ -202,6 +201,7 @@ public class ViewLikedActivity extends AppCompatActivity {
                     .commit();
         }
     }
+
     private void hideAllMenuPages(){
         binding.clNameStats.setVisibility(View.INVISIBLE);
         for (String tag: FragmentTags) {
@@ -210,9 +210,11 @@ public class ViewLikedActivity extends AppCompatActivity {
 
             removeFragment(tag);
         }
-
     }
 
+    /**
+     * Fixes the title for statistics on current user
+     */
     private void fixStatsTitle(){
         String female = getString(R.string.tvViewLikeStatNameFemaleTitle);
         SpannableStringBuilder femaleString = new SpannableStringBuilder(female + "  ");
@@ -237,6 +239,9 @@ public class ViewLikedActivity extends AppCompatActivity {
         }
     }
 
+    /**
+     * Fills in statistics on current user
+     */
     private void getStatData(){
         ApiController.getInstance().getStatData(this, new VolleyCallBack<JSONObject>() {
             @Override

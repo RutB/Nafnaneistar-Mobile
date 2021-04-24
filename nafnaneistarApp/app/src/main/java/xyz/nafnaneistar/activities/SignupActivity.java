@@ -47,7 +47,6 @@ public class SignupActivity extends AppCompatActivity {
             }
         });
         prefs = new Prefs(SignupActivity.this);
-
     }
 
     /**

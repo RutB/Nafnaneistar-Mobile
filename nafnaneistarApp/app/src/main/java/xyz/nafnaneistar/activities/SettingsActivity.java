@@ -76,6 +76,7 @@ public class SettingsActivity extends AppCompatActivity {
         binding.swNotifications.setOnCheckedChangeListener(this::toggleNotifications);
         binding.btnRestartList.setOnClickListener(this::createResetListAlert);
     }
+
     private  void closeFragment() {
         Fragment f = fragmentManager.findFragmentByTag("nameStats");
         if(f != null)

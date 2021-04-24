@@ -37,7 +37,6 @@ import static xyz.nafnaneistar.loginactivity.R.*;
 public class SearchActivity extends AppCompatActivity implements SearchNameAdapter.OnItemListener {
     private ActivitySearchBinding binding;
     private Prefs prefs;
-    private String tvNameResult;
     private ArrayList<NameCard> nameCardList = new ArrayList<>();
     private ArrayList<NameCard> approvedList = new ArrayList<NameCard>();
     private ArrayList<NameCard> nameCardListAll = new ArrayList<>();

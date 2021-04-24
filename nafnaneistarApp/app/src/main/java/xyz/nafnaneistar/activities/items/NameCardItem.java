@@ -12,9 +12,11 @@ public class NameCardItem {
         this.rating = rating;
         this.gender = gender;
     }
+
     public int getId(){
         return id;
     }
+
     public String getName() {
         return name;
     }

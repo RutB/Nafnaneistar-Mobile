@@ -77,14 +77,17 @@ public class ChangeDataFragment extends Fragment {
         binding.btnSubmitData.setOnClickListener(this::changeDataOnClick);
         return view;
     }
-    private  void closeFragment(View view) {
+
+    private void closeFragment(View view) {
         Fragment f = getParentFragmentManager().findFragmentByTag("changedata");
         if(f != null)
             getParentFragmentManager().beginTransaction().remove(f).commit();
     }
 
-
-
+    /**
+     * Updates data depending on which type
+     * @param view
+     */
     public void changeDataOnClick(View view){
         if(type == 1){
             if(binding.etNewData.getText().toString().trim().length() == 0){
@@ -114,13 +117,16 @@ public class ChangeDataFragment extends Fragment {
                 }
             });
         }
+
         if(type == 2){
             if(binding.etNewData.getText().toString().trim().length() == 0 || binding.etOldData.getText().toString().trim().length() == 0){
                 Toast.makeText(getContext(), getResources().getString(R.string.errorEmptyStrings) ,Toast.LENGTH_SHORT)
                         .show();
                 return;
             }
+
             ApiController.getInstance().updatePassword(view.getContext(), binding.etOldData.getText().toString(), binding.etNewData.getText().toString(), new VolleyCallBack<JSONObject>() {
+
                 @Override
                 public ArrayList<NameCardItem> onSuccess() {
                     return null;
@@ -142,6 +148,5 @@ public class ChangeDataFragment extends Fragment {
                 }
             });
         }
-
     }
 }
