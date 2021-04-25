@@ -83,6 +83,9 @@ public class SettingsActivity extends AppCompatActivity {
             fragmentManager.beginTransaction().remove(f).commit();
     }
 
+    /**
+     * reload the statsFragment after namechange or resetlist
+     */
     public void reloadStats() {
         closeFragment();
         Fragment nameStats;
@@ -92,6 +95,11 @@ public class SettingsActivity extends AppCompatActivity {
                 .commit();
     }
 
+    /**
+     * Loads the changeDataFragment with the correct informatino depending on which button was
+     * used
+     * @param view
+     */
     public void changeDataPopup(View view) {
         Bundle bundle = new Bundle();
 
@@ -112,7 +120,6 @@ public class SettingsActivity extends AppCompatActivity {
             fragmentManager.beginTransaction()
                     .add(R.id.clStatContainer, changedata,"changedata")
                     .commit();
-
         }
         if (changedata == null) {
             changedata = new ChangeDataFragment();
@@ -123,6 +130,9 @@ public class SettingsActivity extends AppCompatActivity {
         }
     }
 
+    /**
+     * starts the toggle for notificatinos in the right state
+     */
     public void initNotificationToggle(){
         Log.d("notify", "initNotificationToggle: " + prefs.getEnableNotifications());
         binding.swNotifications.setChecked(prefs.getEnableNotifications());
@@ -131,11 +141,15 @@ public class SettingsActivity extends AppCompatActivity {
     public void toggleNotifications(CompoundButton buttonView, boolean isChecked){
         prefs.setEnableNotifications(isChecked);
     }
+
+    /**
+     * handles creating an AlertDialog to alert user of the action he is trying to take
+     * @param view
+     */
     public void createResetListAlert(View view) {
         android.app.AlertDialog alert =  new AlertDialog.Builder(this)
                 .setTitle("Núllstilla listana")
                 .setMessage("Ertu Alveg viss um að þú viljir núllstilla nöfnin?")
-
                 .setPositiveButton("Já", new DialogInterface.OnClickListener() {
                     public void onClick(DialogInterface dialog, int which) {
                         ApiController.getInstance().resetUserLists(view.getContext(), new VolleyCallBack<JSONObject>() {
@@ -159,7 +173,6 @@ public class SettingsActivity extends AppCompatActivity {
                     }
                 })
 
-                // A null listener allows the button to dismiss the dialog and take no further action.
                 .setNegativeButton("Nei 😯", null)
                 .setIcon(android.R.drawable.ic_dialog_alert)
                 .show();

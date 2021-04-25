@@ -100,6 +100,10 @@ public class ViewNameStatsFragment extends Fragment {
         });
         ApiController.getInstance().addToRequestQueue(jsonObjReq);
     }
+
+    /**
+     * Get's the logged in users stats and populates the textview with the data
+     */
     private void getStatData(){
         ApiController.getInstance().getStatData(context, new VolleyCallBack<JSONObject>() {
             @Override

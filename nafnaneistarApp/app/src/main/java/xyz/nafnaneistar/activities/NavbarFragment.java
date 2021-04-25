@@ -60,7 +60,6 @@ public class NavbarFragment extends Fragment {
      * @return true if the activity
      */
     public Boolean onNavigationItemSelected(MenuItem view){
-        Log.d("partners", "SwitchIntent: " + "click?");
         switch (view.getItemId()){
             case R.id.navSwipe:
                 if(!getActivity().getLocalClassName().toString().contains("SwipeActivity")){

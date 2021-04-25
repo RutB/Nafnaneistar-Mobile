@@ -35,9 +35,8 @@ import xyz.nafnaneistar.loginactivity.R;
 import xyz.nafnaneistar.loginactivity.databinding.FragmentComboListBinding;
 
 /**
- * A simple {@link Fragment} subclass.
- * Use the {@link ComboListFragment#newInstance} factory method to
- * create an instance of this fragment.
+* Displays the available partners and calls the Fragment that  displays the set of names that both the partner and the logged in user have approved and the
+ avarage rating of the name
  */
 public class ComboListFragment extends Fragment implements  AdapterView.OnItemSelectedListener {
     FragmentComboListBinding binding;
@@ -66,7 +65,6 @@ public class ComboListFragment extends Fragment implements  AdapterView.OnItemSe
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         binding = DataBindingUtil.inflate(inflater, R.layout.fragment_combo_list, container, false);
-
         binding.tvComboNameTitle.setText(R.string.viewlikedComboList);
         View view = binding.getRoot();
         ArrayList<String> partners = new ArrayList<>();
@@ -77,8 +75,6 @@ public class ComboListFragment extends Fragment implements  AdapterView.OnItemSe
         binding.btnConfirmPartner.setOnClickListener(this::openListView);
         return view;
     }
-
-
 
     public void getPartnerList(ArrayList<String> list){
         list.clear();
@@ -122,7 +118,6 @@ public class ComboListFragment extends Fragment implements  AdapterView.OnItemSe
         ApiController.getInstance().addToRequestQueue(jsonObjReq);
     }
 
-    //afhverju er fragment að kvarta?
     public void openListView(View view) {
         Fragment f = fragmentManager.findFragmentById(R.layout.fragment_combo_list_manager);
         if(f != null) return;;
@@ -131,7 +126,6 @@ public class ComboListFragment extends Fragment implements  AdapterView.OnItemSe
                     .show();
             return;
         }
-
         if (f == null) {
             f = new ComboListManagerFragment();
             Bundle bundle = new Bundle();

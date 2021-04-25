@@ -79,6 +79,7 @@ public class ViewLikedActivity extends AppCompatActivity {
         binding.tvViewLikedMenuRateName.setOnClickListener(view -> loadApprovedNames());
     }
 
+
     @Override
     public void onRestoreInstanceState(@Nullable Bundle savedInstanceState) {
         super.onRestoreInstanceState(savedInstanceState);
@@ -92,6 +93,10 @@ public class ViewLikedActivity extends AppCompatActivity {
 
     }
 
+    /**
+     * toggles different menus depending on selected index
+     * @param index
+     */
     public void loadCurrentMenu(int index){
         switch (index){
             case 1:
@@ -115,6 +120,9 @@ public class ViewLikedActivity extends AppCompatActivity {
         }
     }
 
+    /**
+    loads the statsFragment
+     **/
     private void loadStatMenu(){
         if(selectedMenuIndex == 0) return;
         selectedMenuIndex = 0;
@@ -130,6 +138,9 @@ public class ViewLikedActivity extends AppCompatActivity {
         }
     }
 
+    /**
+     * Loads the combolist fragment
+     */
     private void loadComboListMenu(){
         if(selectedMenuIndex == 1) return;
         selectedMenuIndex = 1;
@@ -158,9 +169,7 @@ public class ViewLikedActivity extends AppCompatActivity {
                     .add(R.id.viewLikedContainer, f, "ApprovedList")
                     .commit();
         }
-
     }
-
 
     private void loadComboNameMenu(){
         if(selectedMenuIndex == 3) return;
@@ -168,16 +177,17 @@ public class ViewLikedActivity extends AppCompatActivity {
         changedSelectedMenu(binding.tvViewLikedMenuNameCombo);
         hideAllMenuPages();
         Fragment f = fragmentManager.findFragmentByTag("nameCombo");
-
         if (f == null) {
             f = new NameComboFragment();
             fragmentManager.beginTransaction()
                     .add(R.id.clFragmentContainer, f, "nameCombo")
                     .commit();
         }
-
     }
 
+    /**
+     * overrides onBackPressed to close the fullscreen fragments oonly and not leave viewliked Activity
+     */
     @Override
     public void onBackPressed() {
         Fragment f = fragmentManager.findFragmentByTag("listViewCombo");
@@ -193,7 +203,6 @@ public class ViewLikedActivity extends AppCompatActivity {
     }
 
     private void removeFragment(String tag) {
-
         Fragment f = fragmentManager.findFragmentByTag(tag);
         if (f != null) {
             fragmentManager.beginTransaction()
@@ -227,6 +236,10 @@ public class ViewLikedActivity extends AppCompatActivity {
         binding.tvViewLikedMaleTitleStats.setText(maleString, TextView.BufferType.SPANNABLE);
     }
 
+    /**
+     * Changes color to indicate what submeu is selected
+     * @param view
+     */
     private void changedSelectedMenu(View view){
         int childCount = binding.llViewLikedMenu.getChildCount();
         for(int i = 0; i < childCount; i++){
@@ -290,6 +303,10 @@ public class ViewLikedActivity extends AppCompatActivity {
         });
     }
 
+    /**
+     * loads the current user to have that accessible
+     * @throws URISyntaxException
+     */
     public void loadCurrentUser() throws URISyntaxException {
         String[] user = prefs.getUser();
         String email = user[0];

@@ -34,9 +34,8 @@ import xyz.nafnaneistar.loginactivity.R;
 import xyz.nafnaneistar.loginactivity.databinding.FragmentComboListManagerBinding;
 
 /**
- * A simple {@link Fragment} subclass.
- * Use the {@link ComboListManagerFragment#newInstance} factory method to
- * create an instance of this fragment.
+ * Displays the set of names that both the partner and the logged in user have approved and the
+ * avarage rating of the name
  */
 public class ComboListManagerFragment extends Fragment implements  ComboListNameCardRecyclerViewAdapter.OnItemListener {
     private FragmentComboListManagerBinding binding;
@@ -209,7 +208,7 @@ public class ComboListManagerFragment extends Fragment implements  ComboListName
     }
 
     public void removeFromApprovedList(int namecardId, int position){
-        ApiController.getInstance().removeFromApprovedList(namecardId,position, (Activity) getContext(), new VolleyCallBack<JSONObject>() {
+        ApiController.getInstance().removeFromApprovedList(namecardId, (Activity) getContext(), new VolleyCallBack<JSONObject>() {
             @Override
             public ArrayList<NameCardItem> onSuccess() {
                 Toast.makeText(getContext(), getResources().getString(R.string.operationSuccess) ,Toast.LENGTH_SHORT)

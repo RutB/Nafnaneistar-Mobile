@@ -27,9 +27,8 @@ import xyz.nafnaneistar.loginactivity.R;
 import xyz.nafnaneistar.loginactivity.databinding.FragmentChangeDataBinding;
 
 /**
- * A simple {@link Fragment} subclass.
- * Use the {@link ChangeDataFragment#newInstance} factory method to
- * create an instance of this fragment.
+* Changes layout depending on the type it gets from the bundle, used to display Update name and Update
+ * password
  */
 public class ChangeDataFragment extends Fragment {
     FragmentChangeDataBinding binding;

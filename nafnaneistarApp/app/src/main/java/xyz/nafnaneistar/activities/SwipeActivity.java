@@ -32,7 +32,6 @@ import xyz.nafnaneistar.loginactivity.databinding.ActivitySwipeBinding;
 import xyz.nafnaneistar.model.NameCard;
 
 /**
- * TODO:
  * BUGFIX: NavBar hverfur þegar lyklaborð er opið. Tengist Manifest fixi?
  */
 public class SwipeActivity extends AppCompatActivity {
@@ -149,6 +148,11 @@ public class SwipeActivity extends AppCompatActivity {
         binding.tvName.setText(ssb, TextView.BufferType.SPANNABLE);
     }
 
+    /**
+     * handles the action to approve or disapprove name after btn click or swiping
+     * @param view
+     * @throws URISyntaxException
+     */
     public void chooseName(View view) throws URISyntaxException {
         if (currentCard == null) return;
         int currentID = currentCard.getId();
@@ -174,7 +178,6 @@ public class SwipeActivity extends AppCompatActivity {
                         }
 
                     }
-
                     @Override
                     public void onError(String error) {
                         Toast.makeText(SwipeActivity.this, error, Toast.LENGTH_LONG)
@@ -183,6 +186,10 @@ public class SwipeActivity extends AppCompatActivity {
                 });
     }
 
+    /**
+     * fetches a NameCard from the logged in users AvailableNames list
+     * @throws URISyntaxException
+     */
     public void getNewName() throws URISyntaxException {
         initLoading();
         ApiController.getInstance().getNewName(binding.cbGenderMale.isChecked(), binding.cbGenderFemale.isChecked(),

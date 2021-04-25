@@ -95,6 +95,9 @@ public class ApiController extends NotificationController {
 
     }
 
+    /**
+     * Checks if user has some notifications and notifies if there are any
+    **/
     public void checkNotifications(Activity context) throws URISyntaxException {
         Prefs prefs = new Prefs(context);
         String [] user = prefs.getUser();
@@ -138,6 +141,13 @@ public class ApiController extends NotificationController {
         ApiController.getInstance().addToRequestQueue(jsonObjReq);
     }
 
+    /**
+     * Tries to log in with the given emal and password
+     * @param volleyCallBack what to do on error or response
+     * @param email email of the user trying to log in
+     * @param pass password of the user trying to log in
+     * @throws URISyntaxException
+     */
     public void login(VolleyCallBack<User> volleyCallBack, String email, String pass) throws URISyntaxException {
         String listeningPath = "login/check";
         URIBuilder b = null;
@@ -157,6 +167,15 @@ public class ApiController extends NotificationController {
         ApiController.getInstance().addToRequestQueue(jsonObjReq);
     }
 
+
+    /**
+     * Sends a POST request to the backend to signup a new user
+     * @param volleyCallBack implements callback for onresponse and onError
+     * @param name name of the new user
+     * @param email email of the new user
+     * @param pass password of the new user
+     * @throws URISyntaxException
+     */
     public void signup(VolleyCallBack<JSONObject> volleyCallBack, String name, String email, String pass) throws URISyntaxException {
         String listeningPath = "signup";
         URIBuilder b = new URIBuilder(ApiController.getDomainURL()+listeningPath);
@@ -169,6 +188,13 @@ public class ApiController extends NotificationController {
         ApiController.getInstance().addToRequestQueue(jsonObjReq);
     }
 
+    /**
+     * Get's the namecards of the user and their rating
+     * @param partnerId id of the requested partner
+     * @param user_email email of the logged in user
+     * @param pass password of the logged in user
+     * @param volleyCallBack callback for onrespnse and onError
+     */
     public void getNameCardsAndRating(Long partnerId,String user_email,String pass, VolleyCallBack<ArrayList<NameCardItem>> volleyCallBack) {
         ArrayList<NameCardItem> comboList = new ArrayList<>();
         String listeningPath = "viewliked/combolist";
@@ -305,7 +331,14 @@ public class ApiController extends NotificationController {
         ApiController.getInstance().addToRequestQueue(jsonObjReq);
     }
 
-    public void removeFromApprovedList(int namecardId, int position, Activity context, VolleyCallBack<JSONObject> volleyCallBack){
+    /**
+     * Sends a GET method to the server (maybe it should had been delete..) that removes a NameCardID
+     * From the loggedin user
+     * @param namecardId id of the NameCard to be removed
+     * @param context
+     * @param volleyCallBack
+     */
+    public void removeFromApprovedList(int namecardId, Activity context, VolleyCallBack<JSONObject> volleyCallBack){
         Prefs prefs = new Prefs(context);
         String [] user = prefs.getUser();
         String email = user[0];
@@ -335,6 +368,13 @@ public class ApiController extends NotificationController {
         ApiController.getInstance().addToRequestQueue(jsonObjReq);
     }
 
+    /**
+     *  Updated the NameCard with the given rating for the logged in user
+     * @param namecardId
+     * @param rating
+     * @param context
+     * @param volleyCallBack
+     */
     public void updateRating(int namecardId, int rating, Activity context, VolleyCallBack<JSONObject> volleyCallBack){
         Prefs prefs = new Prefs(context);
         String [] user = prefs.getUser();
@@ -366,6 +406,15 @@ public class ApiController extends NotificationController {
 
     }
 
+    /**
+     * Gets a new name by the gender that is specified from the list of available names from the
+     * logged in user
+     * @param male
+     * @param female
+     * @param context
+     * @param volleyCallBack
+     * @throws URISyntaxException
+     */
     public void getNewName(boolean male, boolean female, Activity context, VolleyCallBack<NameCard> volleyCallBack) throws URISyntaxException {
         Prefs prefs = new Prefs(context);
         String[] user = prefs.getUser();
@@ -379,7 +428,6 @@ public class ApiController extends NotificationController {
             b.addParameter("female", "true");
         if (male)
             b.addParameter("male", "true");
-
         JsonObjectRequest jsonObjReq = new JsonObjectRequest(Request.Method.GET, b.build().toString(), null,
                 response -> {
 
@@ -393,6 +441,17 @@ public class ApiController extends NotificationController {
         ApiController.getInstance().addToRequestQueue(jsonObjReq);
     }
 
+    /**
+     * a method used to either approve name or disapprove name and get a new NameCard from the given
+     * parameters
+     * @param action - either approve or disapprove
+     * @param currentCardId - id of the current card on screen
+     * @param male - used to specify the next card gender
+     * @param female - used to specify the next card
+     * @param context
+     * @param volleyCallBack
+     * @throws URISyntaxException
+     */
     public void chooseName(String action, int currentCardId,boolean male, boolean female, Activity context, VolleyCallBack<NameCard> volleyCallBack) throws URISyntaxException {
         Log.d("ApiController.chooseName", "Action: " + action + " nameCardId: " + currentCardId + " male: " + male + " female: " + female + " Context: " + context );
         Prefs prefs = new Prefs(context);
@@ -589,6 +648,12 @@ public class ApiController extends NotificationController {
         ApiController.getInstance().addToRequestQueue(jsonObjReq);
     }
 
+    /**
+     * removes the given partnerID from the partner list of the logged in user
+     * @param partnerEmail
+     * @param context
+     * @param volleyCallBack
+     */
     public void removeFromLinkPartners(String partnerEmail, Activity context, VolleyCallBack<JSONObject> volleyCallBack) {
         Prefs prefs = new Prefs(context);
         String [] user = prefs.getUser();
@@ -722,6 +787,13 @@ public class ApiController extends NotificationController {
 
     }
 
+    /**
+     * updates the password of the logged in user from the given password
+     * @param context
+     * @param pass
+     * @param newpass
+     * @param volleyCallBack
+     */
     public  void updatePassword(Context context,String pass, String newpass, VolleyCallBack<JSONObject> volleyCallBack){
         Prefs prefs = new Prefs((Activity) context);
         String [] user = prefs.getUser();
@@ -751,6 +823,12 @@ public class ApiController extends NotificationController {
     }
 
 
+    /**
+     * updates the users name
+     * @param context
+     * @param newname
+     * @param volleyCallBack
+     */
     public void updateUsersName(Context context,String newname, VolleyCallBack<JSONObject> volleyCallBack){
         Prefs prefs = new Prefs((Activity) context);
         String [] user = prefs.getUser();
@@ -780,6 +858,11 @@ public class ApiController extends NotificationController {
         ApiController.getInstance().addToRequestQueue(jsonObjReq);
     }
 
+    /**
+     * Resets the approveed named list and available names for th elogged in user
+     * @param context
+     * @param volleyCallBack
+     */
     public void resetUserLists(Context context, VolleyCallBack<JSONObject> volleyCallBack){
         Prefs prefs = new Prefs((Activity) context);
         String [] user = prefs.getUser();
